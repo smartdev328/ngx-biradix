@@ -3,8 +3,14 @@ define([
     "app",
     "../../filters/skip/filter",
 ], function(app) {
+    var pageViewType = 'InitialPageView';
+
     app.controller("manageUsersController", ["$scope", "$rootScope", "$location", "$userService", "$authService", "ngProgress", "$dialog", "$uibModal", "$gridService", "toastr",
     function($scope, $rootScope, $location, $userService, $authService, ngProgress, $dialog, $uibModal, $gridService, toastr) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+        
         window.setTimeout(function() {
             window.document.title = "Manage Users | BI:Radix";
             }, 1500);
@@ -21,7 +27,7 @@ define([
                 siteAdmin = $rootScope.me.roles.indexOf("Site Admin") > -1;
                 $scope.adjustToSize($(window).width());
 
-                $scope.reload();
+                $scope.reload(true);
 
                 me();
             }
@@ -88,7 +94,7 @@ define([
             $scope.resetPager();
         };
 
-        $scope.reload = function() {
+        $scope.reload = function(fireGa) {
             $scope.localLoading = false;
             $userService.search().then(function(response) {
                 $scope.data = response.data.users;
@@ -139,6 +145,22 @@ define([
 
 
                 $scope.localLoading = true;
+
+                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                    var pageTime = performance.now() - timeStart;
+
+                    var metrics = pageViewType === 'InitialPageView' && {
+                        'metric1': 1,
+                        'metric2': pageTime,
+                    } || {
+                        'metric3': 1,
+                        'metric4': pageTime,
+                    }
+            
+                    ga('send', 'event', pageViewType, 'Manage Users', metrics);
+            
+                    pageViewType = 'PageView';
+                }
             },
             function(error) {
                 if (error.status == 401) {

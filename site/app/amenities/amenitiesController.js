@@ -4,8 +4,13 @@ define([
     '../../services/propertyAmenityService',
     '../../filters/skip/filter',
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
     app.controller('amenitiesController', ['$scope','$rootScope','$location','$amenityService','$authService','ngProgress','$dialog','$uibModal','$gridService','toastr','$propertyService','$propertyAmenityService', function ($scope,$rootScope,$location,$amenityService,$authService,ngProgress,$dialog,$uibModal,$gridService,toastr,$propertyService,$propertyAmenityService) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         window.setTimeout(function() {window.document.title = "Amenities | BI:Radix";},1500);
 
         $rootScope.nav = "";
@@ -26,7 +31,7 @@ define([
 
 
         // /////////////////////////////
-        $scope.reload = function () {
+        $scope.reload = function (fireGa) {
             $scope.localLoading = false;
             $amenityService.search({getCounts: true, active: true}).then(function (response) {
                 $scope.data = response.data.amenities;
@@ -39,11 +44,27 @@ define([
 
                 $propertyService.getAmenityCounts().then(function (response) {
 
-                        $scope.data.forEach(function(a) {
-                            a.properties = response.data.counts[a._id] || 0;
-                        })
+                    $scope.data.forEach(function(a) {
+                        a.properties = response.data.counts[a._id] || 0;
+                    })
 
                     $scope.localLoading = true;
+
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                        var pageTime = performance.now() - timeStart;
+
+                        var metrics = pageViewType === 'InitialPageView' && {
+                            'metric1': 1,
+                            'metric2': pageTime,
+                        } || {
+                            'metric3': 1,
+                            'metric4': pageTime,
+                        }
+                
+                        ga('send', 'event', pageViewType, 'Amenities', metrics);
+                
+                        pageViewType = 'PageView';
+                    }
                 },
                 function (error) {
                     if (error.status == 401) {
@@ -96,7 +117,7 @@ define([
 
 
         $scope.calcActive();
-        $scope.reload();
+        $scope.reload(true);
 
 
         $scope.searchFilter = function (obj) {

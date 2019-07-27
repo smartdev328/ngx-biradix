@@ -2,8 +2,14 @@
 define([
     "app",
 ], function(app) {
+    var pageViewType = 'InitialPageView';
+
     app.controller("importController", ["$scope", "$rootScope", "$location", "$importService", "$organizationsService", "ngProgress", "$dialog", "$uibModal", "toastr",
         function($scope, $rootScope, $location, $importService, $organizationsService, ngProgress, $dialog, $uibModal, toastr) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         window.setTimeout(function() {
             window.document.title = "Configure PMS Import | BI:Radix";
             }, 1500);
@@ -15,7 +21,7 @@ define([
 
 
         // /////////////////////////////
-        $scope.reload = function() {
+        $scope.reload = function(fireGa) {
             $scope.localLoading = false;
 
             $organizationsService.search().then(function(response) {
@@ -43,6 +49,22 @@ define([
                         });
 
                         $scope.localLoading = true;
+
+                        if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                            var pageTime = performance.now() - timeStart;
+
+                            var metrics = pageViewType === 'InitialPageView' && {
+                                'metric1': 1,
+                                'metric2': pageTime,
+                            } || {
+                                'metric3': 1,
+                                'metric4': pageTime,
+                            }
+                    
+                            ga('send', 'event', pageViewType, 'Import', metrics);
+                    
+                            pageViewType = 'PageView';
+                        }
                     },
                     function(error) {
                         $scope.localLoading = true;
@@ -120,6 +142,6 @@ define([
                 });
             });
         }
-        $scope.reload();
+        $scope.reload(true);
     }]);
 });

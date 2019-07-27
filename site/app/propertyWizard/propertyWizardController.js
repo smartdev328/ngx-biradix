@@ -120,7 +120,7 @@ define([
             }
 
             $scope.changeStep(0);
-            $scope.property = {fees: {}, floorplans: [], isCustom: isCustom }
+            $scope.property = {fees: {}, floorplans: [], isCustom: isCustom, custom_fees: [] }
 
             //Custom subjects get assigned to owners org only.
             if (isCustom && !isComp) {

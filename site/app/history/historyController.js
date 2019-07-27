@@ -3,12 +3,18 @@ define([
     "app",
     "async",
 ], function(app, async) {
+    var pageViewType = 'InitialPageView';
+
     app.controller("historyController"
         , ["$scope", "$rootScope", "$location", "ngProgress", "$dialog", "$auditService", "toastr", "$stateParams", "$propertyService", "$userService",
             function($scope, $rootScope, $location, ngProgress, $dialog, $auditService, toastr, $stateParams, $propertyService, $userService) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         window.setTimeout(function() {
             window.document.title = "Activity History | BI:Radix";
-            }, 1500);
+        }, 1500);
 
         $rootScope.nav = "";
         $scope.pager = {offset: 0, currentPage: 1, itemsPerPage: parseInt($stateParams.rows) || 50};
@@ -151,7 +157,7 @@ define([
             });
         };
 
-        $scope.reload = function() {
+        $scope.reload = function(fireGa) {
             $scope.options.checked = {};
             $scope.options.checkAll = false;
 
@@ -215,6 +221,22 @@ define([
 
                     $scope.pager = response.data.pager;
                     $scope.localLoading = true;
+
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                        var pageTime = performance.now() - timeStart;
+
+                        var metrics = pageViewType === 'InitialPageView' && {
+                            'metric1': 1,
+                            'metric2': pageTime,
+                        } || {
+                            'metric3': 1,
+                            'metric4': pageTime,
+                        }
+                
+                        ga('send', 'event', pageViewType, 'History', metrics);
+                
+                        pageViewType = 'PageView';
+                    }
                 },
                 function(error) {
                     if (error.status == 401) {
@@ -255,7 +277,7 @@ define([
                         }
 
                         if (!$stateParams.property && !$stateParams.user) {
-                            $scope.reload();
+                            $scope.reload(true);
                         } else if ($stateParams.property) {
                             $propertyService.search({
                                 limit: 1,
@@ -268,7 +290,7 @@ define([
                                     $scope.propertyItems.push({id: $stateParams.property, name: response.data.properties[0].name});
                                 }
 
-                                $scope.reload();
+                                $scope.reload(true);
                             }, function(error) {
                                 $scope.reload();
                             });
@@ -278,7 +300,7 @@ define([
                                 _id: $stateParams.user,
                             }).then(function(response) {
                                 $scope.userItems = $scope.formatUsers(response.data);
-                                $scope.reload();
+                                $scope.reload(true);
                             }, function(error) {
                                 $scope.reload();
                             });

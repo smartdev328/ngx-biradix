@@ -2,8 +2,13 @@
 define([
     'app'
 ], function (app) {
+    var pageViewType = 'InitialPageView';
 
      app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', "$http", function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService,$http) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+
         $rootScope.nav = 'Dashboard'
         $rootScope.sideMenu = false;
         $rootScope.sideNav = "Dashboard";
@@ -196,7 +201,7 @@ define([
                         if ($stateParams.id) {
                             $scope.changeProperty();
                         } else {
-                            $scope.loadProperty($scope.selectedProperty._id);
+                            $scope.loadProperty($scope.selectedProperty._id, null, true);
                         }
                     } else {
                         $scope.localLoading = true;
@@ -240,7 +245,7 @@ define([
             $scope.changeProperty();
         });
 
-        $scope.loadProperty = function(defaultPropertyId, trendsOnly) {
+        $scope.loadProperty = function(defaultPropertyId, trendsOnly, fireGa) {
             if (defaultPropertyId) {
                 if (!trendsOnly) {
                     $scope.localLoading = false;
@@ -286,6 +291,25 @@ define([
 
                     $scope.localLoading = true;
                     $scope.trendsLoading = true;
+
+                    if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                        var dateRange = $scope.settings && $scope.settings.daterange && $scope.settings.daterange.selectedRange || null;
+                        var pageTime = performance.now() - timeStart;
+
+                        var metrics = pageViewType === 'InitialPageView' && {
+                            'dimension5': dateRange,
+                            'metric1': 1,
+                            'metric2': pageTime,
+                        } || {
+                            'dimension5': dateRange,
+                            'metric3': 1,
+                            'metric4': pageTime,
+                        }
+
+                        ga('send', 'event', pageViewType, 'Dashboard', metrics);
+
+                        pageViewType = 'PageView';
+                    }
 
                     if ($stateParams.s == "1" && !$scope.surveyPopped) {
                         $rootScope.marketSurvey(defaultPropertyId, null, {trackReminders: true});

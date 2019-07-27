@@ -2,8 +2,14 @@
 define([
     "app",
 ], function(app) {
+    var pageViewType = 'InitialPageView';
+
     app.controller("perspectivesController", ["$scope", "$rootScope", "$perspectivesService", "toastr", "$httpHelperService", "ngProgress", "$dialog", "$cookieSettingsService", "$stateParams",
         function($scope, $rootScope, $perspectivesService, toastr, $httpHelperService, ngProgress, $dialog, $cookieSettingsService, $stateParams) {
+        if (performance && performance.now) {
+            var timeStart = performance.now();
+        }
+        
         window.setTimeout(function() {
             window.document.title = "My Account - Perspectives | BI:Radix";
         }, 1500);
@@ -44,18 +50,34 @@ define([
                 if ($stateParams.pId) {
                     pId = $stateParams.pId;
                 }
-                $scope.loadPerspective(id, pId);
+                $scope.loadPerspective(id, pId, true);
                 me();
             }
         });
 
-        $scope.loadPerspective = function(propertyId, perspectiveId) {
+        $scope.loadPerspective = function(propertyId, perspectiveId, fireGa) {
             $scope.getPropertyById(propertyId, function(properties) {
                 if (properties && properties.length) {
                     $scope.model.selectedProperty = properties[0];
                     $scope.perspectiveToLoad = perspectiveId;
                 }
                 $scope.loading = false;
+
+                if (fireGa && ga && pageViewType && timeStart && performance && performance.now) {
+                    var pageTime = performance.now() - timeStart;
+
+                    var metrics = pageViewType === 'InitialPageView' && {
+                        'metric1': 1,
+                        'metric2': pageTime,
+                    } || {
+                        'metric3': 1,
+                        'metric4': pageTime,
+                    }
+            
+                    ga('send', 'event', pageViewType, 'Perspectives', metrics);
+            
+                    pageViewType = 'PageView';
+                }
             });
         };
 
