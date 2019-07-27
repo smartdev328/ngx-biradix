@@ -1,6 +1,6 @@
 import { Component} from '@angular/core';
 import {IContact, ILoggedInContact} from "../../../core/models/contact";
-import {AuthService, ContactService, PropertyService} from "../../../core/services";
+import {AuthService, ContactService, PerformanceService, PropertyService} from "../../../core/services";
 import {ILoggedInUser} from "../../../core/models";
 import {IProperty} from "../../../core/models/property";
 import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
@@ -23,8 +23,21 @@ export class HelpComponent  {
     ])
   });
 
-  constructor(private authService: AuthService, private propertyService: PropertyService, private contactService: ContactService, private snackBar: MatSnackBar, public dialog: MatDialog) {
+  constructor(private authService: AuthService,
+              private propertyService: PropertyService,
+              private contactService: ContactService,
+              private snackBar: MatSnackBar,
+              public dialog: MatDialog,
+              private performanceService: PerformanceService) {
 
+  }
+
+  async ngOnInit() {
+    this.performanceService.start();
+
+    // async services would go here so we can time them
+
+    this.performanceService.fireGoogleAnalytics('Help');
   }
 
   bookTraining() {

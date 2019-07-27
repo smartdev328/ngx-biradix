@@ -1,5 +1,5 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import {AuthService, ContactService, HttpService, PropertyService, SiteService} from './services';
+import {AuthService, ContactService, HttpService, PerformanceService, PropertyService, SiteService} from './services';
 import {CookieService} from "ngx-cookie-service";
 import {SecureAuthGuard} from "./guards";
 
@@ -13,7 +13,8 @@ import {SecureAuthGuard} from "./guards";
     AuthService,
     PropertyService,
     SiteService,
-    ContactService
+    ContactService,
+    PerformanceService
   ],
   declarations: []
 })
