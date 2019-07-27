@@ -53,8 +53,6 @@ a {
    margin-bottom: 15px;
  }
 
-
-
 .fill-space {
   flex: 1 1 auto;
 }
@@ -65,4 +63,10 @@ a {
 
 .mat-radio-label {
   white-space: normal !important;
+}
+
+
+.mat-menu-item {
+  line-height: 40px !important;
+  height: 40px !important;
 }

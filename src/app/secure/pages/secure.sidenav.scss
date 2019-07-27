@@ -35,11 +35,11 @@
 }
 
 /* width */
-.responsive-nav ::-webkit-scrollbar {
+mat-sidenav ::-webkit-scrollbar {
   width: 5px;
 }
 
 /* Handle */
-.responsive-nav ::-webkit-scrollbar-thumb {
+mat-sidenav ::-webkit-scrollbar-thumb {
   background: #fff;
 }

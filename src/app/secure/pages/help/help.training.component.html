@@ -1,7 +1,7 @@
 <div fxLayout>
   <h1 mat-dialog-title>Reserve Training Spot</h1>
   <span class="fill-space"></span>
-  <div><button mat-button (click)="cancel()" style="min-width:inherit">&times;</button></div>
+  <div><button mat-icon-button (click)="cancel()" style="min-width:inherit"><fa-icon icon="times"></fa-icon></button></div>
 </div>
 <div mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="send()">
@@ -75,7 +75,7 @@
         <div fxHide.gt-sm style="height:20px"></div>
         <button mat-raised-button color="primary" [disabled]="sending">
           <mat-icon *ngIf="sending"><mat-spinner color="primary" diameter="20"></mat-spinner></mat-icon>
-          Book Training</button>
+          Reserve</button>
       </div>
     </div>
 

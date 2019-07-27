@@ -29,7 +29,7 @@ export class HelpTrainingComponent {
       Validators.required,
     ]),
     note: new FormControl('', [
-      Validators.required,
+
     ]),
     someoneElse: new FormControl('', [
 
