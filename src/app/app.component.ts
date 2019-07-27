@@ -30,6 +30,12 @@ export class AppComponent {
         firstName: me.first + " - org: " + me.orgs[0].name,
         fullName: me.first + " " + me.last
       });
+
+      window['FS'].identify(me._id, {
+        displayName: me.first + " " + me.last,
+        email: me.email,
+        org_str: me.orgs[0].name
+      });
     }
     
     this.loaded = true;

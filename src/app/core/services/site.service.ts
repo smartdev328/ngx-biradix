@@ -30,6 +30,13 @@ export class SiteService {
     rg4js('apiKey', response.raygun_key);
     rg4js('setVersion', this.uiVersion.getValue());
     rg4js('enableCrashReporting', true);
+
+    rg4js('onBeforeSend', function (payload) {
+      if (window['FS'] && window['FS'].getCurrentSessionURL) {
+        payload.Details.UserCustomData.fullStoryUrl = (window['FS'].getCurrentSessionURL() || "").replace("%3A", ":");
+      }
+      return payload;
+    });
   }
 
   handleApiError() {
