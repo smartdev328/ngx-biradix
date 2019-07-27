@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {ErrorHandler, ModuleWithProviders, NgModule} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -27,6 +27,7 @@ import {MdePopoverModule} from "@material-extended/mde";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {faBuilding, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
+import {RaygunErrorHandler} from "./providers/raygun.provider";
 
 export const MaterialModules = [
   MatProgressSpinnerModule,
@@ -78,7 +79,14 @@ export const MaterialModules = [
     ...MaterialModules
   ],
   providers: [
-    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 5000, horizontalPosition: 'right', verticalPosition: 'top'}},
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {duration: 5000, horizontalPosition: 'right', verticalPosition: 'top'}
+    },
+    {
+      provide: ErrorHandler,
+      useClass: RaygunErrorHandler
+    }
   ]
 })
 export class SharedModule {

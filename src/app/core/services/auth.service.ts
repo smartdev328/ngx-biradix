@@ -4,16 +4,17 @@ import {HttpService} from "./http.service";
 import {ILoggedInUser, IloggedInUserWithToken} from "../models";
 import {BehaviorSubject} from "rxjs";
 import {environment} from "../../../environments/environment";
+import {SiteService} from "./site.service";
 
 @Injectable()
 export class AuthService {
   self: BehaviorSubject<ILoggedInUser> = new BehaviorSubject<ILoggedInUser>(undefined);
 
-  constructor(private http: HttpClient, private httpService: HttpService){
+  constructor(private http: HttpClient, private httpService: HttpService, private siteService: SiteService){
   }
 
   async refreshToken(): Promise<ILoggedInUser> {
-    const apiUrl = this.httpService.apiUrl;
+    const apiUrl = this.siteService.apiUrl;
     const authHeader = this.httpService.getAuthHeader();
 
     // No need to call the server if there is no cookie set
@@ -37,7 +38,7 @@ export class AuthService {
   }
 
   async getSelf(): Promise<ILoggedInUser> {
-    const apiUrl = this.httpService.apiUrl;
+    const apiUrl = this.siteService.apiUrl;
     const authHeader = this.httpService.getAuthHeader();
 
     // No need to call the server if there is no cookie set

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import {AuthService, HttpService, SiteService} from "./core/services";
+import {AuthService, SiteService} from "./core/services";
 import {environment} from "../environments/environment";
+import {ILoggedInUser} from "./core/models";
+import * as rg4js from 'raygun4js';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +14,24 @@ export class AppComponent {
   down: boolean = false;
   staticPath: string = environment.deployUrl;
 
-  constructor(private httpService: HttpService, private authService: AuthService, private siteService: SiteService) {
+  constructor(private authService: AuthService, private siteService: SiteService) {
   }
 
   async ngOnInit() {
     // get api url form the web service. we have to do this because its controlled with server env variables which can change without a re-build
-    await this.httpService.lookupApiUrl();
-    await this.authService.getSelf();
+    await this.siteService.lookupServerVariables();
+    const me: ILoggedInUser = await this.authService.getSelf();
+    
+    if (me) {
+      rg4js('setUser', {
+        identifier: me.email,
+        isAnonymous: false,
+        email: me.email,
+        firstName: me.first + " - org: " + me.orgs[0].name,
+        fullName: me.first + " " + me.last
+      });
+    }
+    
     this.loaded = true;
 
     // Subscribe to the needs refresh observer

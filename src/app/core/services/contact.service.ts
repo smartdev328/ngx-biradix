@@ -13,7 +13,7 @@ export class ContactService {
   }
 
   async send(contact: IContact): Promise<ILegacyResponse> {
-    const apiUrl = this.httpService.apiUrl;
+    const apiUrl = this.siteService.apiUrl;
     const authHeader = this.httpService.getAuthHeader();
     try {
       const searchResponse: ILegacyResponse = await this.http.post<ILegacyResponse>(apiUrl + "/contact/send?bust=" + (new Date()).getTime(), contact, {headers: authHeader}).toPromise();

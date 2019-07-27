@@ -16,8 +16,12 @@ module.exports = (function() {
     console.log(`Loading with ${settings.API_URL} as api endpoint`);
     let ui = new express.Router();
 
-    ui.get("/apiUrl", (req, res) => {
-        res.status(200).send({apiUrl: settings.API_URL});
+    ui.get("/serverVariables", (req, res) => {
+        res.status(200).send({
+          apiUrl: settings.API_URL,
+          version: packages.version,
+          raygun_key: settings.RAYGUN_APIKEY
+        });
     });
 
     ui.get("/robots.txt", (req, res) => {

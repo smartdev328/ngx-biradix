@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import { environment } from '../../../environments/environment'
 import {ILoggedInUser} from "../../core/models";
-import {AuthService, HttpService, PropertyService} from "../../core/services";
+import {AuthService, HttpService, PropertyService, SiteService} from "../../core/services";
 import {UserIdleService} from "angular-user-idle";
 import {MediaChange, MediaObserver} from "@angular/flex-layout";
 import {Observable, of, Subscription} from "rxjs";
@@ -29,8 +29,13 @@ export class SecureComponent  {
   public autoCompleteSearch: string;
   public env: string = '';
   readonly PERMISSIONS: typeof PERMISSIONS = PERMISSIONS;
+  public uiVersion: string;
 
-  constructor(private authService: AuthService, private userIdle: UserIdleService, private mediaObserver: MediaObserver, private propertyService: PropertyService, private httpService: HttpService) {
+  constructor(private authService: AuthService,
+              private userIdle: UserIdleService,
+              private mediaObserver: MediaObserver,
+              private propertyService: PropertyService,
+              private siteService: SiteService) {
   }
 
   ngOnInit() {
@@ -39,10 +44,15 @@ export class SecureComponent  {
     this.selfLogic();
     this.idleLogic();
     this.enviornmentLogic();
+    this.versionLogic();
   }
 
   logoff() {
     this.logOffLogic(false);
+  }
+
+  throwError() {
+    throw new Error("Fake error");
   }
 
   hasPermission(permission: PERMISSIONS) {
@@ -91,6 +101,12 @@ export class SecureComponent  {
   layoutLogic() {
     this.mediaWatcher = this.mediaObserver.media$.subscribe((change: MediaChange) => {
       this.mediaAlias = change.mqAlias;
+    });
+  }
+
+  versionLogic() {
+    this.siteService.uiVersion.subscribe((version: string) => {
+      this.uiVersion = version;
     });
   }
 
@@ -145,7 +161,7 @@ export class SecureComponent  {
   }
 
   enviornmentLogic() {
-    const loc = this.httpService.apiUrl.toLowerCase();
+    const loc = this.siteService.apiUrl.toLowerCase();
 
     if (loc.indexOf('//localhost') > -1) {
       this.env = "This is API-LOCAL";
