@@ -9,7 +9,7 @@
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button class="top-nav">Dashboard</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button class="top-nav">Reporting</a>
         <mat-form-field>
-            <mat-icon matPrefix>search</mat-icon>
+            <fa-icon matPrefix icon="search" [fixedWidth]="true"></fa-icon>
             <input matInput placeholder="Search Properties" [matAutocomplete]="auto" [formControl]="autoCompleteControl">
             <mat-autocomplete #auto="matAutocomplete" [panelWidth]="'100%'" [displayWith]="autoCompleteDisplay" autoActiveFirstOption (optionSelected)='autoCompleteSelected($event.option.value)'>
               <mat-option *ngFor="let property of propertyAutoComplete$ | async" [value]="property" class="autoCompleteOption">
@@ -18,24 +18,24 @@
             </mat-autocomplete>
         </mat-form-field>
 
-        <button mat-button [matMenuTriggerFor]="menu">{{me.first}} <mat-icon>arrow_drop_down</mat-icon></button>
+        <button mat-button [matMenuTriggerFor]="menu">{{me.first}} <fa-icon icon="caret-down" [fixedWidth]="true"></fa-icon></button>
         <mat-menu #menu="matMenu">
-          <a mat-menu-item *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'"><mat-icon>person</mat-icon> <span>My Account</span></a>
-          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'"><mat-icon>group</mat-icon> <span>Manage Users</span></a>
+          <a mat-menu-item *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'"><fa-icon icon="user" [fixedWidth]="true"></fa-icon> <span>My Account</span></a>
+          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'"><fa-icon icon="users" [fixedWidth]="true"></fa-icon> <span>Manage Users</span></a>
           <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/properties'"><fa-icon icon="building"[fixedWidth]="true"></fa-icon> <span>Manage Properties</span></a>
           <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/perspectives'"><fa-icon icon="eye-slash"[fixedWidth]="true"></fa-icon> <span>Perspectives <span class="green-badge">New!</span></span></a>
-          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.HISTORY)" [href]="baseUrl + '#/history'"><mat-icon>history</mat-icon> <span>Activity History</span></a>
-          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/uploadSurveys'"><mat-icon>build</mat-icon> <span>Admin</span></a>
-          <a mat-menu-item routerLink="/secure/help" [routerLinkActive]="['mat-button', 'mat-primary']"><mat-icon>help_outline</mat-icon> <span>Help</span></a>
-          <a mat-menu-item (click)="logoff();"><mat-icon>power_settings_new</mat-icon> <span>Log Off</span></a>
+          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.HISTORY)" [href]="baseUrl + '#/history'"><fa-icon icon="history" [fixedWidth]="true"></fa-icon> <span>Activity History</span></a>
+          <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/uploadSurveys'"><fa-icon icon="wrench" [fixedWidth]="true"></fa-icon> <span>Admin</span></a>
+          <a mat-menu-item routerLink="/secure/help" [routerLinkActive]="['mat-button', 'mat-primary']"><fa-icon icon="question" [fixedWidth]="true"></fa-icon> <span>Help</span></a>
+          <a mat-menu-item (click)="logoff();"><fa-icon icon="power-off" [fixedWidth]="true"></fa-icon> <span>Log Off</span></a>
         </mat-menu>
       </div>
-      <button mat-button  [mdePopoverTriggerFor]="searchPopover" [mdePopoverTargetAt]="mainToolbar" mdePopoverTriggerOn="click" fxHide.gt-xs>
-        <mat-icon>search</mat-icon>
+      <button mat-icon-button [mdePopoverTriggerFor]="searchPopover" [mdePopoverTargetAt]="mainToolbar" mdePopoverTriggerOn="click" fxHide.gt-xs>
+        <fa-icon icon="search" [fixedWidth]="true"></fa-icon>
       </button>
 
       <button mat-icon-button (click)="sidenav.toggle()" fxHide.gt-xs>
-        <mat-icon>menu</mat-icon>
+        <fa-icon icon="bars" [fixedWidth]="true"></fa-icon>
       </button>
 
       <mde-popover #searchPopover="mdePopover" [mdePopoverOverlapTrigger]="false" [mdePopoverCloseOnClick]="false" mdePopoverArrowColor="#FFFFFF">
@@ -55,18 +55,18 @@
   <mat-sidenav-container fxFlexFill class="responsive-nav">
     <mat-sidenav #sidenav [mode]="mediaAlias !== 'xs' ? 'side' : 'push'" [opened]="mediaAlias !== 'xs'">
       <mat-nav-list>
-        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" fxHide.gt-xs><mat-icon>table_chart</mat-icon> Dashboard</a>
-        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" fxHide.gt-xs><mat-icon>show_chart</mat-icon> Reporting</a>
-        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>person</mat-icon> My Account</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" fxHide.gt-xs><fa-icon icon="tachometer-alt" [fixedWidth]="true"></fa-icon> Dashboard</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" fxHide.gt-xs><fa-icon icon="chart-bar" [fixedWidth]="true"></fa-icon> Reporting</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><fa-icon icon="user" [fixedWidth]="true"></fa-icon> My Account</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Profile</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile?notifications=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Notifications</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile?settings=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Settings</a>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT) && !me.allowSSO" [href]="baseUrl + '#/updateProfile?password=1'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Password</a>
-        <a *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>group</mat-icon> Manage Users</a>
+        <a *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><fa-icon icon="users" [fixedWidth]="true"></fa-icon> Manage Users</a>
         <a *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/properties'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><fa-icon icon="building" [fixedWidth]="true"></fa-icon> Manage Properties</a>
         <a *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/perspectives'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><fa-icon icon="eye-slash" [fixedWidth]="true"></fa-icon> Perspectives <span class="green-badge">New!</span></a>
-        <a *ngIf="hasPermission(PERMISSIONS.HISTORY)" [href]="baseUrl + '#/history'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>history</mat-icon> Activity History</a>
-        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/uploadSurveys'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><mat-icon>build</mat-icon> Admin</a>
+        <a *ngIf="hasPermission(PERMISSIONS.HISTORY)" [href]="baseUrl + '#/history'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><fa-icon icon="history" [fixedWidth]="true"></fa-icon> Activity History</a>
+        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/uploadSurveys'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><fa-icon icon="wrench" [fixedWidth]="true"></fa-icon> Admin</a>
 
         <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/amenities'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Amenities</a>
         <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/approvedLists'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Approved Lists</a>
@@ -76,8 +76,8 @@
         <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/metrics'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Metrics</a>
         <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/import'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Configure PMS Import</a>
 
-        <a routerLink="/secure/help" mat-button [routerLinkActive]="['nav-highlighted']" (click)="closeSideNavLogic(sidenav)"><mat-icon>help_outline</mat-icon> Help</a>
-        <a (click)="logoff();closeSideNavLogic(sidenav)" mat-button><mat-icon>power_settings_new</mat-icon> Log Off</a>
+        <a routerLink="/secure/help" mat-button [routerLinkActive]="['nav-highlighted']" (click)="closeSideNavLogic(sidenav)"><fa-icon icon="question" [fixedWidth]="true"></fa-icon> Help</a>
+        <a (click)="logoff();closeSideNavLogic(sidenav)" mat-button><fa-icon icon="power-off" [fixedWidth]="true"></fa-icon> Log Off</a>
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>

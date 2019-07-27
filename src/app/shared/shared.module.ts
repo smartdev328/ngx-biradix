@@ -26,12 +26,20 @@ import {HighlightPipe} from "./pipes/highlight.pipe";
 import {MdePopoverModule} from "@material-extended/mde";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {faBuilding, faEyeSlash} from "@fortawesome/free-solid-svg-icons";
+import {
+  faBuilding,
+  faChartBar,
+  faEyeSlash,
+  faHistory, faPowerOff, faQuestion,
+  faUser,
+  faUsers,
+  faWrench,
+  faTachometerAlt, faCaretDown, faSearch, faBars
+} from "@fortawesome/free-solid-svg-icons";
 import {RaygunErrorHandler} from "./providers/raygun.provider";
 
 export const MaterialModules = [
   MatProgressSpinnerModule,
-  MatIconModule,
   MatToolbarModule,
   MatSidenavModule,
   MatMenuModule,
@@ -45,7 +53,8 @@ export const MaterialModules = [
   MatDialogModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatIconModule
 ];
 
 @NgModule({
@@ -94,5 +103,16 @@ export class SharedModule {
     // Add an icon to the library for convenient access in other components
     library.add(faEyeSlash);
     library.add(faBuilding);
+    library.add(faUser);
+    library.add(faUsers);
+    library.add(faTachometerAlt);
+    library.add(faChartBar);
+    library.add(faHistory);
+    library.add(faWrench);
+    library.add(faPowerOff);
+    library.add(faQuestion);
+    library.add(faCaretDown);
+    library.add(faSearch);
+    library.add(faBars);
   }
 }

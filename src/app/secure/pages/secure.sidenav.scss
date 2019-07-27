@@ -13,6 +13,7 @@
   text-align: left;
   font-size:13px;
   color:white;
+  border-radius: 0;
 }
 
 .responsive-nav .nav-highlighted {
@@ -33,6 +34,12 @@
   border-bottom: 1px solid #7E91C2;
 }
 
-.responsive-nav .mat-icon {
-  font-size:22px
+/* width */
+.responsive-nav ::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+.responsive-nav ::-webkit-scrollbar-thumb {
+  background: #fff;
 }

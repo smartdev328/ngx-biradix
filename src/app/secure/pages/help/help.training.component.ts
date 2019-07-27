@@ -74,7 +74,7 @@ export class HelpTrainingComponent {
       requesterName: `${this.form.value.first} ${this.form.value.last}`,
       requesterEmail: this.form.value.email,
       someoneElse: this.form.value.someoneElse,
-      date: this.form.value.date,
+      date: (this.form.value.date as Date).toLocaleDateString(),
       subject: "Training Request",
       message: this.form.value.note,
       properties: properties.map((property: IProperty) => property.name).join(", "),
