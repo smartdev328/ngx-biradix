@@ -22,7 +22,6 @@ import {
 import {LoaderComponent} from "./components";
 import {UserIdleModule} from "angular-user-idle";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {HighlightPipe} from "./pipes/highlight.pipe";
 import {MdePopoverModule} from "@material-extended/mde";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -37,6 +36,8 @@ import {
   faTachometerAlt, faCaretDown, faSearch, faBars, faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import {RaygunErrorHandler} from "./providers/raygun.provider";
+import {HighlightPipe} from "./pipes";
+import {FocusDirective} from "./directives/focus.directive";
 
 export const MaterialModules = [
   MatProgressSpinnerModule,
@@ -71,7 +72,7 @@ export const MaterialModules = [
     FontAwesomeModule,
     ...MaterialModules
   ],
-  declarations: [ LoaderComponent, HighlightPipe ],
+  declarations: [ LoaderComponent, HighlightPipe, FocusDirective ],
   exports: [
     CommonModule,
     FormsModule,
@@ -80,6 +81,7 @@ export const MaterialModules = [
     RouterModule,
     BrowserAnimationsModule,
     LoaderComponent,
+    FocusDirective,
     UserIdleModule,
     FlexLayoutModule,
     HighlightPipe,

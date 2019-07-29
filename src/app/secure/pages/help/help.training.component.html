@@ -8,7 +8,7 @@
     <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap.gt-sm="15px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
       <div fxFlex="50%">
         <mat-form-field fxFlex="fill">
-          <input matInput placeholder="First name" [formControl]="form.controls.first">
+          <input matInput placeholder="First name" [formControl]="form.controls.first" [focus]="focusFirst">
           <mat-error *ngIf="form.controls.first.hasError('required')">
             First name is <strong>required</strong>
           </mat-error>

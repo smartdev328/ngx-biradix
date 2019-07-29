@@ -1,18 +1,19 @@
-import {Component, Inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDialogRef, MatSnackBar} from "@angular/material";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ILoggedInUser} from "../../../core/models";
 import {IProperty} from "../../../core/models/property";
-import {AuthService, ContactService, PropertyService} from "../../../core/services";
-import {IBookTrainingContact, ILoggedInContact} from "../../../core/models/contact";
+import {AuthService, ContactService, PerformanceService, PropertyService} from "../../../core/services";
+import {IBookTrainingContact} from "../../../core/models/contact";
 import {ILegacyResponse} from "../../../core/models/common";
 
 @Component({
   selector: 'help-training-component',
   templateUrl: 'help.training.component.html',
 })
-export class HelpTrainingComponent {
+export class HelpTrainingComponent{
   sending: boolean = false;
+  focusFirst: boolean = false;
 
   form = new FormGroup({
     first: new FormControl('', [
@@ -42,8 +43,24 @@ export class HelpTrainingComponent {
     return (day === 2 || day === 4) && d.getTime() > (new Date()).getTime();
   };
 
-  constructor(public dialogRef: MatDialogRef<HelpTrainingComponent>, private authService: AuthService, private propertyService: PropertyService, private snackBar: MatSnackBar, private contactService: ContactService) {}
+  constructor(public dialogRef: MatDialogRef<HelpTrainingComponent>,
+              private authService: AuthService,
+              private propertyService: PropertyService,
+              private snackBar: MatSnackBar,
+              private contactService: ContactService,
+              private performanceService: PerformanceService) {
 
+  }
+
+
+  async ngOnInit() {
+    this.performanceService.start();
+
+    setTimeout(() => {
+      this.focusFirst = true;
+    }, 500);
+    this.performanceService.fireGoogleAnalytics('Book Training');
+  }
 
   cancel(): void {
     this.dialogRef.close();

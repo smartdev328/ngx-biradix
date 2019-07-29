@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "./global";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #f0f0f0}
@@ -69,4 +70,9 @@ a {
 .mat-menu-item {
   line-height: 40px !important;
   height: 40px !important;
+}
+
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):not(.mat-calendar-body-active) .mat-calendar-body-cell-content {
+  color: $green-color;
+  font-weight: bold;
 }

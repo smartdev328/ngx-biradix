@@ -1,3 +1,5 @@
+@import "../../../global";
+
 .main-nav.mat-toolbar {
   background-color:white;
   border-bottom: 1px solid #ccc;
@@ -15,4 +17,40 @@
 
 .main-nav .env {
   color:red;position:absolute;left:22px;top:-2px;font-weight: bolder;font-size: 17px;
+}
+
+.main-nav .top-nav {
+  font-size:14px;
+  color: black;
+  font-weight: bold;
+  display: inline-block;
+  height:47px;
+  margin-right:15px;
+  padding: 0px 10px;
+}
+
+.main-nav .top-nav:hover {
+  color: $green-color;
+  border-bottom: 3px solid $green-color;
+}
+
+.main-nav .prefix {
+  margin-right:8px;
+}
+
+.main-nav .name-dropdown {
+  margin-left:15px;
+}
+
+.mat-menu-item.role-item {
+  text-align: center;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  cursor: default;
+  line-height: 28px !important;
+  height: 32px !important;
+}
+
+.mat-menu-item.role-item:hover {
+  background-color: inherit;
 }

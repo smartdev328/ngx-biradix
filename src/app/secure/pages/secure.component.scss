@@ -1,3 +1,5 @@
+@import "../../../global";
+
 .mat-option.autoCompleteOption {
   line-height: inherit;
 }
@@ -7,7 +9,7 @@
 }
 
 .green-badge {
-  background-color: #32CD32;
+  background-color: $green-color;
   margin-left: 5px;
   font-size: 65%;
   padding: .2em .6em;

@@ -6,10 +6,10 @@
       <span *ngIf="env" class="env">{{env}}</span>
       <span class="fill-space"></span>
       <div fxHide.lt-sm>
-        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" mat-button class="top-nav">Dashboard</a>
-        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" mat-button class="top-nav">Reporting</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" class="top-nav">Dashboard</a>
+        <a *ngIf="!hasPermission(PERMISSIONS.HIDE_REPORTING)" [href]="baseUrl + '#/reporting'" class="top-nav">Reporting</a>
         <mat-form-field>
-            <fa-icon matPrefix icon="search" [fixedWidth]="true"></fa-icon>
+            <fa-icon matPrefix icon="search" [fixedWidth]="true" class="prefix"></fa-icon>
             <input matInput placeholder="Search Properties" [matAutocomplete]="auto" [formControl]="autoCompleteControl">
             <mat-autocomplete #auto="matAutocomplete" [panelWidth]="'100%'" [displayWith]="autoCompleteDisplay" autoActiveFirstOption (optionSelected)='autoCompleteSelected($event.option.value)'>
               <mat-option *ngFor="let property of propertyAutoComplete$ | async" [value]="property" class="autoCompleteOption">
@@ -18,8 +18,10 @@
             </mat-autocomplete>
         </mat-form-field>
 
-        <button mat-button [matMenuTriggerFor]="menu">{{me.first}} <fa-icon icon="caret-down" [fixedWidth]="true"></fa-icon></button>
+        <button mat-button [matMenuTriggerFor]="menu" class="name-dropdown">{{me.first}} <fa-icon icon="caret-down" [fixedWidth]="true"></fa-icon></button>
         <mat-menu #menu="matMenu">
+          <span mat-menu-item class="role-item">{{me.roles[0]}}</span>
+
           <a mat-menu-item *ngIf="!hasPermission(PERMISSIONS.HIDE_ACCOUNT)" [href]="baseUrl + '#/updateProfile'"><fa-icon icon="user" [fixedWidth]="true"></fa-icon> <span>My Account</span></a>
           <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.USERS)" [href]="baseUrl + '#/manageusers'"><fa-icon icon="users" [fixedWidth]="true"></fa-icon> <span>Manage Users</span></a>
           <a mat-menu-item *ngIf="hasPermission(PERMISSIONS.PROPERTIES)" [href]="baseUrl + '#/properties'"><fa-icon icon="building"[fixedWidth]="true"></fa-icon> <span>Manage Properties</span></a>
