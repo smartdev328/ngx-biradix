@@ -1,4 +1,4 @@
-<div fxLayout>
+<div fxLayout class="dialog-title-bar">
   <h1 mat-dialog-title>Reserve Training Spot</h1>
   <span class="fill-space"></span>
   <div><button mat-icon-button (click)="cancel()" style="min-width:inherit"><fa-icon icon="times"></fa-icon></button></div>
@@ -6,7 +6,7 @@
 <div mat-dialog-content>
   <form [formGroup]="form" (ngSubmit)="send()">
     <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap.gt-sm="15px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
-      <div fxFlex="50%">
+      <div fxFlex.gt-sm="50%">
         <mat-form-field fxFlex="fill">
           <input matInput placeholder="First name" [formControl]="form.controls.first" [focus]="focusFirst">
           <mat-error *ngIf="form.controls.first.hasError('required')">
@@ -14,7 +14,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      <div fxFlex="50%">
+      <div fxFlex.gt-sm="50%">
         <mat-form-field fxFlex="fill">
           <input matInput placeholder="Last name" [formControl]="form.controls.last">
           <mat-error *ngIf="form.controls.last.hasError('required')">
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap.gt-sm="15px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
-      <div fxFlex="50%">
+      <div fxFlex.gt-sm="50%">
         <mat-form-field fxFlex="fill">
           <input matInput placeholder="Email address" [formControl]="form.controls.email">
           <mat-error *ngIf="form.controls.email.hasError('required')">
@@ -36,7 +36,7 @@
         </mat-form-field>
       </div>
 
-      <div fxFlex="50%">
+      <div fxFlex.gt-sm="50%">
         <mat-form-field fxFlex="fill">
           <input matInput [matDatepickerFilter]="dateFilter" [matDatepicker]="picker" placeholder="Date of training" [formControl]="form.controls.date" (click)="picker.open()">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

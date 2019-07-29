@@ -13,7 +13,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "dev": "gulp watch",
-    "dev-new": "ng serve --deploy-url="
+    "dev-new": "ng serve --deploy-url=",
+    "dev-new-ie11": "ng serve --configuration es5 --deploy-url="
   },
   "private": true,
   "engines": {

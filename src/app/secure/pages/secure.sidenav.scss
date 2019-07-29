@@ -1,5 +1,7 @@
+@import "../../../global";
+
 .responsive-nav .mat-sidenav {
-  background-color: #4460A9;
+  background-color: $dark-blue-color;
 }
 .wrapper {
   height:calc(100vh - 65px);
@@ -18,12 +20,12 @@
 
 .responsive-nav .nav-highlighted {
   background-color: white;
-  color:#4460A9;
+  color: $dark-blue-color;
 }
 
 .responsive-nav .mat-button:hover {
   background-color: white;
-  color:#4460A9;
+  color: $dark-blue-color;
 }
 
 .responsive-nav .level2 {
@@ -42,4 +44,8 @@ mat-sidenav ::-webkit-scrollbar {
 /* Handle */
 mat-sidenav ::-webkit-scrollbar-thumb {
   background: #fff;
+}
+
+.responsive-nav .green-badge {
+  font-size:70%
 }
