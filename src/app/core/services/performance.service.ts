@@ -28,7 +28,7 @@ export class PerformanceService {
         'metric4': pageTime,
       }
 
-      window['ga']('send', 'event', this.pageViewType, 'Amenities', metrics);
+      window['ga']('send', 'event', this.pageViewType, pageName, metrics);
 
       this.pageViewType = 'PageView';
     }

@@ -48,11 +48,17 @@
       </div>
     </div>
 
-    <div fxLayout="row" *ngIf="form.controls.date.value">
-      Training Time: &nbsp;
-      <strong *ngIf="form.controls.date.value.getDay() === 2">11:00 AM MST</strong>
-      <strong *ngIf="form.controls.date.value.getDay() === 4">10:00 AM MST</strong>
+    <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap.gt-sm="15px" fxLayoutGap.xs="0" fxLayoutGap.sm="0" *ngIf="form.controls.date.value">
+      <div fxFlex.gt-sm="50%">
+      </div>
+
+      <div fxFlex.gt-sm="50%">
+        Training Time: &nbsp;
+        <strong *ngIf="form.controls.date.value.getDay() === 2">11:00 AM MST</strong>
+        <strong *ngIf="form.controls.date.value.getDay() === 4">10:00 AM MST</strong>
+      </div>
     </div>
+
     <div fxLayout="row">
       <mat-form-field fxFlex="fill">
         <textarea matInput placeholder="Note" [formControl]="form.controls.note"
