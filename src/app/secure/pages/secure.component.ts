@@ -69,9 +69,16 @@ export class SecureComponent  {
 
   alertsLogic() {
     this.alertsService.initializeAlerts();
+
+    // Subscribe to when new alerts are available, only grab alerts with counts;
     this.alertsService.alerts.subscribe((alerts: IAlert[]) => {
       this.alerts = alerts.filter((a: IAlert) => a.count > 0);
     });
+
+    // Only admins need to start checking permissions
+    if (this.me.permissions.indexOf(PERMISSIONS.ADMIN) > -1) {
+      this.alertsService.startCheckingAlerts();
+    }
   }
 
   autoCompleteLogic() {
