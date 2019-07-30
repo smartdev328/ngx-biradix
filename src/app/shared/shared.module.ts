@@ -33,7 +33,7 @@ import {
   faUser,
   faUsers,
   faWrench,
-  faTachometerAlt, faCaretDown, faSearch, faBars, faTimes
+  faTachometerAlt, faCaretDown, faSearch, faBars, faTimes, faBell
 } from "@fortawesome/free-solid-svg-icons";
 import {RaygunErrorHandler} from "./providers/raygun.provider";
 import {HighlightPipe} from "./pipes";
@@ -117,5 +117,6 @@ export class SharedModule {
     library.add(faSearch);
     library.add(faBars);
     library.add(faTimes);
+    library.add(faBell);
   }
 }

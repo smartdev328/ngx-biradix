@@ -13,8 +13,8 @@ a {
 .snack-bar-error {
   background-image: none !important;
   background-color: #ffe1e1;
-  border: 1px solid #f33 !important;
-  color: #f33;
+  border: 1px solid $red-color !important;
+  color: $red-color;
   font-size: 13px;
   font-weight: 400;
   white-space: pre-wrap;
@@ -84,4 +84,12 @@ a {
 
 .dialog-title-bar .mat-dialog-title {
   margin: 5px 0 5px 0;
+}
+
+.red {
+  color: $red-color;
+}
+
+.mat-menu-panel {
+  min-height: inherit !important;
 }

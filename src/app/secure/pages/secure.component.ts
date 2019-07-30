@@ -1,7 +1,7 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 import { environment } from '../../../environments/environment'
 import {ILoggedInUser} from "../../core/models";
-import {AuthService, HttpService, PropertyService, SiteService} from "../../core/services";
+import {AlertsService, AuthService, HttpService, PropertyService, SiteService} from "../../core/services";
 import {UserIdleService} from "angular-user-idle";
 import {MediaChange, MediaObserver} from "@angular/flex-layout";
 import {Observable, of, Subscription} from "rxjs";
@@ -9,6 +9,7 @@ import {IProperty} from "../../core/models/property";
 import {FormControl} from "@angular/forms";
 import {debounceTime, startWith, switchMap} from "rxjs/operators";
 import {PERMISSIONS} from "../../core/models/permissions";
+import {IAlert} from "../../core/models/alerts";
 
 @Component({
   selector: 'app-secure',
@@ -30,12 +31,14 @@ export class SecureComponent  {
   public env: string = '';
   readonly PERMISSIONS: typeof PERMISSIONS = PERMISSIONS;
   public uiVersion: string;
+  public alerts: IAlert[];
 
   constructor(private authService: AuthService,
               private userIdle: UserIdleService,
               private mediaObserver: MediaObserver,
               private propertyService: PropertyService,
-              private siteService: SiteService) {
+              private siteService: SiteService,
+              private alertsService: AlertsService) {
   }
 
   ngOnInit() {
@@ -45,6 +48,7 @@ export class SecureComponent  {
     this.idleLogic();
     this.enviornmentLogic();
     this.versionLogic();
+    this.alertsLogic();
   }
 
   logoff() {
@@ -61,6 +65,13 @@ export class SecureComponent  {
     }
 
     return this.me.permissions.indexOf(permission) > -1;
+  }
+
+  alertsLogic() {
+    this.alertsService.initializeAlerts();
+    this.alertsService.alerts.subscribe((alerts: IAlert[]) => {
+      this.alerts = alerts.filter((a: IAlert) => a.count > 0);
+    });
   }
 
   autoCompleteLogic() {

@@ -14,3 +14,7 @@
 
 3.0 Running Angular 8
     > npm run dev-new
+    or
+    > npm run dev-new-ie11
+
+    Note: dev-new-ie11 will run in es5 mode so you can test locally against ie11

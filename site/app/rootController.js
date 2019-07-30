@@ -561,7 +561,7 @@ angular.module("biradix.global").controller("rootController",
             if ($rootScope.me.permissions.indexOf("Admin") > -1) {
                 $scope.alertsAmenities();
                 $scope.alertsAudits();
-                $scope.alertsApprovedLists("OWNER", "owner", "Property:Owners");
+                  $scope.alertsApprovedLists("OWNER", "owner", "Property:Owners");
                 $scope.alertsApprovedLists("MANAGER", "management", "Property:Management");
                 $scope.alertsApprovedLists("FEES", "fees", "Custom Fees & Deposits");
             }
