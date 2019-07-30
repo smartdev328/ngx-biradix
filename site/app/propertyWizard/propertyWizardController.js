@@ -716,7 +716,7 @@ define([
             });
         };
 
-        $scope.facebookSearch = function() {
+/*        $scope.facebookSearch = function() {
             require([
                 "/app/propertyWizard/facebookSearchController.js",
             ], function() {
@@ -743,7 +743,7 @@ define([
 
                 });
             });
-        };
+        };*/
 
         $scope.bulkFloorplans = function() {
             require([
@@ -1136,12 +1136,12 @@ define([
                 });
             };
 
-            $scope.facebookDisconnect = function() {
+/*            $scope.facebookDisconnect = function() {
                 $dialog.confirm('New: You are about to disconnect the Facebook reputation provider from <b>'+$scope.property.name+'</b>. Are you sure you want to do this?', function () {
                     $scope.property.reputation.facebook = undefined;
                 }, function () {
                 });
-            };
+            };*/
 
             $scope.googleDisconnect = function() {
                 $dialog.confirm('New: You are about to disconnect the Google reputation provider from <b>'+$scope.property.name+'</b>. Are you sure you want to do this?', function () {
