@@ -18,8 +18,10 @@ export class SiteService {
   apiDown:  BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   apiUrl: string;
   uiVersion: BehaviorSubject<string> = new BehaviorSubject<string>("");
+  public utcOffset = -(new (Date)).getTimezoneOffset();
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar){
+
   }
 
   async lookupServerVariables() {

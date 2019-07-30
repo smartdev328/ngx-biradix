@@ -9,6 +9,9 @@ import {ILoggedInUser} from "../models";
 import {AuthService} from "./auth.service";
 import {ApprovedListsService} from "./approvedLists.service";
 import {APPROVED_LIST_LABELS, APPROVED_LIST_TYPE, IUnapprovedListFrequency} from "../models/approvedLists";
+import {HistoryService} from "./history.service";
+import {IHistoryResponse} from "../models/history";
+import {SiteService} from "./site.service";
 
 @Injectable()
 export class AlertsService {
@@ -19,7 +22,9 @@ export class AlertsService {
   constructor(private http: HttpClient,
               private amenitiesService: AmenitiesService,
               private authService: AuthService,
-              private approvedListsService: ApprovedListsService){
+              private approvedListsService: ApprovedListsService,
+              private historyService: HistoryService,
+              private siteService: SiteService){
 
   }
 
@@ -40,6 +45,7 @@ export class AlertsService {
 
   startCheckingAlerts() {
     this.checkAmenities();
+    this.checkHistory();
     this.checkUnapproved(APPROVED_LIST_TYPE.OWNER, ALERT_TYPE.PROPERTY_OWNERS);
     this.checkUnapproved(APPROVED_LIST_TYPE.MANAGER, ALERT_TYPE.PROPERTY_MANAGERS);
     this.checkUnapproved(APPROVED_LIST_TYPE.FEES, ALERT_TYPE.CUSTOM_FEES);
@@ -60,6 +66,24 @@ export class AlertsService {
     this.updateAlerts(ALERT_TYPE.AMENITIES, amenities.length);
     setTimeout(()=> {
       this.checkAmenities();
+    }, 120000);
+  }
+
+  private async checkHistory() {
+    if (!this.me) {
+      return;
+    }
+    const history:IHistoryResponse = await this.historyService.search({
+      limit: 1,
+      approved: false,
+      daterange: {
+        daterange: "Last 30 Days",
+      },
+      offset: this.siteService.utcOffset
+    });
+    this.updateAlerts(ALERT_TYPE.DATA_INTEGRITY, history.pager.count);
+    setTimeout(()=> {
+      this.checkHistory();
     }, 120000);
   }
 

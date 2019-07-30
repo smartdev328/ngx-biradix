@@ -2,7 +2,7 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import {
   AlertsService, AmenitiesService, ApprovedListsService,
   AuthService,
-  ContactService,
+  ContactService, HistoryService,
   HttpService,
   PerformanceService,
   PropertyService,
@@ -25,7 +25,8 @@ import {SecureAuthGuard} from "./guards";
     PerformanceService,
     AlertsService,
     AmenitiesService,
-    ApprovedListsService
+    ApprovedListsService,
+    HistoryService,
   ],
   declarations: []
 })
