@@ -1,0 +1,34 @@
+@import "../../../global";
+
+.mat-option.autoCompleteOption {
+  line-height: inherit;
+}
+
+.mat-autocomplete-panel {
+  max-width: none !important;
+}
+
+.green-badge {
+  background-color: $green-color;
+  margin-left: 5px;
+  font-size: 65%;
+  padding: .2em .6em;
+  vertical-align: middle;
+  border-radius: 2px;
+  color:white;
+}
+
+.mat-menu-item .ng-fa-icon {
+  color: rgba(0,0,0,.54);
+  margin-right:18px;
+  margin-left:2px;
+}
+
+.mat-menu-item .ng-fa-icon {
+  margin-right:6px;
+  margin-left:2px;
+}
+
+.version {
+  font-size:11px;text-align: center;margin-top:20px;
+}

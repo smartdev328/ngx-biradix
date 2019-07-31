@@ -1,20 +1,43 @@
 {
-  "name": "biradix",
-  "version": "2.25.26",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "postinstall": "bower install && npm run build",
-    "build": "gulp vendorsjs vendorscss globaljs globalcss",
-    "dev": "gulp watch"
-  },
+  "name": "biradix-platform",
+  "version": "3.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/EugenePerson/biradix-platform.git"
+    "url": "https://github.com/BI-Radix/biradix-platform.git"
   },
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "postinstall": "bower install",
+    "ng": "ng",
+    "build": "gulp vendorsjs vendorscss globaljs globalcss && ng build --prod",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "dev": "gulp watch",
+    "dev-new": "ng serve --deploy-url=",
+    "dev-new-ie11": "ng serve --configuration es5 --deploy-url="
+  },
+  "private": true,
+  "engines": {
+    "node": "10.16.0",
+    "npm": "6.9.0"
+  },
   "dependencies": {
+    "@angular/animations": "^8.0.3",
+    "@angular/cdk": "^8.1.1",
+    "@angular/common": "~8.0.1",
+    "@angular/compiler": "~8.0.1",
+    "@angular/core": "~8.0.1",
+    "@angular/flex-layout": "^8.0.0-beta.26",
+    "@angular/forms": "~8.0.1",
+    "@angular/material": "^8.1.1",
+    "@angular/platform-browser": "~8.0.1",
+    "@angular/platform-browser-dynamic": "~8.0.1",
+    "@angular/router": "~8.0.1",
+    "@fortawesome/angular-fontawesome": "^0.4.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-solid-svg-icons": "^5.9.0",
+    "@material-extended/mde": "^2.3.1",
+    "angular-user-idle": "^2.1.4",
     "body-parser": "^1.18.3",
     "bower": "^1.8.4",
     "compression": "^1.7.3",
@@ -35,17 +58,37 @@
     "merge-stream": "^1.0.1",
     "moment-timezone": "^0.5.25",
     "newrelic": "5.6.4",
+    "ngx-cookie-service": "^2.2.0",
     "nodemon": "^1.18.9",
     "raygun": "^0.9.1",
-    "xlsx-style": "^0.8.13"
-  },
-  "private": true,
-  "engines": {
-    "node": "10.16.0",
-    "npm": "6.9.0"
+    "raygun4js": "^2.17.1",
+    "rxjs": "~6.4.0",
+    "tslib": "^1.9.0",
+    "xlsx-style": "^0.8.13",
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^8.1.0",
+    "@angular-devkit/build-angular": "~0.800.0",
+    "@angular/cli": "~8.0.4",
+    "@angular/compiler-cli": "~8.0.1",
+    "@angular/language-service": "~8.0.1",
+    "@types/jasmine": "~3.3.8",
+    "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
+    "codelyzer": "^5.0.0",
     "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1"
+    "eslint-config-google": "^0.9.1",
+    "jasmine-core": "~3.4.0",
+    "jasmine-spec-reporter": "~4.2.1",
+    "karma": "~4.1.0",
+    "karma-chrome-launcher": "~2.2.0",
+    "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-jasmine": "~2.0.1",
+    "karma-jasmine-html-reporter": "^1.4.0",
+    "protractor": "~5.4.0",
+    "ts-node": "~7.0.0",
+    "tslint": "~5.15.0",
+    "typescript": "~3.4.3"
   }
 }

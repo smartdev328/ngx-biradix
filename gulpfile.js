@@ -156,7 +156,6 @@ gulp.task("globalcss", function() {
         "./site/components/reports/reporting.css",
         "./site/components/uploader/styles.css",
         "./site/app/updateprofile/updateProfile.css",
-        "./site/app/contact/contact.css",
         "./site/app/propertyWizard/propertyWizard.css",
         "./site/app/marketSurvey/marketSurvey.css",
         "./site/app/perspectives/perspectives.css",

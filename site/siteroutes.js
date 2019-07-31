@@ -9,13 +9,19 @@ const vendorscsshash = require("../dist/vendorscss-hash.json");
 const globaljshash = require("../dist/globaljs-hash.json");
 const globalcsshash = require("../dist/globalcss-hash.json");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const fs = require('fs')
 
 module.exports = (function() {
     console.log(`Loading with ${settings.API_URL} as api endpoint`);
     let ui = new express.Router();
 
-    ui.get("/test", (req, res) => {
-        res.status(200).send("Host: " + JSON.stringify(req.headers));
+    ui.get("/serverVariables", (req, res) => {
+        res.status(200).send({
+          apiUrl: settings.API_URL,
+          version: packages.version,
+          raygun_key: settings.RAYGUN_APIKEY
+        });
     });
 
     ui.get("/robots.txt", (req, res) => {
@@ -54,7 +60,8 @@ module.exports = (function() {
 
     ui.get("/", function(req, res) {
         req.headers = req.headers || {"user-agent": ""};
-        let phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
+        const phantom = (req.headers["user-agent"] || "").indexOf("PhantomJS") > -1;
+        const localhost = req.get("host").toString().toLowerCase().indexOf("localhost") > -1;
 
         if (req.headers["x-forwarded-proto"] !== "https"
             && !phantom
@@ -77,8 +84,29 @@ module.exports = (function() {
                 raygun_key: settings.RAYGUN_APIKEY,
                 heroku_env: settings.NEW_RELIC_NAME,
                 api: settings.API_URL,
+                v2: localhost ? "http://localhost:2003/v2/" : "/v2/"
             });
     });
+
+  ui.get('/version.json', function (req, res) {
+    const filePath = path.join(__dirname + '/../dist/biradix-platform/hash.json');
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(200).send("");
+    }
+  });
+
+  ui.get('/v2(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?', function (req, res) {
+    if (req.headers["x-forwarded-proto"] !== "https"
+      && req.get("host").indexOf(".com") > -1
+    ) {
+      return res.redirect("https://" + req.get("host") + req.originalUrl);
+    }
+
+
+    res.sendFile(path.join(__dirname + '/../dist/biradix-platform/index.html'));
+  });
 
     ui.get("/sso", function(req, res) {
         res.cookie('token', req.query.token);
