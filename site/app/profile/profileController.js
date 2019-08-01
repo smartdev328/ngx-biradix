@@ -362,19 +362,19 @@ define([
                     resolve: {
                         items: function() {
                             return [
-                                {id: 1, name: 'Concess. (Monthly)', group: 'Columns', selected: false},
-                                {id: 2, name: 'Concess. (One-Time)', group: 'Columns', selected: false},
-                                {id: 3, name: 'Description', group: 'Columns', selected: false},
-                                {id: 4, name: 'Rent', group: 'Columns', selected: false},
-                                {id: 5, name: 'Sqft', group: 'Columns', selected: false},
-                                {id: 6, name: 'Units', group: 'Columns', selected: false},
-                                {id: 7, name: 'Apts. to Rent', group: 'General Information', selected: false},
-                                {id: 8, name: 'Leased %', group: 'General Information', selected: false},
-                                {id: 9, name: 'Leases/Week', group: 'General Information', selected: false},
-                                {id: 10, name: 'Notes', group: 'General Information', selected: false},
-                                {id: 11, name: 'Occupancy %', group: 'General Information', selected: false},
-                                {id: 12, name: 'Phone Number', group: 'General Information', selected: false},
-                                {id: 13, name: 'Traffic/Week', group: 'General Information', selected: false},
+                                {id: 'phone', name: 'Phone Number', group: 'General Information', selected: false},
+                                {id: 'occupancy', name: 'Occupancy %', group: 'General Information', selected: false},
+                                {id: 'leased', name: 'Leased %', group: 'General Information', selected: false},
+                                {id: 'atr', name: 'Apts. to Rent', group: 'General Information', selected: false},
+                                {id: 'weeklytraffic', name: 'Traffic/Week', group: 'General Information', selected: false},
+                                {id: 'weeklyleases', name: 'Leases/Week', group: 'General Information', selected: false},
+                                {id: 'notes', name: 'Notes', group: 'General Information', selected: false},
+                                {id: 'description', name: 'Description', group: 'Columns', selected: false},
+                                {id: 'units', name: 'Units', group: 'Columns', selected: false},
+                                {id: 'sqft', name: 'Sqft', group: 'Columns', selected: false},
+                                {id: 'rent', name: 'Rent', group: 'Columns', selected: false},
+                                {id: 'concessionsOneTime', name: 'Concess. (One-Time)', group: 'Columns', selected: false},
+                                {id: 'concessionsMonthly', name: 'Concess. (Monthly)', group: 'Columns', selected: false},
                             ]    
                         },
                         options: function() {
@@ -384,8 +384,12 @@ define([
                                 minwidth: "100%",
                             };
                         },
-                        propertyName: function() {
-                            return $scope.property.name;
+                        property: function() {
+                            return {
+                                id: $scope.propertyId,
+                                name: $scope.property.name,
+                                phone: $scope.property.phone,
+                            };
                         },
                     },
                 });
