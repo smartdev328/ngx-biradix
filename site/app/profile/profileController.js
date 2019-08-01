@@ -382,6 +382,7 @@ define([
                                 labelAvailable: "Available",
                                 labelSelected: "Selected",
                                 minwidth: "100%",
+                                skipSort: true,
                             };
                         },
                         property: function() {

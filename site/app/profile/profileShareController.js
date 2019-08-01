@@ -29,10 +29,10 @@ define([
                 if (item.selected) {
                     switch(item.group) {
                         case 'Columns':
-                            items.columns.push(item.id);
+                            items.columns.push({id: item.id, name: item.name});
                         break;
                         case 'General Information':
-                            items.information.push(item.id);
+                            items.information.push({id: item.id, name: item.name});
                         break;
                     }
                 }
@@ -47,11 +47,13 @@ define([
             var email = $scope.email;
             var items = $scope.selectedItems();
             var propertyId = $scope.property.id;
+            var propertyName = $scope.property.name;
             var propertyPhone = $scope.property.phone;
 
             $propertyService.emailProperty(
                 email,
                 items,
+                propertyName,
                 propertyPhone,
                 propertyId
             ).then(function(response) {
