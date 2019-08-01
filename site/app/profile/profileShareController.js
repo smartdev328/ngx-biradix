@@ -2,8 +2,8 @@
 define([
     'app',
 ], function(app) {
-    app.controller('profileShareController', ['$scope', '$rootScope', '$location', '$uibModalInstance', '$propertyService', 'items', 'ngProgress', 'options', 'property',
-    function($scope, $rootScope, $location, $uibModalInstance, $propertyService, items, ngProgress, options, property) {
+    app.controller('profileShareController', ['$scope', '$rootScope', '$location', '$uibModalInstance', '$propertyService', 'items', 'ngProgress', 'options', 'property', 'survey',
+    function($scope, $rootScope, $location, $uibModalInstance, $propertyService, items, ngProgress, options, property, survey) {
         if (!$rootScope.loggedIn) {
             $location.path('/login');
         }
@@ -12,6 +12,7 @@ define([
         $scope.items = items;
         $scope.options = options;
         $scope.property = property;
+        $scope.survey = survey;
 
         $scope.localLoading = true;
 
@@ -49,13 +50,15 @@ define([
             var propertyId = $scope.property.id;
             var propertyName = $scope.property.name;
             var propertyPhone = $scope.property.phone;
+            var survey = $scope.survey;
 
             $propertyService.emailProperty(
                 email,
                 items,
                 propertyName,
                 propertyPhone,
-                propertyId
+                propertyId,
+                survey
             ).then(function(response) {
                 ngProgress.complete();
                 console.log(response)

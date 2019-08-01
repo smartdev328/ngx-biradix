@@ -392,6 +392,7 @@ define([
                                 phone: $scope.property.phone,
                             };
                         },
+                        survey: $scope.comp.survey,
                     },
                 });
 
