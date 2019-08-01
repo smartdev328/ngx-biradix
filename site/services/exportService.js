@@ -2,7 +2,7 @@
 define([
     'app',
 ], function (app) {
-    app.factory('$exportService', ['$http','$cookies','$urlService', function ($http,$cookies,$urlService) {
+    app.factory('$exportService', ['$http','$cookies','$urlService', '$timeout', function ($http,$cookies,$urlService, $timeout) {
         var fac = {};
 
 
@@ -12,9 +12,7 @@ define([
                 timezone = parseInt($cookies.get("timezone"));
             }
 
-            var url = gAPI + '/api/1.0/properties/' + propertyId + '/pdf?'
-            url += "token=" + $cookies.get('token');
-
+            var url = gAPI + '/api/1.0/properties/' + propertyId + '/pdf?';
             var data = {
                 Graphs: graphs,
                 Scale: $cookies.get('Scale') || "ner",
@@ -32,10 +30,10 @@ define([
             };
 
             return {base:url, data: data};
-        }
+        };
 
         fac.print = function (propertyId, showFile, daterange, progressId, graphs, perspective) {
-            var pdf = getPdfUrl(showFile,propertyId, graphs, daterange, progressId, perspective);
+            var pdf = getPdfUrl(true,propertyId, graphs, daterange, progressId, perspective);
 
             //Has to be synchronous
             var key = $urlService.shorten(JSON.stringify(pdf.data));
@@ -43,14 +41,36 @@ define([
 
             url += "&bust=" + (new Date()).getTime();
 
-            if (showFile === true) {
-                location.href = url;
-            }
-            else {
-                window.open(url);
-            }
-        }
 
+          $http.get(url, {
+            headers: {'Authorization': 'Bearer ' + $cookies.get('token') },
+            responseType: "arraybuffer"}).success(function (data, status, headers) {
+            fac.streamFile(data, headers()["x-filename"], headers()["content-type"]);
+          }).error(function (response) {
+            console.error(response);
+          });
+        };
+
+        fac.streamFile = function(data, fileName, contentType) {
+          var blob = new Blob([data], { type: contentType });
+
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, fileName);
+            return;
+          }
+
+          var fileURL = URL.createObjectURL(blob);
+
+          var a = document.createElement('a');
+          a.href = fileURL;
+          a.target = '_blank';
+          a.download = fileName;
+          document.body.appendChild(a); //create the link "a"
+          $timeout(function() {
+            a.click(); //click the link "a"
+            document.body.removeChild(a); //remove the link "a"
+          }, 1);
+        };
         return fac;
     }]);
 });
