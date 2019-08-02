@@ -4,7 +4,7 @@
   </mat-card-header>
   <mat-form-field>
     <mat-label>Field</mat-label>
-    <mat-select [(ngModel)]="selected" (ngModelChange)="applyField($event)">
+    <mat-select [(ngModel)]="selected" (ngModelChange)="applyField()">
       <mat-option [value]="">All</mat-option>
       <mat-option *ngFor="let field of fields" [value]="field.value">
         {{field.value}}
@@ -27,15 +27,15 @@
       <ng-container matColumnDef="autocomplete">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Autocomplete </th>
         <td mat-cell *matCellDef="let row">
-          <mat-icon *ngIf="row.autocomplete" aria-hidden="false" aria-label="Autocomplete">done</mat-icon>
-          <mat-icon *ngIf="!row.autocomplete" aria-hidden="false" aria-label="Autocomplete">clear</mat-icon>
+          <fa-icon *ngIf="row.autocomplete" icon="check"></fa-icon>
+          <fa-icon *ngIf="!row.autocomplete" icon="times"></fa-icon>
         </td>
       </ng-container>
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete </th>
         <td mat-cell *matCellDef="let row">
           <button mat-icon-button aria-label="Delete">
-            <mat-icon>delete</mat-icon>
+            <fa-icon icon="trash-alt"></fa-icon>
           </button>
         </td>
       </ng-container>

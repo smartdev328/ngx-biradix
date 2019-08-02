@@ -46,6 +46,7 @@ export class ApprovedListsComponent implements OnInit {
     {value: 'Custom Fees & Deposits'}
   ];
 
+  selected: string;
   displayedColumns: string[] = ['value', 'field', 'autocomplete', 'delete'];
 
   dataSource: MatTableDataSource<UserData>;
@@ -67,8 +68,8 @@ export class ApprovedListsComponent implements OnInit {
     }
   }
 
-  applyField(fieldValue: string) {
-    this.dataSource.filter = fieldValue;
+  applyField() {
+    this.dataSource.filter = this.selected;
   }
 
 }

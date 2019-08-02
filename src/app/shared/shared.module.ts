@@ -33,10 +33,14 @@ import {
   faBuilding,
   faChartBar,
   faEyeSlash,
-  faHistory, faPowerOff, faQuestion,
+  faHistory, 
+  faPowerOff, 
+  faQuestion,
+  faCheck,
   faUser,
   faUsers,
   faWrench,
+  faTrashAlt,
   faTachometerAlt, faCaretDown, faSearch, faBars, faTimes, faBell
 } from "@fortawesome/free-solid-svg-icons";
 import {RaygunErrorHandler} from "./providers/raygun.provider";
@@ -121,10 +125,12 @@ export class SharedModule {
     library.add(faWrench);
     library.add(faPowerOff);
     library.add(faQuestion);
+    library.add(faCheck);
     library.add(faCaretDown);
     library.add(faSearch);
     library.add(faBars);
     library.add(faTimes);
     library.add(faBell);
+    library.add(faTrashAlt);
   }
 }
