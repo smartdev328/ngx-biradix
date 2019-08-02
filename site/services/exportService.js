@@ -1,8 +1,4 @@
-'use strict';
-define([
-    'app',
-], function (app) {
-    app.factory('$exportService', ['$http','$cookies','$urlService', '$timeout', function ($http,$cookies,$urlService, $timeout) {
+angular.module("biradix.global").factory('$exportService', ['$http','$cookies','$urlService', '$timeout', function ($http,$cookies,$urlService, $timeout) {
         var fac = {};
 
 
@@ -41,36 +37,42 @@ define([
 
             url += "&bust=" + (new Date()).getTime();
 
+            fac.streamFile(url);
+        };
+
+        fac.streamFile = function(url) {
 
           $http.get(url, {
             headers: {'Authorization': 'Bearer ' + $cookies.get('token') },
             responseType: "arraybuffer"}).success(function (data, status, headers) {
-            fac.streamFile(data, headers()["x-filename"], headers()["content-type"]);
+
+            var blob = new Blob([data], { type: headers()["content-type"] });
+
+            var filename = headers()["x-filename"];
+
+            if (!filename) {
+              filename = headers()["content-disposition"].split(";")[1].split("=")[1];
+            }
+            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+              window.navigator.msSaveOrOpenBlob(blob, filename);
+              return;
+            }
+
+            var fileURL = URL.createObjectURL(blob);
+
+            var a = document.createElement('a');
+            a.href = fileURL;
+            a.target = '_blank';
+            a.download = filename;
+            document.body.appendChild(a); //create the link "a"
+            $timeout(function() {
+              a.click(); //click the link "a"
+              document.body.removeChild(a); //remove the link "a"
+            }, 1);
           }).error(function (response) {
             console.error(response);
           });
-        };
 
-        fac.streamFile = function(data, fileName, contentType) {
-          var blob = new Blob([data], { type: contentType });
-
-          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(blob, fileName);
-            return;
-          }
-
-          var fileURL = URL.createObjectURL(blob);
-
-          var a = document.createElement('a');
-          a.href = fileURL;
-          a.target = '_blank';
-          a.download = fileName;
-          document.body.appendChild(a); //create the link "a"
-          $timeout(function() {
-            a.click(); //click the link "a"
-            document.body.removeChild(a); //remove the link "a"
-          }, 1);
         };
         return fac;
     }]);
-});
