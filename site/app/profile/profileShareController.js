@@ -47,6 +47,7 @@ define([
 
             var email = $scope.email;
             var items = $scope.selectedItems();
+            var logo = $rootScope.me.orgs[0].logoBig;
             var propertyId = $scope.property.id;
             var propertyName = $scope.property.name;
             var propertyPhone = $scope.property.phone;
@@ -55,6 +56,7 @@ define([
             $propertyService.emailProperty(
                 email,
                 items,
+                logo,
                 propertyName,
                 propertyPhone,
                 propertyId,
