@@ -17,6 +17,10 @@ import {
   MatAutocompleteModule,
   MatBadgeModule,
   MatSnackBarModule,
+  MatSelectModule,
+  MatTableModule,
+  MatPaginatorModule, 
+  MatSortModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule
 } from "@angular/material";
 import {LoaderComponent} from "./components";
@@ -55,7 +59,11 @@ export const MaterialModules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatCheckboxModule,
-  MatIconModule
+  MatIconModule,
+  MatSelectModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
 ];
 
 @NgModule({
