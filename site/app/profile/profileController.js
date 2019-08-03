@@ -350,6 +350,42 @@ define([
         }
 
         $scope.email = function() {
+            var phoneItem = {id: 'phone', name: 'Phone Number', group: 'General Information', selected: false};
+
+            var informationItems = [
+                {id: 'occupancy', name: 'Occupancy %', group: 'General Information', selected: false},
+                {id: 'leased', name: 'Leased %', group: 'General Information', selected: false},
+                {id: 'atr', name: 'Apts. to Rent', group: 'General Information', selected: false},
+                {id: 'weeklytraffic', name: 'Traffic/Week', group: 'General Information', selected: false},
+                {id: 'weeklyleases', name: 'Leases/Week', group: 'General Information', selected: false},
+                {id: 'notes', name: 'Notes', group: 'General Information', selected: false},
+            ];
+
+            var columnItems = [
+                {id: 'description', name: 'Description', group: 'Columns', selected: false},
+                {id: 'units', name: 'Units', group: 'Columns', selected: false},
+                {id: 'sqft', name: 'Sqft', group: 'Columns', selected: false},
+                {id: 'rent', name: 'Rent', group: 'Columns', selected: false},
+                {id: 'concessionsOneTime', name: 'Concess. (One-Time)', group: 'Columns', selected: false},
+                {id: 'concessionsMonthly', name: 'Concess. (Monthly)', group: 'Columns', selected: false},
+            ];
+
+            var survey = $scope.comp.survey;
+
+            var items = [];
+
+            if ($scope.property.phone) {
+                items.push(phoneItem);
+            }
+
+            informationItems.forEach(function(item) {
+                if (survey[item.id]) items.push(item);
+            });
+
+            columnItems.forEach(function(item) {
+                items.push(item);
+            });
+
             require([
                 "/app/profile/profileShareController.js",
             ], function() {
@@ -361,21 +397,7 @@ define([
                     backdrop: "static",
                     resolve: {
                         items: function() {
-                            return [
-                                {id: 'phone', name: 'Phone Number', group: 'General Information', selected: false},
-                                {id: 'occupancy', name: 'Occupancy %', group: 'General Information', selected: false},
-                                {id: 'leased', name: 'Leased %', group: 'General Information', selected: false},
-                                {id: 'atr', name: 'Apts. to Rent', group: 'General Information', selected: false},
-                                {id: 'weeklytraffic', name: 'Traffic/Week', group: 'General Information', selected: false},
-                                {id: 'weeklyleases', name: 'Leases/Week', group: 'General Information', selected: false},
-                                {id: 'notes', name: 'Notes', group: 'General Information', selected: false},
-                                {id: 'description', name: 'Description', group: 'Columns', selected: false},
-                                {id: 'units', name: 'Units', group: 'Columns', selected: false},
-                                {id: 'sqft', name: 'Sqft', group: 'Columns', selected: false},
-                                {id: 'rent', name: 'Rent', group: 'Columns', selected: false},
-                                {id: 'concessionsOneTime', name: 'Concess. (One-Time)', group: 'Columns', selected: false},
-                                {id: 'concessionsMonthly', name: 'Concess. (Monthly)', group: 'Columns', selected: false},
-                            ]    
+                            return items
                         },
                         options: function() {
                             return {
@@ -392,7 +414,7 @@ define([
                                 phone: $scope.property.phone,
                             };
                         },
-                        survey: $scope.comp.survey,
+                        survey: survey,
                     },
                 });
 

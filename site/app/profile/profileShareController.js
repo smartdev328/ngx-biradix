@@ -63,7 +63,7 @@ define([
                 survey
             ).then(function(response) {
                 ngProgress.complete();
-                console.log(response)
+                $uibModalInstance.dismiss();
             }, function(error) {
                 ngProgress.complete();
             });
