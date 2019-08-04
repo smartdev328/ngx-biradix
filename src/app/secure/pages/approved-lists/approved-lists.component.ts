@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort} from '@angular/material';
 import {MatTableDataSource} from '@angular/material/table';
+import {ApprovedListsService, PerformanceService} from "../../../core/services";
+import {APPROVED_LIST_TYPE} from "../../../core/models/approvedLists";
 
 export interface UserData {
   id: number;
@@ -51,13 +53,27 @@ export class ApprovedListsComponent implements OnInit {
 
   dataSource: MatTableDataSource<UserData>;
 
-  constructor() {
+  constructor(private approvedListsService: ApprovedListsService,
+              private performanceService: PerformanceService) {
     this.dataSource = new MatTableDataSource(ELEMENT_DATA);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.performanceService.start();
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    const approvedLists = await this.approvedListsService.searchApproved({
+      limit: 10000,
+      type: APPROVED_LIST_TYPE.OWNER,
+      searchableOnly: false
+    });
+
+    console.log(approvedLists);
+
+    this.performanceService.fireGoogleAnalytics('Approved Lists');
+
   }
 
   applyFilter(filterValue: string) {
