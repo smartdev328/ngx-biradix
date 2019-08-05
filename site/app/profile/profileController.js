@@ -420,12 +420,6 @@ define([
                         survey: survey,
                     },
                 });
-
-                modalInstance.result.then(function(comp) {
-                    // Send successfully
-                }, function() {
-                    // Cancel
-                });
             });
         }
 
