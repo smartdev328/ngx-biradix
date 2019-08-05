@@ -1,0 +1,74 @@
+<mat-card class="conatiner">
+  <mat-card-header>
+    <mat-card-title>Resources</mat-card-title>
+  </mat-card-header>
+  <mat-card-content fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+    <div fxFlex.gt-sm="50%">
+      Check out helpful videos on how to use the platform, see the answers to frequently asked questions, and dive into our knowledge base to learn everything in between.
+    </div>
+    <div fxFlex.gt-sm="50%">
+      <Br>
+      <a href="https://help.biradix.com" target="_blank" mat-raised-button color="primary" class="help-link">Help Center</a>
+    </div>
+  </mat-card-content>
+</mat-card>
+<br>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Live Training</mat-card-title>
+  </mat-card-header>
+  <mat-card-content fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+    <div fxFlex.gt-sm="50%">
+      There are two regular web-based training sessions each week (except holidays), Tuesdays at 11am MST and Thursdays at 10am MST. Reserve your spot by clicking on "Book Training". Training is usually an hour long and covers the entire BI:Radix platform.
+    </div>
+    <div fxFlex.gt-sm="50%">
+      <Br>
+      <button mat-raised-button color="primary" class="help-link" (click)="bookTraining()">Book Training</button>
+    </div>
+  </mat-card-content>
+</mat-card>
+<br>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Contact Us</mat-card-title>
+  </mat-card-header>
+  <mat-card-content fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="20px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+    <div fxFlex.gt-sm="50%">
+        <form [formGroup]="form" (ngSubmit)="send()">
+        <p>
+          <mat-form-field>
+            <input matInput placeholder="Subject" [formControl]="form.controls.subject">
+            <mat-error *ngIf="form.controls.subject.hasError('required')">
+              Subject is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <Br>
+          <mat-form-field>
+            <textarea matInput placeholder="Message" [formControl]="form.controls.message"
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="2"
+                      cdkAutosizeMaxRows="5"
+            ></textarea>
+            <mat-error *ngIf="form.controls.message.hasError('required')">
+              Message is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </p>
+        <div fxLayoutAlign="center">
+          <button mat-raised-button color="primary" [disabled]="sending">
+            <mat-icon *ngIf="sending"><mat-spinner color="primary" diameter="20"></mat-spinner></mat-icon>
+            Send</button>
+        </div>
+      </form>
+    </div>
+    <div fxFlex.gt-sm="50%">
+      <br>
+      <a style="font-size:17px" href="mailto:support@biradix.com">support@biradix.com</a><Br>
+      Don't forget to include the email address associated with your account.<Br>
+      <Br>
+      <span style="font-size:17px;color:#337ab7">(602) 892-4788</span><br>
+      Available Monday - Friday<Br>
+      8:00am - 5:00pm PST<Br>
+    </div>
+  </mat-card-content>
+</mat-card>
