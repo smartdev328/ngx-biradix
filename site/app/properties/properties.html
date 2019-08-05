@@ -133,6 +133,7 @@
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company_owner" ng-checked="show.company_owner" ng-click="options.columnsChanged=true"> Owner Org.</label></div></li>
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.owner" ng-checked="show.owner" ng-click="options.columnsChanged=true"> Custom Owner</label></div></li>
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show._id" ng-checked="show._id" ng-click="options.columnsChanged=true"> PropertyID</label></div></li>
+            <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.pms" ng-checked="show.pms" ng-click="options.columnsChanged=true"> PMS Integration</label></div></li>
         </ul>
     </div>
 
@@ -228,6 +229,12 @@
                     <div class="inline-block" ng-show="sort.company_owner === true"><i class="fa fa-sort-down"></i></div>
                     <div class="inline-block" ng-show="sort.company_owner === false"><i class="fa fa-sort-up"></i></div>
                 </th>
+                <th ng-show="show.pms" class="sortable" ng-click="toggleSort('pms')">
+                    <div class="inline-block">PMS Integration</div>
+                    <div class="inline-block" ng-show="sort.pms == null"><i class="fa fa-sort"></i></div>
+                    <div class="inline-block" ng-show="sort.pms === true"><i class="fa fa-sort-down"></i></div>
+                    <div class="inline-block" ng-show="sort.pms === false"><i class="fa fa-sort-up"></i></div>
+                </th>
                 <th ng-show="show.owner" class="sortable" ng-click="toggleSort('owner')">
                     <div class="inline-block">Custom Owner</div>
                     <div class="inline-block" ng-show="sort.owner == null"><i class="fa fa-sort"></i></div>
@@ -279,6 +286,7 @@
             </td>
             <td ng-show="show.company">{{row.company || '-'}}</td>
             <td ng-show="show.company_owner">{{row.company_owner || '-'}}</td>
+            <td ng-show="show.pms">{{row.pms.importProvider || '-'}}</td>
             <td ng-show="show.owner">{{row.owner}}</td>
             <td ng-show="show._id">{{row._id}}</td>
             <td ng-show="show.tools" class="center">
@@ -370,6 +378,7 @@
             <td ng-show="show.company">{{comp.company || '-'}}</td>
             <td ng-show="show.company_owner">{{comp.company_owner || '-'}}</td>
             <td ng-show="show.owner">{{comp.owner || '-'}}</td>
+            <td ng-show="show.pms">{{row.pms.importProvider || '-'}}</td>
             <td ng-show="show._id">{{comp._id}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
