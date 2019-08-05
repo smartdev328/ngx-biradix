@@ -362,7 +362,7 @@ define([
             ];
 
             var columnItems = [
-                {id: 'description', name: 'Description', group: 'Columns', selected: false},
+                {id: 'description', name: 'Desc.', group: 'Columns', selected: false},
                 {id: 'units', name: 'Units', group: 'Columns', selected: false},
                 {id: 'sqft', name: 'Sqft', group: 'Columns', selected: false},
                 {id: 'rent', name: 'Rent', group: 'Columns', selected: false},
