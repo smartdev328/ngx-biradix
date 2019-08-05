@@ -1,0 +1,51 @@
+@import "../../../global";
+
+.responsive-nav .mat-sidenav {
+  background-color: $dark-blue-color;
+}
+.wrapper {
+  height:calc(100vh - 65px);
+}
+
+.responsive-nav mat-nav-list{
+  width:250px;
+}
+.responsive-nav .mat-button {
+  width:100%;
+  text-align: left;
+  font-size:13px;
+  color:white;
+  border-radius: 0;
+}
+
+.responsive-nav .nav-highlighted {
+  background-color: white;
+  color: $dark-blue-color;
+}
+
+.responsive-nav .mat-button:hover {
+  background-color: white;
+  color: $dark-blue-color;
+}
+
+.responsive-nav .level2 {
+  padding-left:40px
+}
+
+.responsive-nav .mat-button {
+  border-bottom: 1px solid #7E91C2;
+}
+
+/* width */
+mat-sidenav ::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Handle */
+mat-sidenav ::-webkit-scrollbar-thumb {
+  background: #fff;
+}
+
+.responsive-nav .green-badge {
+  font-size:70%
+}

@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex"/>
     <link rel="icon" id="favicon" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <script type="text/javascript">var gAPI = "<%=api%>"; var version="<%=version%>"; var maintenance = <%=maintenance%>; var raygun_key="<%=raygun_key%>"; var heroku_env="<%=heroku_env%>"</script>
+    <script type="text/javascript">var gV2 = "<%=v2%>"; var gAPI = "<%=api%>"; var version="<%=version%>"; var maintenance = <%=maintenance%>; var raygun_key="<%=raygun_key%>"; var heroku_env="<%=heroku_env%>"</script>
 
     <link href="/dist/vendors.css?v=<%=hashes.vendorscss%>" rel="stylesheet" type="text/css">
     <script src="/dist/vendors.js?v=<%=hashes.vendorsjs%>"></script>
@@ -88,7 +88,7 @@
                             <li ng-show="$root.me.permissions.indexOf('Properties') > -1"><a href="#/perspectives"><i class="fa fa-eye-slash"></i> Perspectives <span class="label brand-green-bg nav-link-label">New!</span></a></li>
                             <li ng-show="$root.me.permissions.indexOf('History') > -1"><a href="#/history"><i class="fa fa-history"></i> Activity History</a></li>
                             <li ng-show="$root.me.permissions.indexOf('Admin') > -1"><a href="#/uploadSurveys"><i class="fa fa-wrench"></i> Admin</a></li>
-                            <li><a href="#/helpcontactus"><i class="fa fa-question"></i> Help</a></li>
+                            <li><a href="{{v2Base + 'secure/help'}}"><i class="fa fa-question"></i> Help</a></li>
                             <li><a href ng-click="logoff()"><i class="fa fa-power-off"></i> Log Off</a></li>
                         </ul>
                     </div>
@@ -260,7 +260,7 @@
                         <a href = "#/import" href ng-class="{'active': sideNav == 'Import', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Configure PMS Import</a>
                     </li>
                     <li>
-                        <a ng-class="{'active': sideNav == 'HelpContactUs'}" href="#/helpcontactus" ng-click="turnOffIfMobile()"><i class="fa fa-question"></i> Help</a>
+                        <a ng-class="{'active': sideNav == 'HelpContactUs'}" href="{{v2Base + 'secure/help'}}" ng-click="turnOffIfMobile()"><i class="fa fa-question"></i> Help</a>
                     </li>
                     <li>
                         <a href ng-click="logoff();turnOffIfMobile()"><i class="fa fa-power-off"></i> Log Off</a>

@@ -101,7 +101,6 @@ define([], function () {
             .state("approvedLists", AsyncRoute("/approvedLists", "approvedLists", "approvedListsController", "approvedLists.html", "loggedInView",{loggedIn: true}))
             .state("unapprovedLists", AsyncRoute("/unapprovedLists?type", "approvedLists", "unapprovedListsController", "unapprovedLists.html", "loggedInView",{loggedIn: true}))
             .state("reporting", AsyncRoute("/reporting?property", "reporting", "reportingController",phantom ? "reporting-phantom.html" : "reporting.html",phantom ? "printView" : "loggedInView",{loggedIn: true}))
-            .state("helpcontactus", AsyncRoute("/helpcontactus", "contact", "contactController", "contact.html", "loggedInView",{loggedIn: true}))
             .state("organizations", AsyncRoute("/organizations", "organizations", "organizationsController", "organizations.html", "loggedInView",{loggedIn: true}))
 
             .state("metrics", AsyncRoute("/metrics", "metrics", "metricsController", "metrics.html", "loggedInView", {loggedIn: true}))
