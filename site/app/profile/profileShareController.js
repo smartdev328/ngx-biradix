@@ -2,8 +2,8 @@
 define([
     'app',
 ], function(app) {
-    app.controller('profileShareController', ['$scope', '$rootScope', '$location', '$uibModalInstance', '$propertyService', 'items', 'ngProgress', 'options', 'property', 'survey',
-    function($scope, $rootScope, $location, $uibModalInstance, $propertyService, items, ngProgress, options, property, survey) {
+    app.controller('profileShareController', ['$scope', '$rootScope', '$location', '$uibModalInstance', '$propertyService', 'items', 'ngProgress', 'options', 'property', 'survey', 'toastr',
+    function($scope, $rootScope, $location, $uibModalInstance, $propertyService, items, ngProgress, options, property, survey, toastr) {
         if (!$rootScope.loggedIn) {
             $location.path('/login');
         }
@@ -48,24 +48,26 @@ define([
             var email = $scope.email;
             var items = $scope.selectedItems();
             var logo = $rootScope.me.orgs[0].logoBig;
-            var propertyId = $scope.property.id;
-            var propertyName = $scope.property.name;
-            var propertyPhone = $scope.property.phone;
+            var property = {
+                id: $scope.property.id,
+                name: $scope.property.name,
+                phone: $scope.property.phone
+            }
             var survey = $scope.survey;
 
             $propertyService.emailProperty(
                 email,
                 items,
                 logo,
-                propertyName,
-                propertyPhone,
-                propertyId,
+                property,
                 survey
             ).then(function(response) {
                 ngProgress.complete();
                 $uibModalInstance.dismiss();
+                toastr.success('Property data for ' + property.name + ' emailed to ' + email);
             }, function(error) {
                 ngProgress.complete();
+                toastr.error('Property data for ' + property.name + ' not emailed. Please try again or contact support for assistance');
             });
         };
     }]);
