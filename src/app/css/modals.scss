@@ -1,0 +1,10 @@
+@import "../../global";
+
+.dialog-title-bar {
+    border-bottom: 1px solid $light-border-color;
+    margin-bottom: 15px;
+}
+
+.dialog-title-bar .mat-dialog-title {
+    margin: 5px 0 5px 0;
+}

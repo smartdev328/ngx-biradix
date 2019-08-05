@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import {AuthService, SiteService} from "./core/services";
 import {environment} from "../environments/environment";
 import {ILoggedInUser} from "./core/models";
@@ -7,7 +7,17 @@ import * as rg4js from 'raygun4js';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: [
+    './app.component.scss', 
+    './css/modals.scss',
+    './css/typography.scss',
+    './css/alerts.scss',
+    './css/navigation.scss',
+    './css/forms.scss',
+    './css/buttons.scss',
+    './css/general.scss'
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
   loaded: boolean = false;
