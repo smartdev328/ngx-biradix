@@ -411,6 +411,7 @@ define([
                             return {
                                 id: $scope.propertyId,
                                 name: $scope.property.name,
+                                orgid: $rootScope.me.orgs[0]._id,
                                 phone: $scope.property.phone,
                             };
                         },

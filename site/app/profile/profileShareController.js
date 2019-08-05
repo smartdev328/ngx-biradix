@@ -48,11 +48,7 @@ define([
             var email = $scope.email;
             var items = $scope.selectedItems();
             var logo = $rootScope.me.orgs[0].logoBig;
-            var property = {
-                id: $scope.property.id,
-                name: $scope.property.name,
-                phone: $scope.property.phone
-            }
+            var property = $scope.property;
             var survey = $scope.survey;
 
             $propertyService.emailProperty(
