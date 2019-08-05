@@ -401,9 +401,11 @@ define([
                         },
                         options: function() {
                             return {
+                                hideSearch: true,
                                 labelAvailable: "Available",
                                 labelSelected: "Selected",
                                 minwidth: "100%",
+                                panelWidth: 260,
                                 skipSort: true,
                             };
                         },
