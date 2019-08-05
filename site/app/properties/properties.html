@@ -286,7 +286,7 @@
             </td>
             <td ng-show="show.company">{{row.company || '-'}}</td>
             <td ng-show="show.company_owner">{{row.company_owner || '-'}}</td>
-            <td ng-show="show.pms">{{row.pms.importProvider || '-'}}</td>
+            <td ng-show="show.pms">{{row.pms.importProvider == null ? '-' : row.pms.importProvider }}</td>
             <td ng-show="show.owner">{{row.owner}}</td>
             <td ng-show="show._id">{{row._id}}</td>
             <td ng-show="show.tools" class="center">
@@ -378,7 +378,7 @@
             <td ng-show="show.company">{{comp.company || '-'}}</td>
             <td ng-show="show.company_owner">{{comp.company_owner || '-'}}</td>
             <td ng-show="show.owner">{{comp.owner || '-'}}</td>
-            <td ng-show="show.pms">{{row.pms.importProvider || '-'}}</td>
+            <td ng-show="show.pms">{{row.pms.importProvider == null ? '-' : row.pms.importProvider}}</td>
             <td ng-show="show._id">{{comp._id}}</td>
             <td ng-show="show.tools" class="center">
                 <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">

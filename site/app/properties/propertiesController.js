@@ -105,7 +105,7 @@ define([
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
                 $propertyService.search({
-                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner needsSurvey survey.dateByOwner custom pms", ids: compids
+                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner needsSurvey survey.dateByOwner custom pms.importProvider", ids: compids
                     , skipAmenities: true
                 }).then(function (response) {
                     $propertyService.search({
@@ -174,7 +174,7 @@ define([
             $propertyService.search({
                 limit: 10000,
                 permission: "PropertyManage",
-                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner comps.id comps.excluded comps.orderNumber needsSurvey custom pms",
+                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner comps.id comps.excluded comps.orderNumber needsSurvey custom pms.importProvider",
                 skipAmenities: true,
                 hideCustomComps: true,
             }).then(function(response) {
