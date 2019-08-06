@@ -29,7 +29,7 @@ export interface IApprovedListItemRead extends IApprovedListItemWrite {
 }
 
 export interface IApprovedListSearchCriteria {
-  type: APPROVED_LIST_TYPE;
+  type: string;
   value?: string;
   searchableOnly: boolean;
   search?: string;

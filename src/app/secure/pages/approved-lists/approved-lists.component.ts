@@ -2,34 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort} from '@angular/material';
 import {MatTableDataSource} from '@angular/material/table';
 import {ApprovedListsService, PerformanceService} from "../../../core/services";
-import {APPROVED_LIST_TYPE, IApprovedListItemRead} from "../../../core/models/approvedLists";
-
-export interface UserData {
-  id: number;
-  value: string;
-  field: string;
-  autocomplete: boolean;
-}
-
-export interface Field {
-  value: string;
-}
-
-const ELEMENT_DATA: UserData[] = [
-  {id: 1,value: '1st Lake Properties', field: 'Property:Owner', autocomplete: true},
-  {id: 2,value: '29th Street Capital', field: 'Property:Owner', autocomplete: true},
-  {id: 3,value: '360 Residential', field: 'Property:Management', autocomplete: true},
-  {id: 4,value: '4G Ventures', field: 'Property:Management', autocomplete: false},
-  {id: 5,value: 'A&E Real Estate Holdings', field: 'Property:Owner', autocomplete: false},
-  {id: 6,value: 'A.R. Building', field: 'Property:Owner', autocomplete: true},
-  {id: 7,value: 'AAA Management', field: 'Property:Owner', autocomplete: true},
-  {id: 8,value: 'AEW Capital Management', field: 'Property:Management', autocomplete: true},
-  {id: 9,value: 'AHC', field: 'Property:Owner', autocomplete: true},
-  {id: 10,value: 'AIG Global Real Estate', field: 'Property:Owner', autocomplete: true},
-  {id: 11,value: 'AION Partners', field: 'Property:Owner', autocomplete: true},
-  {id: 12,value: 'AMCAL Multi-Housing', field: 'Property:Owner', autocomplete: true},
-  {id: 13,value: 'APM Management', field: 'Property:Management', autocomplete: true}
-];
+import {APPROVED_LIST_LABELS, IApprovedListItemRead} from "../../../core/models/approvedLists";
 
 @Component({
   selector: 'app-approved-lists',
@@ -42,50 +15,51 @@ export class ApprovedListsComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  fields: Field[] = [
-    {value: 'Property:Owner'},
-    {value: 'Property:Management'},
-    {value: 'Custom Fees & Deposits'}
-  ];
+  filtered = {
+    dropdown: 'OWNER',
+    search: ''
+  }
+  
+  fields: any;
+  displayedColumns: string[] = ['value', 'type', 'searchable', 'delete'];
 
-  selected: string;
-  displayedColumns: string[] = ['value', 'field', 'autocomplete', 'delete'];
-
-  dataSource: MatTableDataSource<UserData>;
+  dataSource: MatTableDataSource<IApprovedListItemRead>;
 
   constructor(private approvedListsService: ApprovedListsService,
               private performanceService: PerformanceService) {
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
   }
 
   async ngOnInit() {
     this.performanceService.start();
 
+    this.dataSource = new MatTableDataSource();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.fields = APPROVED_LIST_LABELS;
 
     const approvedLists: IApprovedListItemRead[] = await this.approvedListsService.searchApproved({
       limit: 10000,
-      type: APPROVED_LIST_TYPE.OWNER,
+      type: this.filtered.dropdown,
       searchableOnly: false
     });
 
-    console.log(approvedLists);
+    this.dataSource.data = approvedLists;
 
     this.performanceService.fireGoogleAnalytics('Approved Lists');
 
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  filterApprovedSearch() {
+    this.dataSource.filter = this.filtered.search.trim().toLowerCase();
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
   }
 
-  applyField() {
-    this.dataSource.filter = this.selected;
+  filterApprovedDropdown() {
+    this.dataSource.filter = this.filtered.dropdown;
+    console.log(this.filtered.dropdown);
   }
 
 }
