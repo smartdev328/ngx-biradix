@@ -350,54 +350,83 @@ define([
         }
 
         $scope.email = function() {
-            var phoneItem = {id: 'phone', name: 'Phone Number', group: 'General Information', selected: false};
-
-            var informationItems = [
-                {id: 'occupancy', name: 'Occupancy %', group: 'General Information', selected: false},
-                {id: 'leased', name: 'Leased %', group: 'General Information', selected: false},
-                {id: 'atr', name: 'Apts. to Rent', group: 'General Information', selected: false},
-                {id: 'weeklytraffic', name: 'Traffic/Week', group: 'General Information', selected: false},
-                {id: 'weeklyleases', name: 'Leases/Week', group: 'General Information', selected: false},
-                {id: 'notes', name: 'Notes', group: 'General Information', selected: false},
+            var propertyItems = [
+                {id: 'address', name: 'Address', group: 'Common Property Info', selected: true},
+                {id: 'atr', name: 'Apartments To Rent', group: 'Common Property Info', selected: false},
+                {id: 'atr_percent', name: 'Apartments To Rent %', group: 'Common Property Info', selected: false},
+                {id: 'bikescore', name: 'Walk Score® - Bike Score', group: 'Common Property Info', selected: false},
+                {id: 'constructionType', name: 'Construction', group: 'Common Property Info', selected: false},
+                {id: 'contact', name: 'Contact', group: 'Common Property Info', selected: false},
+                {id: 'email', name: 'Email', group: 'Common Property Info', selected: false},
+                {id: 'leased', name: 'Leased %', group: 'Common Property Info', selected: true},
+                {id: 'management', name: 'Management', group: 'Common Property Info', selected: false},
+                {id: 'notes', name: 'Notes', group: 'Common Property Info', selected: false},
+                {id: 'occupancy', name: 'Occupancy %', group: 'Common Property Info', selected: true},
+                {id: 'owner', name: 'Owner', group: 'Common Property Info', selected: false},
+                {id: 'phone', name: 'Phone', group: 'Common Property Info', selected: false},
+                {id: 'picture', name: 'Picture', group: 'Common Property Info', selected: false},
+                {id: 'renewal', name: 'Renewal %', group: 'Common Property Info', selected: false},
+                {id: 'totalUnits', name: 'Units', group: 'Common Property Info', selected: true},
+                {id: 'transitscore', name: 'Walk Score® - Transit Score', group: 'Common Property Info', selected: false},
+                {id: 'walkscore', name: 'Walk Score® - Walk Score', group: 'Common Property Info', selected: false},
+                {id: 'website', name: 'Website', group: 'Common Property Info', selected: false},
+                {id: 'weeklyleases', name: 'Leases/Week', group: 'Common Property Info', selected: true},
+                {id: 'weeklytraffic', name: 'Traffic/Week', group: 'Common Property Info', selected: true},
+                {id: 'yearBuilt', name: 'Year Built', group: 'Common Property Info', selected: false},
+                {id: 'yearRenovated', name: 'Year Renovated', group: 'Common Property Info', selected: false},
             ];
 
-            var columnItems = [
-                {id: 'description', name: 'Desc.', group: 'Columns', selected: false},
-                {id: 'units', name: 'Units', group: 'Columns', selected: false},
-                {id: 'sqft', name: 'Sqft', group: 'Columns', selected: false},
-                {id: 'rent', name: 'Rent', group: 'Columns', selected: false},
-                {id: 'concessionsOneTime', name: 'Concess. (One-Time)', group: 'Columns', selected: false},
-                {id: 'concessionsMonthly', name: 'Concess. (Monthly)', group: 'Columns', selected: false},
+            var floorPlanItems = [
+                {id: 'concessions', name: 'Total Concessions', group: 'Floor Plan Info', selected: false},
+                {id: 'concessionsOneTime', name: 'One-Time Concessions', group: 'Floor Plan Info', selected: true},
+                {id: 'concessionsMonthly', name: 'Recurring Concessions', group: 'Floor Plan Info', selected: true},
+                {id: 'description', name: 'Description', group: 'Floor Plan Info', selected: false},
+                {id: 'ner', name: 'NER', group: 'Floor Plan Info', selected: true},
+                {id: 'nersqft', name: 'NER/Sqft', group: 'Floor Plan Info', selected: false},
+                {id: 'runrate', name: 'Recurring Rent', group: 'Floor Plan Info', selected: false},
+                {id: 'runratesqft', name: 'Recurring Rent/Sqft', group: 'Floor Plan Info', selected: false},
+                {id: 'rent', name: 'Rent', group: 'Floor Plan Info', selected: true},
+                {id: 'mersqft', name: 'Rent/Sqft', group: 'Floor Plan Info', selected: false},
+                {id: 'sqft', name: 'Sqft', group: 'Floor Plan Info', selected: true},
+                {id: 'unitPercent', name: 'Unit %', group: 'Floor Plan Info', selected: true},
+                {id: 'units', name: 'Units', group: 'Floor Plan Info', selected: true},
             ];
 
-            var survey = $scope.comp.survey;
-
+            var comp = $scope.comp;
             var items = [];
 
-            if ($scope.property.phone) {
-                items.push(phoneItem);
-            }
-
-            informationItems.forEach(function(item) {
-                if (survey[item.id]) items.push(item);
+            propertyItems.forEach(function(item) {
+                if ((comp[item.id] !== null && comp[item.id] !== undefined) ||
+                    (comp.survey[item.id] !== null && comp.survey[item.id] !== undefined) ||
+                    (comp.walkscore[item.id] !== null && comp.walkscore[item.id] !== undefined)
+                ) {
+                    items.push(item);
+                }
             });
 
-            columnItems.forEach(function(item) {
-                items.push(item);
+            floorPlanItems.forEach(function(item) {
+                var floorplan = comp.survey.floorplans.find(function(floorplan) {
+                    return floorplan[item.id] !== null && floorplan[item.id] !== undefined;
+                });
+
+                if (floorplan) items.push(item);
             });
 
             require([
                 "/app/profile/profileShareController.js",
             ], function() {
-                var modalInstance = $uibModal.open({
+                $uibModal.open({
                     templateUrl: "/app/profile/profileShare.html?bust="+version,
                     controller: "profileShareController",
                     size: "md",
                     keyboard: false,
                     backdrop: "static",
                     resolve: {
+                        comp: function() {
+                            return comp;
+                        },
                         items: function() {
-                            return items
+                            return items;
                         },
                         options: function() {
                             return {
@@ -406,18 +435,8 @@ define([
                                 labelSelected: "Selected",
                                 minwidth: "100%",
                                 panelWidth: 260,
-                                skipSort: true,
                             };
-                        },
-                        property: function() {
-                            return {
-                                id: $scope.propertyId,
-                                name: $scope.property.name,
-                                orgid: $rootScope.me.orgs[0]._id,
-                                phone: $scope.property.phone,
-                            };
-                        },
-                        survey: survey,
+                        }
                     },
                 });
             });
