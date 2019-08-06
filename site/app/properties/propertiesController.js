@@ -58,7 +58,7 @@ define([
                 owner: false,
                 lastUpdated: false,
                 _id: false,
-                pms: true,
+                pms: false,
             };
         }
 
