@@ -4,8 +4,8 @@ define([
 ], function (app) {
     var pageViewType = 'InitialPageView';
 
-    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService','$q'
-        , function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService,$q) {
+    app.controller('reportingController', ['$scope','$rootScope','$location','$propertyService','$auditService', 'ngProgress', '$progressService','$cookies','$window','toastr','$reportingService','$stateParams','$urlService','$uibModal','$saveReportService','$cookieSettingsService','$q',"$exportService"
+        , function ($scope,$rootScope,$location,$propertyService,$auditService,ngProgress,$progressService,$cookies,$window,toastr,$reportingService,$stateParams,$urlService,$uibModal,$saveReportService,$cookieSettingsService,$q,$exportService) {
         if (performance && performance.now) {
             var timeStart = performance.now();
         }
@@ -864,16 +864,15 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = gAPI + '/api/1.0/properties/reportsPdf?'
-            url += "token=" + $cookies.get('token')
-            url += "&key=" + key
+            var url = gAPI + '/api/1.0/properties/reportsPdf?';
+            url += "key=" + key
 
-            $.get( url, function( data ) {
-                window.setTimeout(
-                    function() {
-                        $scope.checkProgressNew(showFile);
-                    }, 500
-                );
+            $reportingService.initiateReportingPdf(url).then(function() {
+              window.setTimeout(
+                function() {
+                  $scope.checkProgressNew(showFile);
+                }, 500
+              );
             });
 
             ngProgress.start();
@@ -887,15 +886,10 @@ define([
                         ngProgress.complete();
                         $("#export").prop("disabled", false);
 
-                        var url = gAPI + "/api/1.0/properties/downloadPdf?"
-                        url += "token=" + $cookies.get("token")
-                        url += "&id=" + $scope.progressId;
+                        var url = gAPI + "/api/1.0/properties/downloadPdf?";
+                        url += "id=" + $scope.progressId;
 
-                        // if (showFile === true) {
-                            location.href = url;
-                        // } else {
-                        //     window.open(url);
-                        // }
+                      $exportService.streamFile(url);
                     } else {
                         window.setTimeout(
                             function() {
@@ -1084,13 +1078,12 @@ define([
 
                 var key = $urlService.shorten(JSON.stringify(data));
 
-                var url = gAPI + "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanDetailed?"
-                url += "token=" + $cookies.get("token")
-                url += "&key=" + key;
+                var url = gAPI + "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanDetailed?";
+                url += "key=" + key;
 
                 $window.setTimeout($scope.checkProgress, 500);
 
-                location.href = url;
+              $exportService.streamFile(url);
 
                 $scope.audit("report", "Excel");
             };
@@ -1110,13 +1103,12 @@ define([
 
                 var key = $urlService.shorten(JSON.stringify(data));
 
-                var url = gAPI + "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanSummary?"
-                url += "token=" + $cookies.get("token")
-                url += "&key=" + key;
+                var url = gAPI + "/api/1.0/properties/" + $scope.selected.Property._id + "/excelFloorplanSummary?";
+                url += "key=" + key;
 
                 $window.setTimeout($scope.checkProgress, 500);
 
-                location.href = url;
+                $exportService.streamFile(url);
 
                 $scope.audit("report", "Excel");
             };
@@ -1153,13 +1145,12 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = gAPI + "/api/1.0/reporting/excel/property_status?"
-            url += "token=" + $cookies.get("token")
-            url += "&key=" + key;
+            var url = gAPI + "/api/1.0/reporting/excel/property_status?";
+            url += "key=" + key;
 
             $window.setTimeout($scope.checkProgress, 500);
 
-            location.href = url;
+          $exportService.streamFile(url);
         };
 
             $scope.excel_custom_portfolio = function(settings) {
@@ -1194,13 +1185,12 @@ define([
 
                 var key = $urlService.shorten(JSON.stringify(data));
 
-                var url = gAPI + "/api/1.0/reporting/excel/custom_portfolio?"
-                url += "token=" + $cookies.get("token")
-                url += "&key=" + key;
+                var url = gAPI + "/api/1.0/reporting/excel/custom_portfolio?";
+                url += "key=" + key;
 
                 $window.setTimeout($scope.checkProgress, 500);
 
-                location.href = url;
+              $exportService.streamFile(url);
             };
 
         $scope.excel = function(cortland) {
@@ -1223,13 +1213,12 @@ define([
 
             var key = $urlService.shorten(JSON.stringify(data));
 
-            var url = gAPI + '/api/1.0/properties/' + $scope.selected.Property._id + '/excel?'
-            url += "token=" + $cookies.get('token')
-            url += "&key=" + key;
+            var url = gAPI + '/api/1.0/properties/' + $scope.selected.Property._id + '/excel?';
+            url += "key=" + key;
 
             $window.setTimeout($scope.checkProgress, 500);
 
-            location.href = url;
+            $exportService.streamFile(url);
 
             $auditService.create({type: 'excel_profile', property: {id: $scope.selected.Property._id, name: $scope.selected.Property.name}, description: $scope.selected.Property.name + ' - ' + $scope.liveSettings.dashboardSettings.daterange.selectedRange});
 

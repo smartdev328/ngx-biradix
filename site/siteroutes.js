@@ -97,7 +97,7 @@ module.exports = (function() {
     }
   });
 
-  ui.get('/v2(/[A-Za-z0-9-]+)?(/[A-Za-z0-9-]+)?(/[A-Za-z0-9-]+)?', function (req, res) {
+  ui.get('/v2(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?', function (req, res) {
     if (req.headers["x-forwarded-proto"] !== "https"
       && req.get("host").indexOf(".com") > -1
     ) {
@@ -109,28 +109,16 @@ module.exports = (function() {
   });
 
   ui.get("/sso", function(req, res) {
-    if (req.query.r === "undefined") {
-      req.query.r = "";
-    }
-    req.query.r = req.query.r || "";
-
-    if (req.query.o === "undefined") {
-      req.query.o = "";
-    }
-    req.query.o = req.query.o || "";
-
     jwt.verify(req.query.token, settings.SECRET, function(err, decoded) {
       if (err) {
-        console.error(err);
         res.redirect('/');
       } else {
-        console.log("SSO Success token");
         res.cookie('token', decoded.data);
-        res.cookie('tokenDate', new Date());
-        res.redirect('/#/dashboard?r=' + encodeURIComponent(req.query.r) + "&o=" + encodeURIComponent(req.query.o));
+        res.cookie('tokenDate', "");
+        res.redirect('/#/login?r=' + encodeURIComponent(req.query.r) + "&t=");
       }
     });
-  });
+ });
 
   ui.get("/oauth2/authorize", (req, res) => {
     let data = JSON.stringify(req.query);
