@@ -68,10 +68,10 @@ define([
             ).then(function(response) {
                 ngProgress.complete();
                 $uibModalInstance.dismiss();
-                toastr.success('Property data for ' + property.name + ' emailed to ' + email);
+                toastr.success('Property data for ' + comp.name + ' emailed to ' + email);
             }, function(error) {
                 ngProgress.complete();
-                toastr.error('Property data for ' + property.name + ' not emailed. Please try again or contact support for assistance');
+                toastr.error('Property data for ' + comp.name + ' not emailed. Please try again or contact support for assistance');
             });
         };
     }]);
