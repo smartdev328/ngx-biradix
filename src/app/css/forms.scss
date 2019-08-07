@@ -1,14 +1,10 @@
 @import "../../global";
 
-.mat-checkbox-layout {
-    white-space: normal !important;
-}
-  
-.mat-radio-label {
+.mat-checkbox-layout, .mat-radio-label {
     white-space: normal !important;
 }
 
 .mat-calendar-body-cell:not(.mat-calendar-body-disabled) .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
-  color: $dark-blue-color;
+  color: $blue-color;
   font-weight: bold;
 }

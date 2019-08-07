@@ -370,11 +370,12 @@ define([
             var key = $urlService.shorten(JSON.stringify(data));
 
             var url = gAPI + '/api/1.0/properties/' + ($scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.propertyId : $scope.property._id) + '/excel?'
-            url += "key=" + key;
+            url += "token=" + $cookies.get('token')
+            url += "&key=" + key;
 
             $window.setTimeout($scope.checkProgress, 500);
 
-            $exportService.streamFile(url);
+            location.href = url;
 
             $auditService.create({type: 'excel_profile', property: {id: $scope.property._id, name: $scope.property.name, orgid: $scope.property.orgid}, description: $scope.property.name + ' - ' + $scope.settings.daterange.selectedRange});
 
@@ -396,6 +397,11 @@ define([
             $exportService.print($scope.property._id, true, daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.perspective.value);
 
             $window.setTimeout($scope.checkProgress, 500);
+        };
+
+
+        $scope.print = function() {
+            $exportService.print($scope.property._id, "", $scope.settings.daterange, "", $scope.settings.graphs, $scope.settings.perspective.value);
         };
     }]);
 });

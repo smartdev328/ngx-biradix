@@ -1,27 +1,26 @@
-@import "../../../global";
+@import "../../global";
 
 .main-nav.mat-toolbar {
-  background-color:white;
-  border-bottom: 1px solid #ccc;
+  background-color:$white-color;
+  border-bottom: 1px solid $grey-color;
 }
 
 .main-nav .mat-form-field {
   font-size:15px;
-  color: rgba(0,0,0,.54);
+  color: rgba($black-color, 0.54);
 }
-
 
 .main-nav .mat-button  {
   font-weight: bold;
 }
 
 .main-nav .env {
-  color:red;position:absolute;left:22px;top:-2px;font-weight: bolder;font-size: 17px;
+  color:$red-color;position:absolute;left:22px;top:-2px;font-weight: bolder;font-size: 17px;
 }
 
 .main-nav .top-nav {
   font-size:14px;
-  color: black;
+  color: $black-color;
   font-weight: bold;
   display: inline-block;
   height: 46px;
@@ -30,8 +29,8 @@
 }
 
 .main-nav .top-nav:hover {
-  color: $green-color;
-  border-bottom: 3px solid $green-color;
+  color: $neon-green-color;
+  border-bottom: 3px solid $neon-green-color;
 }
 
 .main-nav .prefix {
@@ -45,7 +44,7 @@
 .mat-menu-item.role-item {
   text-align: center;
   font-weight: bold;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid $grey-color;
   cursor: default;
   line-height: 24px !important;
   height: 28px !important;

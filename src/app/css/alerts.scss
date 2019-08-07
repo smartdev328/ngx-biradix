@@ -2,7 +2,7 @@
 
 .snack-bar-error {
     background-image: none !important;
-    background-color: #ffe1e1;
+    background-color: $light-red-color;
     border: 1px solid $red-color !important;
     color: $red-color;
     font-size: 13px;
@@ -12,9 +12,9 @@
   
 .snack-bar-success {
     background-image: none !important;
-    background-color: #e8f8ed;
-    border: 1px solid #70b760 !important;
-    color: #70b760;
+    background-color: $light-green-color;
+    border: 1px solid $green-color !important;
+    color: $green-color;
     font-size: 13px;
     font-weight: 400;
     white-space: pre-wrap;
@@ -22,9 +22,9 @@
   
 .snack-bar-warning {
     background-image: none !important;
-    background-color: #ffe5cb;
-    border: 1px solid #f90 !important;
-    color: #f90;
+    background-color: $light-orange-color;
+    border: 1px solid $orange-color !important;
+    color: $orange-color;
     font-size: 13px;
     font-weight: 400;
     white-space: pre-wrap

@@ -1,14 +1,14 @@
 @import "../../global";
   
 html, body { height: 100%; }
-body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #f0f0f0;}
+body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: $light-grey-color;}
 
 .red {
   color: $red-color;
 }
 
 .mat-card-header {
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid $light-grey-color;
   margin-bottom: 15px;
 }
 

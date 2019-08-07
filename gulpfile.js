@@ -72,7 +72,6 @@ gulp.task("globaljs", function() {
         "./site/components/gallery/module.js",
         "./site/components/excluded/module.js",
 
-        "./site/services/exportService.js",
         "./site/services/httpHelperService.js",
         "./site/services/authService.js",
         "./site/services/propertyService.js",

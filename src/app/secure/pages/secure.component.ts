@@ -14,7 +14,7 @@ import {IAlert} from "../../core/models/alerts";
 @Component({
   selector: 'app-secure',
   templateUrl: './secure.component.html',
-  styleUrls: ['./secure.component.scss', './secure.topnav.scss', './secure.sidenav.scss'],
+  styleUrls: ['../../css/secure.component.scss', '../../css/secure.topnav.scss', '../../css/secure.sidenav.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class SecureComponent  {
