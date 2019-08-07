@@ -11,6 +11,7 @@ define([
         $scope.comp = comp;
         $scope.email = '';
         $scope.items = items;
+        $scope.itemsUnsorted = items;
         $scope.options = options;
 
         $scope.localLoading = true;
@@ -21,23 +22,23 @@ define([
 
         $scope.selectedItems = function () {
             var items = {
-                columns: [],
-                information: [],
+                floorPlan: [],
+                property: [],
             };
-
-            $scope.items.forEach(function(item) {
+            
+            $scope.itemsUnsorted.forEach(function(item) {
                 if (item.selected) {
                     switch(item.group) {
                         case 'Floor Plan Info':
-                            items.columns.push({id: item.id, name: item.name});
+                            items.floorPlan.push({id: item.id, name: item.name});
                         break;
                         case 'Common Property Info':
-                            items.information.push({id: item.id, name: item.name});
+                            items.property.push({id: item.id, name: item.name});
                         break;
                     }
                 }
             });
-
+            
             return items;
         };
         
