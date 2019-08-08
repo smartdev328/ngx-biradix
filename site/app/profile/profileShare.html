@@ -11,17 +11,17 @@
                 style="left:0px;top:0px;height:20px"
         ></div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
-        <h2 class="modal-title">Email Property Data: {{property.name}}</h2>
+        <h2 class="modal-title">Email Property Data: {{comp.name}}</h2>
     </div>
     <div class="modal-body container-fluid">
         <div class="row">
             <div class="col-xs-12" style="padding-left: 5px;">
-                Enter the email address of the user you want to share your property data with and select which data to include.
+                Enter the email address of the user you want to share <span style="font-weight: bold;">{{comp.name}}</span> data with and select which data to include.
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12" style="margin-top:20px;padding-left: 5px;">
-                <label for="email" style="font-weight: normal;">Email <span style="font-weight: bold;">{{property.name}}</span> data to:</label>
+                <label for="email" style="font-weight: normal;">Email data to:</label>
             </div>
             <div class="col-xs-12" style="padding-left: 5px;" ng-class="{'has-error': email.$dirty && email.$invalid, 'has-success': email.$dirty && email.$valid}">
                 <input type="email" name="email" placeholder="Type email here" style="padding: 5px;width: 100%;" ng-model="email"  required />

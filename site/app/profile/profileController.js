@@ -355,13 +355,12 @@ define([
                 {id: 'occupancy', name: 'Occupancy %', group: 'Common Property Info', selected: true},
                 {id: 'weeklytraffic', name: 'Traffic/Week', group: 'Common Property Info', selected: true},
                 {id: 'weeklyleases', name: 'Leases/Week', group: 'Common Property Info', selected: true},
-                {id: 'totalUnits', name: 'Units', group: 'Common Property Info', selected: true},
-                {id: 'atr', name: 'Apartments To Rent', group: 'Common Property Info', selected: false},
+                {id: 'totalUnits', name: 'Total Units', group: 'Common Property Info', selected: true},
                 {id: 'atr_percent', name: 'Apartments To Rent %', group: 'Common Property Info', selected: false},
                 {id: 'address', name: 'Address', group: 'Common Property Info', selected: true},
                 {id: 'phone', name: 'Phone', group: 'Common Property Info', selected: false},
-                {id: 'email', name: 'Email', group: 'Common Property Info', selected: false},
-                {id: 'contact', name: 'Contact', group: 'Common Property Info', selected: false},
+                {id: 'contactEmail', name: 'Email', group: 'Common Property Info', selected: false},
+                {id: 'contactName', name: 'Contact', group: 'Common Property Info', selected: false},
                 {id: 'website', name: 'Website', group: 'Common Property Info', selected: false},
                 {id: 'management', name: 'Management', group: 'Common Property Info', selected: false},
                 {id: 'owner', name: 'Owner', group: 'Common Property Info', selected: false},
@@ -373,34 +372,41 @@ define([
                 {id: 'notes', name: 'Notes', group: 'Common Property Info', selected: false},
             ];
 
+            var concessionSelection = $scope.comp.survey && ((!$scope.comp.survey.concessionsMonthly || $scope.comp.survey.concessionsMonthly === 0) && (!$scope.comp.survey.concessionsOneTime || $scope.comp.survey.concessionsOneTime === 0))
+
             var floorPlanItems = [
-                {id: 'description', name: 'Description', group: 'Floor Plan Info', selected: false},
+                {id: 'description', name: 'Description', group: 'Floor Plan Info', selected: true},
                 {id: 'units', name: 'Units', group: 'Floor Plan Info', selected: true},
                 {id: 'sqft', name: 'Sqft', group: 'Floor Plan Info', selected: true},
                 {id: 'rent', name: 'Rent', group: 'Floor Plan Info', selected: true},
                 {id: 'mersqft', name: 'Rent/Sqft', group: 'Floor Plan Info', selected: false},
                 {id: 'ner', name: 'NER', group: 'Floor Plan Info', selected: true},
                 {id: 'nersqft', name: 'NER/Sqft', group: 'Floor Plan Info', selected: false},
-                {id: 'concessions', name: 'Concessions (Total)', group: 'Floor Plan Info', selected: false},
-                {id: 'concessionsMonthly', name: 'Concessions (Recurring)', group: 'Floor Plan Info', selected: true},
-                {id: 'concessionsOneTime', name: 'Concessions (One-Time)', group: 'Floor Plan Info', selected: true},
+                {id: 'concessions', name: 'Concessions (Total)', group: 'Floor Plan Info', selected: concessionSelection},
+                {id: 'concessionsMonthly', name: 'Concessions (Recurring)', group: 'Floor Plan Info', selected: !concessionSelection},
+                {id: 'concessionsOneTime', name: 'Concessions (One-Time)', group: 'Floor Plan Info', selected: !concessionSelection},
             ];
 
             var comp = $scope.comp;
             var items = [];
 
             propertyItems.forEach(function(item) {
-                if (comp[item.id] || comp.survey[item.id]) {
+                if ((comp[item.id] && comp[item.id] !== 0 && comp[item.id] !== null && typeof comp[item.id] !== "undefined") ||
+                    (comp.survey[item.id] && comp.survey[item.id] !== 0 && comp.survey[item.id] !== null && typeof comp.survey[item.id] !== "undefined") ||
+                    (item.id === 'picture' && comp.media && comp.media.length && comp.media[0].url))
+                {
                     items.push(item);
                 }
             });
 
             floorPlanItems.forEach(function(item) {
-                var floorplan = comp.survey.floorplans.find(function(floorplan) {
-                    return floorplan[item.id] !== null && floorplan[item.id] !== undefined;
+                var floorPlanCheck = comp.survey.floorplans.find(function(floorplan) {
+                    return floorplan[item.id] && floorplan[item.id] !== 0 && floorplan[item.id] !== null && typeof floorplan[item.id] !== "undefined";
                 });
 
-                if (floorplan) items.push(item);
+                var surveyCheck = comp.survey[item.id] && comp.survey[item.id] !== 0 && comp.survey[item.id] !== null && typeof comp.survey[item.id] !== "undefined";
+
+                if (floorPlanCheck || surveyCheck) items.push(item);
             });
 
             require([
