@@ -4,7 +4,7 @@
   </mat-card-header>
   <mat-form-field>
     <mat-label>Field</mat-label>
-    <mat-select [(ngModel)]="filtered.dropdown" (ngModelChange)="filterApprovedDropdown()">
+    <mat-select [formControl]="typeFilter" (ngModelChange)="takeToFirstPage()">
       <mat-option [value]="">All</mat-option>
       <mat-option *ngFor="let field of fields | keyvalue" [value]="field.key">
         {{field.value}}
@@ -12,7 +12,7 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field class="right-align">
-    <input matInput [(ngModel)]="filtered.search" (keyup)="filterApprovedSearch()" placeholder="Search">
+    <input matInput class="form-field" [formControl]="valueFilter" (ngModelChange)="takeToFirstPage()" placeholder="Search">
   </mat-form-field>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
@@ -43,7 +43,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;">
       </tr>
     </table>
-  
     <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
   </div>
 </div>
