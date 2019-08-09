@@ -4,14 +4,14 @@
   </mat-card-header>
   <mat-form-field>
     <mat-label>Field</mat-label>
-    <mat-select [formControl]="typeFilter" (ngModelChange)="fieldFilterFunction()">
+    <mat-select [(ngModel)]="typeFilter" (ngModelChange)="run()">
       <mat-option *ngFor="let field of fields | keyvalue" [value]="field.key">
         {{field.value}}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field class="right-align">
-    <input matInput class="form-field" [(ngModel)]="valueFilter" (ngModelChange)="fieldFilterFunction()" placeholder="Search">
+    <input matInput class="form-field" [(ngModel)]="valueFilter" (ngModelChange)="filterBySearch()" placeholder="Search">
   </mat-form-field>
   <div class="mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort>
