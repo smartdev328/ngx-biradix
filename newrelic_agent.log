@@ -592,3 +592,7 @@
 {"v":0,"level":30,"name":"newrelic","hostname":"DESKTOP-P6NA139","pid":30616,"time":"2019-08-04T03:14:38.619Z","msg":"Starting New Relic for Node.js connection process."}
 {"v":0,"level":30,"name":"newrelic","hostname":"DESKTOP-P6NA139","pid":30616,"time":"2019-08-04T03:14:41.696Z","msg":"Connected to collector-009.newrelic.com:443 with agent run ID Bd6ecXr9O7hoABhoqhFql5JdRk3wAAgBAAAnIQEAAHeYAgQC5kUeAwAFNS42LjQAD0RFU0tUT1AtUDZOQTEzOQAFTE9DQUw.","component":"collector_api"}
 {"v":0,"level":30,"name":"newrelic","hostname":"DESKTOP-P6NA139","pid":30616,"time":"2019-08-04T03:14:41.696Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1599658/applications/48645406","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Mendim-PC","pid":11968,"time":"2019-08-09T17:14:23.863Z","msg":"Using New Relic for Node.js. Agent version: 5.6.4; Node version: v10.15.0."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Mendim-PC","pid":11968,"time":"2019-08-09T17:14:24.249Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"Mendim-PC","pid":11968,"time":"2019-08-09T17:14:28.276Z","msg":"Connected to collector-009.newrelic.com:443 with agent run ID BWwazJWwiYqgABhoqg2yljpdTapQAAgBAAAnIQEAAC7AAgQC5kUeAwAFNS42LjQACU1lbmRpbS1QQwAFTE9DQUw.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"Mendim-PC","pid":11968,"time":"2019-08-09T17:14:28.276Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1599658/applications/48645406","component":"collector_api"}
