@@ -400,10 +400,10 @@ define([
 
             floorPlanItems.forEach(function(item) {
                 var floorPlanCheck = comp.survey.floorplans.find(function(floorplan) {
-                    return floorplan[item.id] && floorplan[item.id] !== 0 && floorplan[item.id] !== null && typeof floorplan[item.id] !== "undefined";
+                    return floorplan[item.id] !== null && typeof floorplan[item.id] !== "undefined";
                 });
 
-                var surveyCheck = comp.survey[item.id] && comp.survey[item.id] !== 0 && comp.survey[item.id] !== null && typeof comp.survey[item.id] !== "undefined";
+                var surveyCheck = comp.survey[item.id] !== null && typeof comp.survey[item.id] !== "undefined";
 
                 if (floorPlanCheck || surveyCheck) items.push(item);
             });
