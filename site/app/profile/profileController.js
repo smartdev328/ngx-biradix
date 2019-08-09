@@ -391,8 +391,8 @@ define([
             var items = [];
 
             propertyItems.forEach(function(item) {
-                if ((comp[item.id] && comp[item.id] !== 0 && comp[item.id] !== null && typeof comp[item.id] !== "undefined") ||
-                    (comp.survey[item.id] && comp.survey[item.id] !== 0 && comp.survey[item.id] !== null && typeof comp.survey[item.id] !== "undefined"))
+                if ((comp[item.id] !== null && typeof comp[item.id] !== "undefined") ||
+                    (comp.survey[item.id] !== null && typeof comp.survey[item.id] !== "undefined"))
                 {
                     items.push(item);
                 }
