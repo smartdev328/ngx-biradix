@@ -375,9 +375,9 @@ define([
             var concessionSelection = $scope.comp.survey && ((!$scope.comp.survey.concessionsMonthly || $scope.comp.survey.concessionsMonthly === 0) && (!$scope.comp.survey.concessionsOneTime || $scope.comp.survey.concessionsOneTime === 0))
 
             var floorPlanItems = [
-                {id: 'concessions', name: 'Concessions (Total)', group: 'Floor Plan Info', selected: concessionSelection},
-                {id: 'concessionsMonthly', name: 'Concessions (Recurring)', group: 'Floor Plan Info', selected: !concessionSelection},
-                {id: 'concessionsOneTime', name: 'Concessions (One-Time)', group: 'Floor Plan Info', selected: !concessionSelection},
+                {id: 'concessions', name: 'Concessions - Total', group: 'Floor Plan Info', selected: concessionSelection},
+                {id: 'concessionsMonthly', name: 'Concessions - Recurring', group: 'Floor Plan Info', selected: !concessionSelection},
+                {id: 'concessionsOneTime', name: 'Concessions - One-Time', group: 'Floor Plan Info', selected: !concessionSelection},
                 {id: 'description', name: 'Description', group: 'Floor Plan Info', selected: true},
                 {id: 'mersqft', name: 'Rent/Sqft', group: 'Floor Plan Info', selected: false},
                 {id: 'ner', name: 'NER', group: 'Floor Plan Info', selected: true},
