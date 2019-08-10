@@ -1,0 +1,46 @@
+<div ng-show="!localLoading" style="display:block;width:100px;margin:50px auto">
+    <img src="/images/squares.gif" style="width:100px">
+</div>
+<div ng-show="localLoading" class="profileShare">
+    <div class="modal-header" style="padding-top:5px;border-bottom:1px solid #e5e5e5;">
+        <div class="triangle profile" ng-if="isCustom"
+                popover-trigger="'mouseenter'"
+                popover-placement="bottom"
+                popover-append-to-body="true"
+                uib-popover=""
+                style="left:0px;top:0px;height:20px"
+        ></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title">Email Property Data: {{comp.name}}</h2>
+    </div>
+    <div class="modal-body container-fluid">
+        <div class="row">
+            <div class="col-xs-12" style="padding-left: 5px;">
+                Enter the email address of the user you want to share <span style="font-weight: bold;">{{comp.name}}</span> data with and select which data to include.
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12" style="margin-top:20px;padding-left: 5px;">
+                <label for="email" style="font-weight: normal;">Email data to:</label>
+            </div>
+            <div class="col-xs-12" style="padding-left: 5px;" ng-class="{'has-error': email.$dirty && email.$invalid, 'has-success': email.$dirty && email.$valid}">
+                <input type="email" name="email" placeholder="Type email here" style="padding: 5px;width: 100%;" ng-model="email"  required />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12" style="color:#4460A9;font-size:18px;font-weight:600;margin-top:20px;padding-left: 5px;">
+                Choose data to include
+            </div>
+        </div>
+        <div class="row">
+            <filter-list options="options" items="items"></filter-list>
+        </div>
+    </div>
+    <div class="modal-footer" style="text-align: left;">
+        <div class="row">
+            <div class="col-xs-12" style="display:flex;justify-content: center;">
+                <button class="btn btn-success" id="propertySend" type="submit" ng-click="send()">Send</button>
+            </div>
+        </div>
+    </div>
+</div>

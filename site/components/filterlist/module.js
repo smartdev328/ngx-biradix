@@ -337,6 +337,7 @@ angular.module('biradix.global').directive('filterList', function () {
                         $scope.items = _.sortBy($scope.items, function(x) {
                             return (x.group || "") + x.name.toLowerCase();
                         });
+
                         $scope.search();
 
                         if ($scope.items) {
