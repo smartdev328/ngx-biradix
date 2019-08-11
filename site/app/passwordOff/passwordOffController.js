@@ -11,6 +11,7 @@ define([
                 $scope.email = $stateParams.e;
             }
 
+            $scope.o = $stateParams.o;
             window.document.title = "Forgot Password | BI:Radix";
 
             $scope.btnSubmit = function() {

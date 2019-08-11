@@ -77,17 +77,17 @@ define([], function () {
         $urlRouterProvider.otherwise("/login");
 
         $stateProvider
-            .state("login", AsyncRoute("/login?r&e", "login", "loginController", "login.html", "loggedOutView",{}))
-            .state("sso", AsyncRoute("/sso?r&n", "login", "ssoController", "sso.html", "loggedOutView",{}))
-            .state("expired", AsyncRoute("/expired?name", "expired", "expiredController", "expired.html", "loggedOutView",{loggedIn: false}))
-            .state("contact", AsyncRoute("/contact?e", "contactOff", "contactOffController", "contact.html", "loggedOutView",{loggedIn: false}))
-            .state("contact_thank_you", AsyncRoute("/contact/thankyou?e", "contactOff","contactOffController","thankyou.html", "loggedOutView",{loggedIn: false}))
-            .state("password", AsyncRoute("/password?e", "passwordOff", "passwordOffController", "password.html", "loggedOutView",{loggedIn: false}))
-            .state("password_sent", AsyncRoute("/password/sent?e", "passwordOff",null,"sent.html", "loggedOutView",{loggedIn: false}))
-            .state("password_invalid", AsyncRoute("/password/invalid?e", "passwordOff", "passwordOffController", "invalid.html", "loggedOutView",{loggedIn: false}))
-            .state("password_reset", AsyncRoute("/password/reset/:token", "passwordOff", "resetController", "reset.html", "loggedOutView",{loggedIn: false}))
+          .state("login", AsyncRoute("/login?r&e&o", "login", "loginController", "login.html", "loggedOutView",{}))
+          .state("sso", AsyncRoute("/sso?r&n&o", "login", "ssoController", "sso.html", "loggedOutView",{}))
+          .state("expired", AsyncRoute("/expired?name", "expired", "expiredController", "expired.html", "loggedOutView",{loggedIn: false}))
+          .state("contact", AsyncRoute("/contact?e&o", "contactOff", "contactOffController", "contact.html", "loggedOutView",{loggedIn: false}))
+          .state("contact_thank_you", AsyncRoute("/contact/thankyou?e&o", "contactOff","contactOffController","thankyou.html", "loggedOutView",{loggedIn: false}))
+          .state("password", AsyncRoute("/password?e&o", "passwordOff", "passwordOffController", "password.html", "loggedOutView",{loggedIn: false}))
+          .state("password_sent", AsyncRoute("/password/sent?e&o", "passwordOff",null,"sent.html", "loggedOutView",{loggedIn: false}))
+          .state("password_invalid", AsyncRoute("/password/invalid?e&o", "passwordOff", "passwordOffController", "invalid.html", "loggedOutView",{loggedIn: false}))
+          .state("password_reset", AsyncRoute("/password/reset/:token", "passwordOff", "resetController", "reset.html", "loggedOutView",{loggedIn: false}))
 
-            .state("maintenance", AsyncRoute("/maintenance", "login", "loginController", "maintenance.html", "loggedOutView",{loggedIn: false}))
+          .state("maintenance", AsyncRoute("/maintenance", "login", "loginController", "maintenance.html", "loggedOutView",{loggedIn: false}))
 
             .state("dashboard", AsyncRoute("/dashboard?id&s", "dashboard", "dashboardController", "dashboard.html", "loggedInView",{loggedIn: true}))
             .state("dashboard2", AsyncRoute("/dashboard2?id", "dashboard2", "dashboard2Controller", "dashboard2.html", "loggedInView",{loggedIn: true}))
