@@ -89,7 +89,7 @@ define([], function () {
 
           .state("maintenance", AsyncRoute("/maintenance", "login", "loginController", "maintenance.html", "loggedOutView",{loggedIn: false}))
 
-            .state("dashboard", AsyncRoute("/dashboard?id&s", "dashboard", "dashboardController", "dashboard.html", "loggedInView",{loggedIn: true}))
+            .state("dashboard", AsyncRoute("/dashboard?id&s&o", "dashboard", "dashboardController", "dashboard.html", "loggedInView",{loggedIn: true}))
             .state("dashboard2", AsyncRoute("/dashboard2?id", "dashboard2", "dashboard2Controller", "dashboard2.html", "loggedInView",{loggedIn: true}))
             .state("manageUsers", AsyncRoute("/manageusers", "manageUsers", "manageUsersController", "manageUsers.html", "loggedInView",{loggedIn: true}))
             .state("properties", AsyncRoute("/properties", "properties", "propertiesController", "properties.html", "loggedInView",{loggedIn: true}))

@@ -145,6 +145,12 @@ define([
             if ($rootScope.me) {
                 me();
 
+                if ($stateParams.o) {
+                  console.log($stateParams.o);
+                  location.href = "http://localhost:4300/auth/sso?code=abc123";
+                  return;
+                }
+
                 $scope.settings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
                 $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
 
