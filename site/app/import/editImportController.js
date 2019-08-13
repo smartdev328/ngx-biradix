@@ -7,6 +7,10 @@ define([
         function($scope, $uibModalInstance, config, orgs, $importService, ngProgress, toastr, $rootScope) {
             $scope.config = _.cloneDeep(config) || {provider: "YARDI", orgid: "", identity: "", timeZone: "America/Los_Angeles"};
             $scope.edit = config;
+            $scope.isEdit = false;
+            if(config && config.id){
+                $scope.isEdit = true;
+            }
             $scope.orgs = _.cloneDeep(orgs);
             $scope.orgs.unshift({_id: "", name: "Please Select"});
             $scope.model = {
@@ -37,7 +41,6 @@ define([
                 return o.id.toString() === $scope.config.timeZone;
             });
 
-
             $scope.save = function() {
                 var obj = {
                     provider: $scope.config.provider,
@@ -48,9 +51,9 @@ define([
                     }
                 };
 
-                if ($scope.edit) {
+                if ($scope.isEdit) {
                     obj.id = config.id;
-                    obj.isActive = config.isActive;
+                    obj.isActive =  $scope.config.isActive; // config.isActive;
 
                     ngProgress.start();
                     $importService.update(obj).then(function(response) {
