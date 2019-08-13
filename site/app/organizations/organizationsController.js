@@ -16,8 +16,6 @@ define([
         $rootScope.sideMenu = true;
         $rootScope.sideNav = "Organizations";
 
-
-
         // /////////////////////////////
         $scope.reload = function (fireGa) {
             $scope.localLoading = false;
@@ -139,6 +137,7 @@ define([
         }
 
         $scope.edit = function(config) {
+            var isEdit = config.id === "" ? false : true;
             require([
                 "/app/import/editImportController.js"
             ], function() {
@@ -160,7 +159,7 @@ define([
 
                 modalInstance.result.then(function(newConfig) {
                     var name = newConfig.org + " (" + newConfig.provider +")";
-                    if (!config) {
+                    if (!isEdit) {
                         toastr.success("<B>" + name + "</B> has been created successfully.", "", {timeOut: 10000});
                     } else {
                         toastr.success("<B>" + name + "</B> updated successfully.");

@@ -5,11 +5,10 @@ define([
 ], function(app, async) {
     app.controller("editImportController", ["$scope", "$uibModalInstance", "config", "orgs", "$importService", "ngProgress", "toastr", "$rootScope",
         function($scope, $uibModalInstance, config, orgs, $importService, ngProgress, toastr, $rootScope) {
-            $scope.config = _.cloneDeep(config) || {provider: "YARDI", orgid: "", identity: "", timeZone: "America/Los_Angeles"};
-            $scope.edit = config;
-            $scope.isEdit = false;
-            if(config && config.id){
-                $scope.isEdit = true;
+            $scope.config = _.cloneDeep(config);
+            $scope.isEdit = true;
+            if(config.id === ""){
+                $scope.isEdit = false;
             }
             $scope.orgs = _.cloneDeep(orgs);
             $scope.orgs.unshift({_id: "", name: "Please Select"});
@@ -53,7 +52,7 @@ define([
 
                 if ($scope.isEdit) {
                     obj.id = config.id;
-                    obj.isActive =  $scope.config.isActive; // config.isActive;
+                    obj.isActive =  $scope.config.isActive; 
 
                     ngProgress.start();
                     $importService.update(obj).then(function(response) {
