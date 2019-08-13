@@ -4,8 +4,9 @@ define([
 ], function (app) {
     var pageViewType = 'InitialPageView';
 
-     app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', "$exportService", "$http",
-       function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService,$exportService,$http) {
+     app.controller('dashboardController',
+       ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', "$exportService", "$http", "$identityProviderService",
+       function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService,$exportService,$http, $identityProviderService) {
         if (performance && performance.now) {
             var timeStart = performance.now();
         }
@@ -146,8 +147,11 @@ define([
                 me();
 
                 if ($stateParams.o) {
-                  console.log($stateParams.o);
-                  location.href = "http://localhost:4300/auth/sso?code=abc123";
+                  $identityProviderService.getCallbackUrl($stateParams.o).then(function(response) {
+                    location.href = response.data.uri;
+                  }, function(err) {
+                    toastr.error("Unable to login into your application: " + err.data);
+                  });
                   return;
                 }
 
