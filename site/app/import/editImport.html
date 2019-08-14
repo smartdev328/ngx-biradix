@@ -1,3 +1,9 @@
+<style>
+    .row {
+        padding-bottom: 10px;
+    }
+</style>
+
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
     <h2 class="modal-title">{{!isEdit ? 'Add' : 'Update'}} PMS Import</h2>
@@ -31,8 +37,12 @@
     </div>
     <div class="row" ng-if="isEdit">
         <div class="col-xs-12">
-            Active:<Br>
-                <toggle-switch checked="config.isActive"></toggle-switch>
+            Active Status:<Br> 
+                <select class="form-control input-sm" ng-model="model.selectedActiveStatus">
+                    <option value="1" ng-selected="config.isActive === true">Enabled</option>
+                    <option value="0" ng-selected="config.isActive === false">Disabled</option>
+                </select>
+    
         </div>
         </div>
     <div style="margin:0px auto;width:75px">
@@ -40,3 +50,4 @@
         <button class=" btn btn-primary btn-large btn-block contact-submit" type="button" ng-click="save()">{{!isEdit ? 'Create' : 'Save'}}</button>
     </div>
 </div>
+

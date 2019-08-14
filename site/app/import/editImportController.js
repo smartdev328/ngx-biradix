@@ -33,12 +33,18 @@ define([
                 {id: 'America/New_York', name: "New York (Eastern)"},
             ];
 
+            $scope.activeStatus = [
+                {id: false, name: "Disabled"},
+                {id: true, name: "Enabled"}
+            ];
+
             $scope.selectedOrg = _.find($scope.orgs, function(o) {
                 return o._id.toString() === $scope.config.orgid;
             });
             $scope.model.selectedTimeZone = _.find($scope.timezones, function(o) {
                 return o.id.toString() === $scope.config.timeZone;
             });
+            $scope.model.selectedActiveStatus = $scope.config.isActive ? "1":"0";
 
             $scope.save = function() {
                 var obj = {
@@ -52,7 +58,7 @@ define([
 
                 if ($scope.isEdit) {
                     obj.id = config.id;
-                    obj.isActive =  $scope.config.isActive; 
+                    obj.isActive =  $scope.model.selectedActiveStatus === "1" ? true: false; 
 
                     ngProgress.start();
                     $importService.update(obj).then(function(response) {
