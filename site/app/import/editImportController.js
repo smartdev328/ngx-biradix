@@ -33,11 +33,6 @@ define([
                 {id: 'America/New_York', name: "New York (Eastern)"},
             ];
 
-            $scope.activeStatus = [
-                {id: false, name: "Disabled"},
-                {id: true, name: "Enabled"}
-            ];
-
             $scope.selectedOrg = _.find($scope.orgs, function(o) {
                 return o._id.toString() === $scope.config.orgid;
             });
