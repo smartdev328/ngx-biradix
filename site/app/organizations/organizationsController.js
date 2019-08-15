@@ -37,7 +37,8 @@ define([
                         });
                         if(pmsImport) {
                             Object.assign(pmsImport,{identity: pmsImport.yardi.folder});
-                            Object.assign(pmsImport,{org: org.name});
+                            Object.assign(pmsImport,{orgName: org.name});
+                            Object.assign(pmsImport,{orgid: org._id});
                         }
                         $scope.results.push({
                             id: org._id,
@@ -150,9 +151,6 @@ define([
                     resolve: {
                         config: function() {
                             return config;
-                        },
-                        orgs: function() {
-                            return $scope.orgs;
                         }
                     }
                 });
@@ -179,7 +177,7 @@ define([
                 timeZone: "America/Los_Angeles",
                 orgid: data.id,
                 identity: "",
-                org: data.name
+                orgName: data.name
             };
             $scope.edit(config);
         }
