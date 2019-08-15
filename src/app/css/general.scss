@@ -23,3 +23,15 @@ body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-
 .fill-space {
   flex: 1 1 auto;
 }
+
+@media(max-width: 768px) {
+
+  .text-center-m {
+    justify-content: center;
+  }
+
+  .mat-cell, .mat-header-cell, .mat-footer-cell {
+    word-break: break-word;
+  }
+
+}

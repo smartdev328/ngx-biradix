@@ -14,33 +14,29 @@
     <input matInput class="form-field" [(ngModel)]="valueFilter" (ngModelChange)="filterBySearch()" placeholder="Search">
   </mat-form-field>
   <div class="mat-elevation-z8">
-    <table mat-table #table [dataSource]="dataSource" matSort>
+    <mat-table [dataSource]="dataSource" matSort>
       <ng-container matColumnDef="value">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Value </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <span class="mobile-label">Value:</span>
           {{row.value}}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="type">
         <mat-header-cell *matHeaderCellDef mat-sort-header> Field </mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <span class="mobile-label">Field:</span>
           {{fields[row.type]}}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="searchable">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Autocomplete </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <span class="mobile-label">Autocomplete:</span>
+        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center-m"> Autocomplete </mat-header-cell>
+        <mat-cell *matCellDef="let row" class="text-center-m">
           <fa-icon *ngIf="row.searchable" icon="check"></fa-icon>
           <fa-icon *ngIf="!row.searchable" icon="times"></fa-icon>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="delete">
-        <mat-header-cell *matHeaderCellDef> Delete </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <span class="mobile-label">Delete:</span>
+        <mat-header-cell *matHeaderCellDef class="text-center-m"> Delete </mat-header-cell>
+        <mat-cell *matCellDef="let row" class="text-center-m">
           <button mat-icon-button aria-label="Delete">
             <fa-icon icon="trash-alt"></fa-icon>
           </button>
@@ -48,7 +44,7 @@
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </table>
+    </mat-table>
     <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
   </div>
 </div>
