@@ -7,6 +7,10 @@ body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-
   color: $red-color;
 }
 
+.green {
+  color: $green-color;
+}
+
 .mat-card-header {
   border-bottom: 1px solid $light-grey-color;
   margin-bottom: 15px;

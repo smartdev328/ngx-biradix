@@ -15,7 +15,8 @@ import * as rg4js from 'raygun4js';
     './css/navigation.scss',
     './css/forms.scss',
     './css/buttons.scss',
-    './css/general.scss'
+    './css/general.scss',
+    './css/table.scss'
   ],
   encapsulation: ViewEncapsulation.None
 })
