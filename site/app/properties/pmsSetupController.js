@@ -23,6 +23,7 @@ define([
                 floorplans: [],
                 unmappedFloorplans: [],
                 excludedFloorplans: [],
+                importYardiUrl: ""
             };
             $scope.cancel = function() {
                 $uibModalInstance.dismiss("cancel");
@@ -58,6 +59,8 @@ define([
                         if ($scope.imports.length === 1) {
                             $importIntegrationService.getLatestProperties($scope.imports[0].id).then(function(response) {
                                 $scope.properties = response.data;
+                                $scope.pms.importYardiUrl =yAPI + "/yardi/date/" + new Date().getTime() +
+                                "/" + $scope.property.pms.yardi.propertyId +"?key=" + $scope.imports[0].id;//TODO: get latest date 
 
                                 if (!$scope.pms.config) {
                                     $scope.pms.selectedProperty = _.find($scope.properties, function(p) {

@@ -84,6 +84,7 @@ module.exports = (function() {
                 raygun_key: settings.RAYGUN_APIKEY,
                 heroku_env: settings.NEW_RELIC_NAME,
                 api: settings.API_URL,
+                yapi: settings.IMPORT_YARDI_URL,
                 v2: localhost ? "http://localhost:2003/v2/" : "/v2/"
             });
     });
