@@ -632,7 +632,13 @@ angular.module('biradix.global').directive('trendsTimeSeries', function () {
                                 }
                         }
                     });
-
+                    var colors = ['#7CB5EC', '#90ed7d', '#f7a35c', '#8085e9', '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#A47D7C', '#B5CA92'];
+                    d1subjects.forEach(function(e,i){
+                        e.color = colors[i];
+                    });
+                    d2subjects.forEach(function(e,i){
+                        e.color = colors[i];
+                    });
                     return {d1subjects: d1subjects, d2subjects: d2subjects}
                 }
             },
