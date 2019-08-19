@@ -59,8 +59,8 @@ define([
                         if ($scope.imports.length === 1) {
                             $importIntegrationService.getLatestProperties($scope.imports[0].id).then(function(response) {
                                 $scope.properties = response.data;
-                                $scope.pms.importYardiUrl =yAPI + "/yardi/date/" + new Date().getTime() +
-                                "/" + $scope.property.pms.yardi.propertyId +"?key=" + $scope.imports[0].id;//TODO: get latest date 
+                                $scope.pms.importYardiUrl ="https://biradix-integrations-yardi.herokuapp.com/yardi/ui/latestImport/"+
+                                + $scope.property.pms.yardi.propertyId +"?key=" + $scope.imports[0].id;
 
                                 if (!$scope.pms.config) {
                                     $scope.pms.selectedProperty = _.find($scope.properties, function(p) {
