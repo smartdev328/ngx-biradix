@@ -2,53 +2,64 @@
   <mat-card-header>
     <mat-card-title>Approved Lists</mat-card-title>
   </mat-card-header>
-  <mat-form-field>
-    <mat-label>Field</mat-label>
-    <mat-select [(ngModel)]="typeFilter" (ngModelChange)="run()">
-      <mat-option *ngFor="let field of fields | keyvalue" [value]="field.key">
-        {{field.value}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="right-align w-40-m">
-    <input matInput class="form-field" [(ngModel)]="valueFilter" (ngModelChange)="filterBySearch()" placeholder="Search">
-  </mat-form-field>
-  <!-- <mat-card>
-    <mat-card-subtitle>No results match</mat-card-subtitle>
-    <mat-card-content>This table has no records matching your search for: <b><i>{{valueFilter}}</i></b></mat-card-content>
-  </mat-card> -->
-  <div class="mat-elevation-z8">
-    <mat-table [dataSource]="dataSource" matSort>
-      <ng-container matColumnDef="value">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Value </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          {{row.value}}
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="type">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Field </mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          {{fields[row.type]}}
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="searchable">
-        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center-m"> Autocomplete </mat-header-cell>
-        <mat-cell *matCellDef="let row" class="text-center-m">
-          <fa-icon *ngIf="row.searchable" icon="check" class="green"></fa-icon>
-          <fa-icon *ngIf="!row.searchable" icon="times" class="red"></fa-icon>
-        </mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="delete">
-        <mat-header-cell *matHeaderCellDef class="text-center-m"></mat-header-cell>
-        <mat-cell *matCellDef="let row" class="text-center-m">
-          <button mat-icon-button aria-label="Delete" class="red">
-            <fa-icon icon="trash-alt"></fa-icon>
-          </button>
-        </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+
+  <div *ngIf="loading">
+    <app-loader></app-loader>
+  </div>
+  <div [ngStyle]="{'display': loading ? 'none' : 'block'}">
+    <div fxLayout >
+      <mat-form-field>
+        <mat-label>Field</mat-label>
+        <mat-select [(ngModel)]="typeFilter" (ngModelChange)="run()">
+          <mat-option *ngFor="let field of fields | keyvalue" [value]="field.key">
+            {{field.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="fill-space"></div>
+      <mat-form-field>
+        <input matInput class="form-field" [(ngModel)]="valueFilter" (ngModelChange)="filterBySearch()" placeholder="Search">
+      </mat-form-field>
+    </div>
+
+    <div [ngClass]="{'table-container': true, 'mat-elevation-z8': true, 'no-results': numberOfResults === 0}">
+      <mat-card *ngIf="numberOfResults === 0">
+        <mat-card-content fxLayoutAlign="center">
+          <b>No results found</b>
+        </mat-card-content>
+      </mat-card>
+      <table mat-table [dataSource]="dataSource" matSort [hidden]="numberOfResults === 0" matSortActive="value" matSortDirection="asc">
+        <ng-container matColumnDef="value" [sticky]="!isIEorEdge">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Value </th>
+          <td mat-cell *matCellDef="let row">
+            {{row.value}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef> Field </th>
+          <td mat-cell *matCellDef="let row">
+            {{fields[row.type]}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="searchable">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Autocomplete </th>
+          <td mat-cell *matCellDef="let row" class="text-center-m">
+            <fa-icon *ngIf="row.searchable" icon="check" class="green"></fa-icon>
+            <fa-icon *ngIf="!row.searchable" icon="times" class="red"></fa-icon>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button aria-label="Delete" class="red">
+              <fa-icon icon="trash-alt"></fa-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isIEorEdge"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[50, 100, 500]" showFirstLastButtons class=" mat-elevation-z8"></mat-paginator>
   </div>
 </div>

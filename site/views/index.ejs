@@ -239,7 +239,7 @@
                         <a href = "#/amenities" href ng-class="{'active': sideNav == 'Amenities', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Amenities</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
-                        <a href = "#/approvedLists" href ng-class="{'active': sideNav == 'ApprovedLists', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Approved Lists</a>
+                        <a href = "{{v2Base + 'secure/approved-lists'}}" href ng-class="{'active': sideNav == 'ApprovedLists', 'subnav' : true}" ng-click="turnOffIfMobile()"> - Approved Lists</a>
                     </li>
                     <li ng-if="$root.me.permissions.indexOf('Admin') > -1">
                         <a href  href ng-class="{'subnav' : true}" ng-click="test_error()"> - Throw an Error</a>

@@ -1,16 +1,40 @@
-.mat-icon-button:hover {
-    background:#f2f2f2;
+.table-container {
+  max-height: calc(100vh - 280px);
+  min-height:104px;
+  overflow: auto;
 }
 
-@media(max-width: 768px) {
-
-    mat-cell:first-of-type, mat-footer-cell:first-of-type, mat-header-cell:first-of-type {
-        padding-left: 8px;
-    }
-
-    mat-cell:last-of-type, mat-footer-cell:last-of-type, mat-header-cell:last-of-type {
-        padding-right: 8px;
-    }
-    
+.table-container.no-results {
+  min-height: inherit;
 }
-  
+
+.table-container.no-results + mat-paginator {
+  display: none !important;
+}
+
+.table-container table {
+  width:100%;
+}
+
+.table-container mat-card {
+  box-shadow: none;
+}
+
+.table-container .mat-table-sticky:first-child {
+  border-right: 1px solid #e0e0e0;
+}
+
+.table-container td, .table-container th {
+  padding: 0 6px !important;
+  white-space: nowrap !important;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #4460A9;
+}
+

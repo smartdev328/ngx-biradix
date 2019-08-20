@@ -97,7 +97,7 @@ module.exports = (function() {
     }
   });
 
-  ui.get('/v2(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?', function (req, res) {
+  ui.get('/v2(/[A-Za-z0-9-]+)?(/[A-Za-z0-9-]+)?(/[A-Za-z0-9-]+)?', function (req, res) {
     if (req.headers["x-forwarded-proto"] !== "https"
       && req.get("host").indexOf(".com") > -1
     ) {

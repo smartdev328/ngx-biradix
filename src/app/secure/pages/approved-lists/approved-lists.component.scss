@@ -1,16 +1,12 @@
-table {
-    width:100%;
+
+@media (min-width: 800px) {
+  .table-container .mat-table-sticky:first-child {
+    border-right: inherit;
+  }
 }
 
-.right-align {
-    float: right;
+.table-container .mat-table-sticky:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width:150px;
 }
-
-@media(max-width: 768px) {
-
-    .w-40-m {
-        width: 40%;
-    }
-    
-}
-  

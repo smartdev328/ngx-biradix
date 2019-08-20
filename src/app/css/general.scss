@@ -28,14 +28,8 @@ body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-
   flex: 1 1 auto;
 }
 
-@media(max-width: 768px) {
-
+@media (max-width: 800px) {
   .text-center-m {
-    justify-content: center;
+    text-align: center;
   }
-
-  .mat-cell, .mat-header-cell, .mat-footer-cell {
-    word-break: break-word;
-  }
-
 }

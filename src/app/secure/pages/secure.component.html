@@ -77,8 +77,7 @@
         <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/uploadSurveys'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]=""><fa-icon icon="wrench" [fixedWidth]="true"></fa-icon> Admin</a>
 
         <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/amenities'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Amenities</a>
-        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/approvedLists'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Approved Lists</a>
-        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" routerLink="/secure/approved-lists" mat-button [routerLinkActive]="['nav-highlighted']" (click)="closeSideNavLogic(sidenav)" class="level2">- Approved Lists new</a>
+        <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" routerLink="/secure/approved-lists" mat-button [routerLinkActive]="['nav-highlighted']" (click)="closeSideNavLogic(sidenav)" class="level2">- Approved Lists</a>
         <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" mat-button (click)="throwError()" [routerLinkActive]="" class="level2">- Throw an Error</a>
         <a *ngIf="hasPermission(PERMISSIONS.ADMIN)" [href]="baseUrl + '#/organizations'" mat-button (click)="closeSideNavLogic(sidenav)" [routerLinkActive]="" class="level2">- Organizations</a>
 
