@@ -133,6 +133,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             });
         }
 
+        fac.emailProperty = function (comp, email, items, logo) {
+            return $http.post(gAPI + '/api/1.0/properties/' + comp._id + '/email?bust=' + (new Date()).getTime(), { comp: comp, email: email, items: items, logo: logo }, {
+                headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {
+                return response;
+            }).error(function (response) {
+                return response;
+            });
+        }
+
         fac.getSurvey = function (id, surveyid) {
             return $http.get(gAPI + '/api/1.0/properties/' + id + '/survey/' + surveyid + '?bust=' + (new Date()).getTime(), {
                 headers: {'Authorization': 'Bearer ' + $cookies.get('token') }}).success(function (response) {

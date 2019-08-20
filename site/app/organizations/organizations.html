@@ -14,13 +14,19 @@
                 <th>#</th>
                 <th>Name</th>
                 <th>Url</th>
+                <th>PMS Import</th>
                 <th></th>
             </tr>
 
-            <tr ng-repeat-start="row in data | orderBy : 'name'">
+            <tr ng-repeat-start="row in results | orderBy : 'name'">
                 <td>{{$index + 1}}.</td>
                 <td>{{row.name}}</td>
                 <td>https://{{row.subdomain}}.biradix.com</td>
+                <td>
+                    {{row.import ? row.import.provider : "-" }}
+                    <span class="fa fa-check fa-1x" ng-show="row.import.isActive"></span>
+                    <span class="fa fa-times fa-1x" ng-show="row.import.isActive===false" style="color:#ccc"></span>
+                </td>
                 <td class="center">
                     <div class="form-group has-feedback pull-right" style="margin-bottom:0px; margin-right:5px">
                         <div class="btn-group action_dropdown">
@@ -30,6 +36,9 @@
                             <ul class="dropdown-menu dropdown-menu-right skinny" role="menu">
                                 <li><a href ng-click="settings(row)"><span class="fa fa-wrench fa-fw"></span> Default Settings</a></li>
                                 <li><a href ng-click="ssoconfig(row)"><span class="fa fa-sign-in fa-fw"></span> SSO Config</a></li>
+                                <li><a href ng-show="row.import" ng-click="edit(row.import)"><span class="fa fa-fw fa-pencil"></span> Edit PMS Import</a></li>
+                                <li><a href ng-show="!row.hasPmsImport" ng-click="addPMSImport(row)"><span class="fa fa-fw fa-plus"></span> Add PMS Import</a></li>
+
                             </ul>
                         </div>
                     </div>

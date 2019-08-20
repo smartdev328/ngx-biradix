@@ -5,7 +5,7 @@ define([
 ], function (app) {
     var pageViewType = 'InitialPageView';
 
-    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', '$saveReportService', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService,$saveReportService) {
+    app.controller('profileController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$stateParams', '$window','$cookies', 'ngProgress', '$progressService', '$cookieSettingsService', '$auditService','$exportService','toastr', '$reportingService','$urlService', '$saveReportService', '$uibModal', function ($scope,$rootScope,$location,$propertyService,$authService, $stateParams, $window, $cookies, ngProgress, $progressService, $cookieSettingsService, $auditService,$exportService,toastr,$reportingService,$urlService,$saveReportService,$uibModal) {
         if (performance && performance.now) {
             var timeStart = performance.now();
         }
@@ -347,6 +347,95 @@ define([
                 }
             })
 
+        }
+
+        $scope.email = function() {
+            var propertyItems = [
+                {id: 'address', name: 'Address', group: 'Common Property Info', selected: true},
+                {id: 'atr_percent', name: 'Apartments To Rent %', group: 'Common Property Info', selected: false},
+                {id: 'constructionType', name: 'Construction', group: 'Common Property Info', selected: false},
+                {id: 'contactEmail', name: 'Email', group: 'Common Property Info', selected: false},
+                {id: 'contactName', name: 'Contact', group: 'Common Property Info', selected: false},
+                {id: 'leased', name: 'Leased %', group: 'Common Property Info', selected: true},
+                {id: 'management', name: 'Management', group: 'Common Property Info', selected: false},
+                {id: 'notes', name: 'Notes', group: 'Common Property Info', selected: false},
+                {id: 'occupancy', name: 'Occupancy %', group: 'Common Property Info', selected: true},
+                {id: 'owner', name: 'Owner', group: 'Common Property Info', selected: false},
+                {id: 'phone', name: 'Phone', group: 'Common Property Info', selected: false},
+                {id: 'renewal', name: 'Renewal %', group: 'Common Property Info', selected: false},
+                {id: 'totalUnits', name: 'Total Units', group: 'Common Property Info', selected: true},
+                {id: 'website', name: 'Website', group: 'Common Property Info', selected: false},
+                {id: 'weeklyleases', name: 'Leases/Week', group: 'Common Property Info', selected: true},
+                {id: 'weeklytraffic', name: 'Traffic/Week', group: 'Common Property Info', selected: true},
+                {id: 'yearBuilt', name: 'Year Built', group: 'Common Property Info', selected: false},
+                {id: 'yearRenovated', name: 'Year Renovated', group: 'Common Property Info', selected: false},
+                
+            ];
+
+            var concessionSelection = $scope.comp.survey && ((!$scope.comp.survey.concessionsMonthly || $scope.comp.survey.concessionsMonthly === 0) && (!$scope.comp.survey.concessionsOneTime || $scope.comp.survey.concessionsOneTime === 0))
+
+            var floorPlanItems = [
+                {id: 'concessions', name: 'Concessions - Total', group: 'Floor Plan Info', selected: concessionSelection},
+                {id: 'concessionsMonthly', name: 'Concessions - Recurring', group: 'Floor Plan Info', selected: !concessionSelection},
+                {id: 'concessionsOneTime', name: 'Concessions - One-Time', group: 'Floor Plan Info', selected: !concessionSelection},
+                {id: 'description', name: 'Description', group: 'Floor Plan Info', selected: true},
+                {id: 'mersqft', name: 'Rent/Sqft', group: 'Floor Plan Info', selected: false},
+                {id: 'ner', name: 'NER', group: 'Floor Plan Info', selected: true},
+                {id: 'nersqft', name: 'NER/Sqft', group: 'Floor Plan Info', selected: false},
+                {id: 'rent', name: 'Rent', group: 'Floor Plan Info', selected: true},
+                {id: 'sqft', name: 'Sqft', group: 'Floor Plan Info', selected: true},
+                {id: 'units', name: 'Units', group: 'Floor Plan Info', selected: true},
+            ];
+
+            var comp = $scope.comp;
+            var items = [];
+
+            propertyItems.forEach(function(item) {
+                if ((comp[item.id] !== null && typeof comp[item.id] !== "undefined") ||
+                    (comp.survey[item.id] !== null && typeof comp.survey[item.id] !== "undefined"))
+                {
+                    items.push(item);
+                }
+            });
+
+            floorPlanItems.forEach(function(item) {
+                var floorPlanCheck = comp.survey.floorplans.find(function(floorplan) {
+                    return floorplan[item.id] !== null && typeof floorplan[item.id] !== "undefined";
+                });
+
+                var surveyCheck = comp.survey[item.id] !== null && typeof comp.survey[item.id] !== "undefined";
+
+                if (floorPlanCheck || surveyCheck) items.push(item);
+            });
+
+            require([
+                "/app/profile/profileShareController.js",
+            ], function() {
+                $uibModal.open({
+                    templateUrl: "/app/profile/profileShare.html?bust="+version,
+                    controller: "profileShareController",
+                    size: "md",
+                    keyboard: false,
+                    backdrop: "static",
+                    resolve: {
+                        comp: function() {
+                            return comp;
+                        },
+                        items: function() {
+                            return items;
+                        },
+                        options: function() {
+                            return {
+                                hideSearch: true,
+                                labelAvailable: "Available",
+                                labelSelected: "Selected",
+                                minwidth: "100%",
+                                panelWidth: 260,
+                            };
+                        }
+                    },
+                });
+            });
         }
 
         $scope.excel = function() {
