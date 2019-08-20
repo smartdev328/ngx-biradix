@@ -42,15 +42,15 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="searchable">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Autocomplete </th>
-          <td mat-cell *matCellDef="let row" class="text-center-m">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Autocomplete </th>
+          <td mat-cell *matCellDef="let row" class="text-center">
             <fa-icon *ngIf="row.searchable" icon="check" class="green"></fa-icon>
             <fa-icon *ngIf="!row.searchable" icon="times" class="red"></fa-icon>
           </td>
         </ng-container>
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let row">
+          <td mat-cell *matCellDef="let row" class="text-center">
             <button mat-icon-button aria-label="Delete" class="red">
               <fa-icon icon="trash-alt"></fa-icon>
             </button>
