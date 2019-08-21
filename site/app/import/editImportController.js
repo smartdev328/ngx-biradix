@@ -3,16 +3,17 @@ define([
     "app",
     "async",
 ], function(app, async) {
-    app.controller("editImportController", ["$scope", "$uibModalInstance", "config", "orgs", "$importService", "ngProgress", "toastr", "$rootScope",
-        function($scope, $uibModalInstance, config, orgs, $importService, ngProgress, toastr, $rootScope) {
-            $scope.config = _.cloneDeep(config) || {provider: "YARDI", orgid: "", identity: "", timeZone: "America/Los_Angeles"};
-            $scope.edit = config;
-            $scope.orgs = _.cloneDeep(orgs);
-            $scope.orgs.unshift({_id: "", name: "Please Select"});
+    app.controller("editImportController", ["$scope", "$uibModalInstance", "config", "$importService", "ngProgress", "toastr", "$rootScope",
+        function($scope, $uibModalInstance, config, $importService, ngProgress, toastr, $rootScope) {
+            $scope.config = _.cloneDeep(config);
+            $scope.isEdit = true;
+            if(config.id === ""){
+                $scope.isEdit = false;
+            }
+
             $scope.model = {
                 selectedTimeZone: null
             };
-
 
             ga("set", "title", "/editImport");
             ga("set", "page", "/editImport");
@@ -30,32 +31,29 @@ define([
                 {id: 'America/New_York', name: "New York (Eastern)"},
             ];
 
-            $scope.selectedOrg = _.find($scope.orgs, function(o) {
-                return o._id.toString() === $scope.config.orgid;
-            });
             $scope.model.selectedTimeZone = _.find($scope.timezones, function(o) {
                 return o.id.toString() === $scope.config.timeZone;
             });
-
+            $scope.model.selectedActiveStatus = $scope.config.isActive ? "1":"0";
 
             $scope.save = function() {
                 var obj = {
                     provider: $scope.config.provider,
-                    orgid: $scope.selectedOrg._id,
+                    orgid: $scope.config.orgid,
                     timeZone: $scope.model.selectedTimeZone.id,
                     yardi: {
                         folder: $scope.config.identity
                     }
                 };
 
-                if ($scope.edit) {
+                if ($scope.isEdit) {
                     obj.id = config.id;
-                    obj.isActive = config.isActive;
+                    obj.isActive =  $scope.model.selectedActiveStatus === "1" ? true: false; 
 
                     ngProgress.start();
                     $importService.update(obj).then(function(response) {
                             var ret = _.cloneDeep(response.data);
-                            ret.org = $scope.selectedOrg.name;
+                            ret.org = $scope.config.orgName;
                             $uibModalInstance.close(ret);
                             ngProgress.reset();
                         },
@@ -75,7 +73,7 @@ define([
 
                     $importService.create(obj).then(function(response) {
                         var ret = _.cloneDeep(response.data);
-                        ret.org = $scope.selectedOrg.name;
+                        ret.org = $scope.config.orgName;
                         $uibModalInstance.close(ret);
                         ngProgress.reset();
                     },
