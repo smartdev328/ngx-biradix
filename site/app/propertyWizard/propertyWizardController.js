@@ -22,18 +22,21 @@ define([
                     $scope.$watch("property", function (newValue, oldValue) {
                         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
                             $scope.changed = true;
+                            $rootScope.globalConfirm = "You have made changes that have not been saved. Are you sure you want to leave without saving?";
                         }
                     }, true);
 
                     $scope.$watch("communityItems", function (newValue, oldValue) {
                         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
                             $scope.changed = true;
+                            $rootScope.globalConfirm = "You have made changes that have not been saved. Are you sure you want to leave without saving?";
                         }
                     }, true);
 
                     $scope.$watch("locationItems", function (newValue, oldValue) {
                         if (JSON.stringify(newValue) != JSON.stringify(oldValue)) {
                             $scope.changed = true;
+                            $rootScope.globalConfirm = "You have made changes that have not been saved. Are you sure you want to leave without saving?";
                         }
                     }, true);
                 }, 1000);
