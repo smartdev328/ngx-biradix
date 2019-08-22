@@ -113,73 +113,72 @@
   </tbody>
 </table>
 </div>
-<table class="new-table border-table">
-  <thead>
-    <tr>
-      <th width="9"></th>
-      <th>Type</th>
-      <th class="hidden-xs">Desc.</th>
-      <th class="hidden-xs text-right"><span>Units<span style="width:17px;height: 17px;float:right;"></span></span></th>
-      <th class="hidden-xs text-right"><span class="pr-20">Sqft</span></th>
-      <th>
-        <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">BI:Radix</strong><br class="hidden-xs">
-        <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
-      </th>
-      <th>
-        <img src="/images/organizations/yardi-small.png" style="width:12px;margin-right: 5px;"><strong class="hidden-xs">Yardi</strong><br class="hidden-xs">
-        <i class="grey-txt">Updated: {{showDate(pms.dates.date)}}</i><br>
-      </th>
-      <th width="9"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="row in originalSurvey.floorplans | orderBy : getOrder()">
-      <td width="9"></td>
-      <td>{{row.bedrooms}}x{{row.bathrooms}}
-        <div class="visible-xs tiny"><strong>{{row.units}} Units</strong></div>
-        <div class="visible-xs tiny"><strong>{{row.sqft}} Sqft</strong></div>
-      </td>
-      <td class="hidden-xs">{{row.description}}</td>
-      <td class="hidden-xs text-right">
-        <div class="clearfix">
-        <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 3px;margin:0;"
-           ng-if="pms.mappedFloorplans[row.id].units !== row.units"
-           popover-trigger="'mouseenter'"
-           popover-placement="right"
-           popover-class="popover-small"
-           uib-popover-html="'Unit count in BI:Radix <strong>({{row.units}})</strong> not matching total units mapped from Yardi <strong>({{pms.mappedFloorplans[row.id].units}})</strong>'"
-        ></span><span ng-if="pms.mappedFloorplans[row.id].units === row.units" class="pull-right" style="width:17px;height: 17px;"></span>{{row.units}}
-        </div>
-      </td>
-      <td class="hidden-xs text-right"><span class="pr-20">{{row.sqft}}</span></td>
-      <td>
-        <label ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX" id="B-{{row.id}}"> ${{row.rent | number: 0}}</label>
-        <div ng-if="row.rent === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
-      </td>
-      <td>
-        <label ng-if="pms.mappedFloorplans[row.id]"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
-        <label ng-if="!pms.mappedFloorplans[row.id]"><input type="radio" value="BIRADIX" disabled="disabled"> -</label>
-        <i class="fa fa-question-circle link ml-3"
-           popover-trigger="'mouseenter'"
-           popover-placement="top"
-           uib-popover-html="'View Floor Plan Pricing Breakdown'"
-           popover-append-to-body="true"
-           ng-click="pmsFloorplan(pms.mappedFloorplans[row.id]);"
-           ng-if="pms.mappedFloorplans[row.id] && $root.me.permissions.indexOf('Admin') > -1"
-        ></i>
-        <span class="fa fa-exclamation-triangle warning label-side-icon" style="padding-top: 3px;margin:0;"
-              ng-if="pms.mappedFloorplans[row.id] && pms.mappedFloorplans[row.id].priceWarning"
-              popover-trigger="'mouseenter'"
-              popover-placement="left"
-              popover-class="popover-small"
-              popover-append-to-body="true"
-              uib-popover-html="pms.mappedFloorplans[row.id].priceWarning"
-        ></span>
-      </td>
-      <td width="9"></td>
-    </tr>
-  </tbody>
-</table>
+<div class="propertySurvey pmsTable" ng-class="{'allShown': allShown}">
+  <table class="new-table" fixed-table-pms>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th class="hidden-xs">Desc.</th>
+        <th class="hidden-xs text-right"><span>Units<span style="width:17px;height: 17px;float:right;"></span></span></th>
+        <th class="hidden-xs text-right"><span class="pr-20">Sqft</span></th>
+        <th>
+          <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">BI:Radix</strong><br class="hidden-xs">
+          <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
+        </th>
+        <th>
+          <img src="/images/organizations/yardi-small.png" style="width:12px;margin-right: 5px;"><strong class="hidden-xs">Yardi</strong><br class="hidden-xs">
+          <i class="grey-txt">Updated: {{showDate(pms.dates.date)}}</i><br>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="scrollableTable">
+      <tr ng-repeat="row in originalSurvey.floorplans | orderBy : getOrder()">
+        <td>{{row.bedrooms}}x{{row.bathrooms}}
+          <div class="visible-xs tiny"><strong>{{row.units}} Units</strong></div>
+          <div class="visible-xs tiny"><strong>{{row.sqft}} Sqft</strong></div>
+        </td>
+        <td class="hidden-xs">{{row.description}}</td>
+        <td class="hidden-xs text-right">
+          <div class="clearfix">
+          <span class="fa fa-exclamation-triangle warning label-side-icon pull-right" style="padding-top: 3px;margin:0;"
+             ng-if="pms.mappedFloorplans[row.id].units !== row.units"
+             popover-trigger="'mouseenter'"
+             popover-placement="right"
+             popover-class="popover-small"
+             uib-popover-html="'Unit count in BI:Radix <strong>({{row.units}})</strong> not matching total units mapped from Yardi <strong>({{pms.mappedFloorplans[row.id].units}})</strong>'"
+          ></span><span ng-if="pms.mappedFloorplans[row.id].units === row.units" class="pull-right" style="width:17px;height: 17px;"></span>{{row.units}}
+          </div>
+        </td>
+        <td class="hidden-xs text-right"><span class="pr-20">{{row.sqft}}</span></td>
+        <td>
+          <label ng-if="row.rent !== ''"><input type="radio" ng-model="pms.values.rent[row.id]" value="BIRADIX" id="B-{{row.id}}"> ${{row.rent | number: 0}}</label>
+          <div ng-if="row.rent === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
+        </td>
+        <td>
+          <label ng-if="pms.mappedFloorplans[row.id]"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
+          <label ng-if="!pms.mappedFloorplans[row.id]"><input type="radio" value="BIRADIX" disabled="disabled"> -</label>
+          <i class="fa fa-question-circle link ml-3"
+             popover-trigger="'mouseenter'"
+             popover-placement="top"
+             uib-popover-html="'View Floor Plan Pricing Breakdown'"
+             popover-append-to-body="true"
+             ng-click="pmsFloorplan(pms.mappedFloorplans[row.id]);"
+             ng-if="pms.mappedFloorplans[row.id] && $root.me.permissions.indexOf('Admin') > -1"
+          ></i>
+          <span class="fa fa-exclamation-triangle warning label-side-icon" style="padding-top: 3px;margin:0;"
+                ng-if="pms.mappedFloorplans[row.id] && pms.mappedFloorplans[row.id].priceWarning"
+                popover-trigger="'mouseenter'"
+                popover-placement="left"
+                popover-class="popover-small"
+                popover-append-to-body="true"
+                uib-popover-html="pms.mappedFloorplans[row.id].priceWarning"
+          ></span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<button type="button" ng-hide="allShown" class="showAllFpButton mb-20" ng-click="showAllFP()">Show all</button>
 <div class="row" style="padding:20px">
   <div class="col-xs-offset-2 col-xs-8 text-center">
       <a class="btn btn-warning contact-submit" ng-click="pmsNext()">Next</a>

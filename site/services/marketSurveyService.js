@@ -257,7 +257,7 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                             }
 
                             if (!responseObj.editMode && pmsFp.priceWarning && fp.rent) {
-                                responseObj.pms.values.rent[fp.id] = "BIRADIX";
+                                responseObj.pms.values.rent[fp.id] = "YARDI";
                             }
                         } else {
                             responseObj.pms.values.rent[fp.id] = "BIRADIX";

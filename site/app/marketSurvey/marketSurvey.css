@@ -361,6 +361,10 @@
     height: 350px;
 }
 
+.propertySurvey.pmsTable table {
+  height: 220px;
+} 
+
 .propertySurvey.allShown table {
     height: auto;
     overflow-y: hidden;
@@ -438,6 +442,10 @@
 
   .propertySurvey {
       margin: 0 -14px;
+  }
+
+  .propertySurvey.pmsTable {
+      margin: 0;
   }
 
   .market-survey .propertySurvey .survey-value {
