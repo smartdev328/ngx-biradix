@@ -1144,6 +1144,10 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             $scope.allShown = !$scope.allShown;
         }
 
+        $scope.showAllPms = function() {
+            $scope.allShownPms = !$scope.allShownPms;
+        }
+
         $scope.incorrectFloorplans = function () {
             require([
                 '/app/marketSurvey/marketSurveyIncorrectFloorplansController.js'

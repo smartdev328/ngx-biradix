@@ -365,7 +365,7 @@
   height: 395px;
 } 
 
-.propertySurvey.allShown table {
+.propertySurvey.allShown table, .propertySurvey.allShownPms table {
     height: auto;
     overflow-y: hidden;
 }
