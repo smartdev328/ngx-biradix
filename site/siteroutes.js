@@ -114,5 +114,13 @@ module.exports = (function() {
         res.redirect('/#/login?r=' + encodeURIComponent(req.query.r) + "&t=");
    });
 
+  ui.get("/oauth2/authorize", (req, res) => {
+    let data = JSON.stringify(req.query);
+    let buff = new Buffer(data);
+    let base64data = buff.toString('base64');
+
+    res.redirect('/#/sso?o=' + base64data);
+  });
+  
     return ui;
 })();

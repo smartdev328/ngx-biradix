@@ -4,7 +4,9 @@ define([
 ], function (app) {
     var pageViewType = 'InitialPageView';
 
-     app.controller('dashboardController', ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', "$http", function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService,$http) {
+     app.controller('dashboardController',
+       ['$scope','$rootScope','$location','$propertyService', '$authService', '$cookieSettingsService','$cookies','$progressService','ngProgress','$auditService','toastr','$stateParams','$reportingService','$urlService', "$exportService", "$http", "$identityProviderService",
+       function ($scope,$rootScope,$location,$propertyService,$authService,$cookieSettingsService,$cookies,$progressService,ngProgress,$auditService,toastr,$stateParams,$reportingService,$urlService,$exportService,$http, $identityProviderService) {
         if (performance && performance.now) {
             var timeStart = performance.now();
         }
@@ -143,6 +145,15 @@ define([
         var me = $rootScope.$watch("me", function(x) {
             if ($rootScope.me) {
                 me();
+
+                if ($stateParams.o) {
+                  $identityProviderService.getCallbackUrl($stateParams.o).then(function(response) {
+                    location.href = response.data.uri;
+                  }, function(err) {
+                    toastr.error("Unable to login into your application: " + err.data);
+                  });
+                  return;
+                }
 
                 $scope.settings = $reportingService.getDashboardSettings($rootScope.me, $(window).width());
                 $scope.showProfile = $reportingService.getInfoRows($rootScope.me);
