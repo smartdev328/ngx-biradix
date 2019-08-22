@@ -9,6 +9,7 @@ define([
             if (maintenance === true && $location.path().indexOf('maintenance') === -1) {
                 return $location.path("/maintenance")
             }
+            $scope.o = $stateParams.o;
 
             window.setTimeout(function() {
                 window.document.title = "Log In | BI:Radix";
@@ -76,7 +77,7 @@ define([
 
             $scope.newUser = function() {
                 $cookies.remove("email");
-                $location.path("/sso").search("n", 1).search("e", null);
+                $location.path("/sso").search("n", 1).search("e", null).search("o", $scope.o);
             }
 
 

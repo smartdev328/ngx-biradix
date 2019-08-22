@@ -17,6 +17,9 @@ define([
             if ($stateParams.e) {
                 $scope.user.email = $stateParams.e;
             }
+
+            $scope.o = $stateParams.o;
+
             $scope.btnSubmit = function() {
                 $scope.localLoading = true;
                 $contactService.send($scope.user).then(function (resp) {
@@ -26,7 +29,7 @@ define([
                             toastr.error(errors);
                         }
                         else {
-                            $location.path('/contact/thankyou?e=' + $scope.user.email)
+                            $location.path('/contact/thankyou?e=' + $scope.user.email + "&o=" + $scope.o)
                         }
                     },
                     function(errors) {

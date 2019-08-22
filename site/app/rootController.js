@@ -61,9 +61,12 @@ angular.module("biradix.global").controller("rootController",
         }
 
         $scope.updateLogos = function(org) {
+          if (org) {
             $rootScope.logoBig = "/images/organizations/" + org.logoBig;
             $rootScope.logoSmall = "/images/organizations/" + org.logoSmall;
             $("#favicon").attr("href", "/images/organizations/" + org.logoSmall);
+          }
+
             window.setTimeout(function() {
                 $(".loading").hide();
                 if ($rootScope.loggedIn) {
@@ -273,19 +276,20 @@ angular.module("biradix.global").controller("rootController",
         $rootScope.updateLogos = function() {
             var org;
 
-            if ($rootScope.me.orgs.length == 1) {
+            if ($rootScope.me) {
+              if ($rootScope.me.orgs.length == 1) {
                 org = $rootScope.me.orgs[0];
-            } else {
-                $rootScope.me.orgs.forEach(function(x) {
-                    if (x.subdomain.toLowerCase() == window.location.hostname.toLowerCase()) {
-                        org = x;
-                    }
+              } else {
+                $rootScope.me.orgs.forEach(function (x) {
+                  if (x.subdomain.toLowerCase() == window.location.hostname.toLowerCase()) {
+                    org = x;
+                  }
                 })
 
                 if (!org) {
-                    org = $rootScope.me.orgs[0];
+                  org = $rootScope.me.orgs[0];
                 }
-
+              }
             }
 
             $scope.updateLogos(org);
@@ -392,7 +396,8 @@ angular.module("biradix.global").controller("rootController",
         $rootScope.logoff = function() {
             $rootScope.loggedIn = false;
             $cookies.remove('token');
-            window.location.href = "/";
+            $location.path("/login");
+            $rootScope.updateLogos();
         }
 
         $rootScope.toggleUnlniked = function() {
