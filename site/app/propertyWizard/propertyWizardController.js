@@ -57,6 +57,7 @@ define([
 
                 if ($scope.changed) {
                     $dialog.confirm('You have made changes that have not been saved. Are you sure you want to close without saving?', function () {
+                        $rootScope.globalConfirm = "";
                         $uibModalInstance.dismiss('cancel');
                     }, function () {
                     });
