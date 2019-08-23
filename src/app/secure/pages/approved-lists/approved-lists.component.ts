@@ -72,6 +72,7 @@ export class ApprovedListsComponent implements OnInit {
   }
 
   async confirmDelete(item: IApprovedListItemRead) {
+    const currentPage = this.paginator.pageIndex;
     const dialogRef = this.dialog.open(ConfirmComponent, {
       data: {htmlConfirm: `Are you sure you want to delete <b>${this.fields[item.type]} - ${item.value}</b>?`}
     });
@@ -87,6 +88,7 @@ export class ApprovedListsComponent implements OnInit {
         this.approvedLists.splice(index, 1);
         this.dataSource.data = this.approvedLists;
         this.filterBySearch();
+        this.paginator.pageIndex = currentPage;
       }
     });
   }
