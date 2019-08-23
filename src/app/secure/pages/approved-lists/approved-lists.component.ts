@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort} from '@angular/material';
+import {MatDialog, MatPaginator, MatSnackBar, MatSort} from '@angular/material';
 import {MatTableDataSource} from '@angular/material/table';
 import {ApprovedListsService, PerformanceService, SiteService} from "../../../core/services";
 import {APPROVED_LIST_TYPE, APPROVED_LIST_LABELS, IApprovedListItemRead} from "../../../core/models/approvedLists";
+import {ConfirmComponent} from "../../../shared/components";
 
 @Component({
   selector: 'app-approved-lists',
@@ -21,14 +22,16 @@ export class ApprovedListsComponent implements OnInit {
   isIEorEdge: boolean = this.siteService.isIEorEdge();
   numberOfResults: number = -1;
   loading: boolean = true;
-
+  approvedLists: IApprovedListItemRead[];
   displayedColumns: string[] = ['value', 'type', 'searchable', 'delete'];
 
   dataSource: MatTableDataSource<IApprovedListItemRead>;
 
   constructor(private approvedListsService: ApprovedListsService,
               private performanceService: PerformanceService,
-              private siteService: SiteService) {
+              private siteService: SiteService,
+              private snackBar: MatSnackBar,
+              public dialog: MatDialog) {
   }
 
   filterBySearch() {
@@ -56,15 +59,30 @@ export class ApprovedListsComponent implements OnInit {
 
   async run() {
     this.loading = true;
-    const approvedLists: IApprovedListItemRead[] = await this.approvedListsService.searchApproved({
+    this.approvedLists = await this.approvedListsService.searchApproved({
       limit: 10000,
       type: this.typeFilter,
       searchableOnly: false
     });
 
-    this.dataSource.data = approvedLists;
+    this.dataSource.data = this.approvedLists;
     this.filterBySearch();
     this.loading = false;
   }
 
+  confirmDelete(item: IApprovedListItemRead) {
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: {htmlConfirm: `Are you sure you want to delete <b>${this.fields[item.type]} - ${item.value}</b>?`}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.snackBar.open(`${this.fields[item.type]} - ${item.value} removed successfully.`, 'X', {panelClass: ["snack-bar-success"]});
+        const index: number = this.approvedLists.findIndex(d => d === item);
+        this.approvedLists.splice(index, 1);
+        this.dataSource.data = this.approvedLists;
+        this.filterBySearch();
+      }
+    });
+  }
 }

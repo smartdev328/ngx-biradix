@@ -51,7 +51,7 @@
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let row" class="text-center">
-            <button mat-icon-button aria-label="Delete" class="red">
+            <button mat-icon-button aria-label="Delete" class="red" (click)="confirmDelete(row)">
               <fa-icon icon="trash-alt"></fa-icon>
             </button>
           </td>

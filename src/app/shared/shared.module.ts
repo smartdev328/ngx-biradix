@@ -23,7 +23,7 @@ import {
   MatSortModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule
 } from "@angular/material";
-import {LoaderComponent} from "./components";
+import {ConfirmComponent, LoaderComponent} from "./components";
 import {UserIdleModule} from "angular-user-idle";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MdePopoverModule} from "@material-extended/mde";
@@ -84,7 +84,8 @@ export const MaterialModules = [
     FontAwesomeModule,
     ...MaterialModules
   ],
-  declarations: [ LoaderComponent, HighlightPipe, FocusDirective ],
+  declarations: [ LoaderComponent, HighlightPipe, FocusDirective, ConfirmComponent ],
+  entryComponents: [ConfirmComponent],
   exports: [
     CommonModule,
     FormsModule,
@@ -99,6 +100,7 @@ export const MaterialModules = [
     HighlightPipe,
     MdePopoverModule,
     FontAwesomeModule,
+    ConfirmComponent,
     ...MaterialModules
   ],
   providers: [
