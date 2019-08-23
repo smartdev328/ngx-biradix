@@ -4,6 +4,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {ApprovedListsService, PerformanceService, SiteService} from "../../../core/services";
 import {APPROVED_LIST_TYPE, APPROVED_LIST_LABELS, IApprovedListItemRead} from "../../../core/models/approvedLists";
 import {ConfirmComponent} from "../../../shared/components";
+import {HtmlSnackbarComponent} from "../../../shared/components/html-snackbar/html-snackbar.component";
 
 @Component({
   selector: 'app-approved-lists',
@@ -70,14 +71,18 @@ export class ApprovedListsComponent implements OnInit {
     this.loading = false;
   }
 
-  confirmDelete(item: IApprovedListItemRead) {
+  async confirmDelete(item: IApprovedListItemRead) {
     const dialogRef = this.dialog.open(ConfirmComponent, {
       data: {htmlConfirm: `Are you sure you want to delete <b>${this.fields[item.type]} - ${item.value}</b>?`}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async result => {
       if (result) {
-        this.snackBar.open(`${this.fields[item.type]} - ${item.value} removed successfully.`, 'X', {panelClass: ["snack-bar-success"]});
+        await this.approvedListsService.deleteApproved(item.type, item.value);
+        this.snackBar.openFromComponent(HtmlSnackbarComponent, {
+          panelClass: ["snack-bar-success"],
+          data: `<b>${this.fields[item.type]} - ${item.value}</b> removed successfully.`,
+        });
         const index: number = this.approvedLists.findIndex(d => d === item);
         this.approvedLists.splice(index, 1);
         this.dataSource.data = this.approvedLists;

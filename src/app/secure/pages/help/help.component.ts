@@ -7,6 +7,7 @@ import {FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/f
 import {MatDialog, MatSnackBar} from "@angular/material";
 import {ILegacyResponse} from "../../../core/models/common";
 import {HelpTrainingComponent} from "./help.training.component";
+import {HtmlSnackbarComponent} from "../../../shared/components/html-snackbar/html-snackbar.component";
 
 @Component({
   templateUrl: './help.component.html',
@@ -86,6 +87,7 @@ export class HelpComponent  {
     }
 
     this.sending = false;
+    response.success = false;
 
     if (response.success) {
       // Reset data
@@ -95,9 +97,15 @@ export class HelpComponent  {
       Object.keys(this.form.controls).forEach(key => {
         this.form.get(key).setErrors(null);
       });
-      this.snackBar.open("Thank you for your submission. Someone will contact you shortly.", 'X', {panelClass: ["snack-bar-success"]});
+      this.snackBar.openFromComponent(HtmlSnackbarComponent, {
+        panelClass: ["snack-bar-success"],
+        data: `Thank you for your submission. Someone will contact you shortly.`,
+      });
     } else {
-      this.snackBar.open(response.errors.map((x) => x.msg).join("\r\n"), 'X', {panelClass: ["snack-bar-error"]});
+      this.snackBar.openFromComponent(HtmlSnackbarComponent, {
+        panelClass: ["snack-bar-error"],
+        data: response.errors.map((x) => x.msg).join("<br>"),
+      });
     }
   }
 }

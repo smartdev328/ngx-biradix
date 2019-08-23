@@ -59,4 +59,28 @@ export class ApprovedListsService {
       return null;
     }
   }
+
+  async deleteApproved (type: APPROVED_LIST_TYPE, value: string) : Promise<IApprovedListItemRead> {
+    const apiUrl = this.siteService.apiUrl;
+    const authHeader = this.httpService.getAuthHeader();
+
+    const gql = {
+      query: `mutation ApprovedListItemDelete($value: String, $type: ApprovedListType) {
+        ApprovedListItemDelete(value: $value, type: $type) {
+            id
+            value
+            type
+            searchable
+          }
+      }`,
+      variables: {value, type},
+    };
+    try {
+      const searchResponse: any = await this.http.post(apiUrl + "/graphql?bust=" + (new Date()).getTime(), gql, {headers: authHeader}).toPromise();
+      return searchResponse.data.ApprovedListItemDelete;
+    } catch(err) {
+      this.siteService.handleApiError();
+      return null;
+    }
+  }
 }

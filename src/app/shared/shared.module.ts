@@ -46,6 +46,7 @@ import {
 import {RaygunErrorHandler} from "./providers/raygun.provider";
 import {HighlightPipe} from "./pipes";
 import {FocusDirective} from "./directives/focus.directive";
+import {HtmlSnackbarComponent} from "./components/html-snackbar/html-snackbar.component";
 
 export const MaterialModules = [
   MatProgressSpinnerModule,
@@ -84,8 +85,8 @@ export const MaterialModules = [
     FontAwesomeModule,
     ...MaterialModules
   ],
-  declarations: [ LoaderComponent, HighlightPipe, FocusDirective, ConfirmComponent ],
-  entryComponents: [ConfirmComponent],
+  declarations: [ LoaderComponent, HighlightPipe, FocusDirective, ConfirmComponent, HtmlSnackbarComponent ],
+  entryComponents: [ConfirmComponent, HtmlSnackbarComponent],
   exports: [
     CommonModule,
     FormsModule,
@@ -101,6 +102,7 @@ export const MaterialModules = [
     MdePopoverModule,
     FontAwesomeModule,
     ConfirmComponent,
+    HtmlSnackbarComponent,
     ...MaterialModules
   ],
   providers: [
