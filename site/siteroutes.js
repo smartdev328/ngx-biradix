@@ -109,6 +109,16 @@ module.exports = (function() {
   });
 
   ui.get("/sso", function(req, res) {
+    if (req.query.r === "undefined") {
+      req.query.r = "";
+    }
+    req.query.r = req.query.r || "";
+
+    if (req.query.o === "undefined") {
+      req.query.o = "";
+    }
+    req.query.o = req.query.o || "";
+
     jwt.verify(req.query.token, settings.SECRET, function(err, decoded) {
       if (err) {
         res.redirect('/');
