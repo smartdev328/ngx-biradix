@@ -121,10 +121,12 @@ module.exports = (function() {
 
     jwt.verify(req.query.token, settings.SECRET, function(err, decoded) {
       if (err) {
+        console.error(err);
         res.redirect('/');
       } else {
+        console.log("SSO Success token");
         res.cookie('token', decoded.data);
-        res.cookie('tokenDate', "");
+        res.cookie('tokenDate', new Date());
         res.redirect('/#/dashboard?r=' + encodeURIComponent(req.query.r) + "&o=" + encodeURIComponent(req.query.o));
       }
     });
