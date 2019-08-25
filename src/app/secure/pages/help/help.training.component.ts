@@ -6,6 +6,7 @@ import {IProperty} from "../../../core/models/property";
 import {AuthService, ContactService, PerformanceService, PropertyService} from "../../../core/services";
 import {IBookTrainingContact} from "../../../core/models/contact";
 import {ILegacyResponse} from "../../../core/models/common";
+import {HtmlSnackbarComponent} from "../../../shared/components/html-snackbar/html-snackbar.component";
 
 @Component({
   selector: 'help-training-component',
@@ -115,10 +116,16 @@ export class HelpTrainingComponent{
       Object.keys(this.form.controls).forEach(key => {
         this.form.get(key).setErrors(null);
       });
-      this.snackBar.open("Thank you for your submission. Someone will contact you shortly.", 'X', {panelClass: ["snack-bar-success"]});
+      this.snackBar.openFromComponent(HtmlSnackbarComponent, {
+        panelClass: ["snack-bar-success"],
+        data: `Thank you for your submission. Someone will contact you shortly.`,
+      });
       this.dialogRef.close();
     } else {
-      this.snackBar.open(response.errors.map((x) => x.msg).join("\r\n"), 'X', {panelClass: ["snack-bar-error"]});
+      this.snackBar.openFromComponent(HtmlSnackbarComponent, {
+        panelClass: ["snack-bar-error"],
+        data: response.errors.map((x) => x.msg).join("<br>"),
+      });
     }
   }
 }

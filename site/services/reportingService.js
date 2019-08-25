@@ -46,16 +46,6 @@ angular.module("biradix.global").factory("$reportingService", ["$http","$cookies
             return d1;
         };
 
-      fac.initiateReportingPdf = function(url) {
-        return $http.get(url,
-          {
-          headers: {"Authorization": "Bearer " + $cookies.get("token") }}).success(function (response) {
-          return response;
-        }).error(function (response) {
-          return response;
-        });
-      }
-
         fac.reports = function(compids, subjectid, reports, options) {
             return $http.post(gAPI + "/api/1.0/reporting/" + subjectid + "?bust=" + (new Date()).getTime(), {
                 compids: compids,

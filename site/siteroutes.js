@@ -97,7 +97,7 @@ module.exports = (function() {
     }
   });
 
-  ui.get('/v2(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?(/[A-Za-z0-9]+)?', function (req, res) {
+  ui.get('/v2(/[A-Za-z0-9-]+)?(/[A-Za-z0-9-]+)?(/[A-Za-z0-9-]+)?', function (req, res) {
     if (req.headers["x-forwarded-proto"] !== "https"
       && req.get("host").indexOf(".com") > -1
     ) {
@@ -108,17 +108,17 @@ module.exports = (function() {
     res.sendFile(path.join(__dirname + '/../dist/biradix-platform/index.html'));
   });
 
-    ui.get("/sso", function(req, res) {
-      jwt.verify(req.query.token, settings.SECRET, function(err, decoded) {
-        if (err) {
-          res.redirect('/');
-        } else {
-          res.cookie('token', decoded.data);
-          res.cookie('tokenDate', "");
-          res.redirect('/#/login?r=' + encodeURIComponent(req.query.r) + "&t=");
-        }
-      });
-   });
+  ui.get("/sso", function(req, res) {
+    jwt.verify(req.query.token, settings.SECRET, function(err, decoded) {
+      if (err) {
+        res.redirect('/');
+      } else {
+        res.cookie('token', decoded.data);
+        res.cookie('tokenDate', "");
+        res.redirect('/#/dashboard?r=' + encodeURIComponent(req.query.r) + "&o=" + encodeURIComponent(req.query.o));
+      }
+    });
+  });
 
   ui.get("/oauth2/authorize", (req, res) => {
     let data = JSON.stringify(req.query);

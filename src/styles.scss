@@ -1,95 +1,31 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$biradix-platform-primary: mat-palette($mat-indigo);
+$biradix-platform-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$biradix-platform-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$biradix-platform-theme: mat-light-theme($biradix-platform-primary, $biradix-platform-accent, $biradix-platform-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($biradix-platform-theme);
+
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "./global";
-
-html, body { height: 100%; }
-body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #f0f0f0}
-a {
-  color: #337ab7;
-  /*font-size: 90%;*/
-  text-decoration: none;
-}
-
-.snack-bar-error {
-  background-image: none !important;
-  background-color: #ffe1e1;
-  border: 1px solid $red-color !important;
-  color: $red-color;
-  font-size: 13px;
-  font-weight: 400;
-  white-space: pre-wrap;
-}
-
-.snack-bar-success {
-  background-image: none !important;
-  background-color: #e8f8ed;
-  border: 1px solid #70b760 !important;
-  color: #70b760;
-  font-size: 13px;
-  font-weight: 400;
-  white-space: pre-wrap;
-}
-
-.snack-bar-warning {
-  background-image: none !important;
-  background-color: #ffe5cb;
-  border: 1px solid #f90 !important;
-  color: #f90;
-  font-size: 13px;
-  font-weight: 400;
-  white-space: pre-wrap
-}
-
-.mat-card-header-text {
-  margin: 0 !important;
-}
-
-
-.mat-raised-button.mat-primary {
-  background-color: #1E90FF;
-}
-
-.mat-card-header {
-   border-bottom: 1px solid #eeeeee;
-   margin-bottom: 15px;
- }
-
-.fill-space {
-  flex: 1 1 auto;
-}
-
-.mat-checkbox-layout {
-  white-space: normal !important;
-}
-
-.mat-radio-label {
-  white-space: normal !important;
-}
-
-
-.mat-menu-item {
-  line-height: 30px !important;
-  height: 30px !important;
-}
-
-.mat-calendar-body-cell:not(.mat-calendar-body-disabled) .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
-  color: $dark-blue-color;
-  font-weight: bold;
-}
-
-.dialog-title-bar {
-  border-bottom: 1px solid $light-border-color;
-  margin-bottom: 15px;
-}
-
-.dialog-title-bar .mat-dialog-title {
-  margin: 5px 0 5px 0;
-}
-
-.red {
-  color: $red-color;
-}
-
-.mat-menu-panel {
-  min-height: inherit !important;
-}

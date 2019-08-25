@@ -58,7 +58,6 @@ define([
                 owner: false,
                 lastUpdated: false,
                 _id: false,
-                pms: false,
             };
         }
 
@@ -105,7 +104,7 @@ define([
                 var compids = _.remove(_.pluck(row.comps, "id"), function(p) { return p.toString() != row._id.toString()});
 
                 $propertyService.search({
-                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner needsSurvey survey.dateByOwner custom pms.importProvider", ids: compids
+                    limit: 10000, permission: 'PropertyView', select:"_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner needsSurvey survey.dateByOwner custom", ids: compids
                     , skipAmenities: true
                 }).then(function (response) {
                     $propertyService.search({
@@ -174,7 +173,7 @@ define([
             $propertyService.search({
                 limit: 10000,
                 permission: "PropertyManage",
-                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner comps.id comps.excluded comps.orderNumber needsSurvey custom pms.importProvider",
+                select: "_id name address city state zip active date totalUnits survey.occupancy survey.ner survey.date orgid orgid_owner comps.id comps.excluded comps.orderNumber needsSurvey custom",
                 skipAmenities: true,
                 hideCustomComps: true,
             }).then(function(response) {
@@ -378,9 +377,6 @@ define([
             if ($scope.show._id) {
                 header.push("PropertyID");
             }
-            if ($scope.show.pms) {
-                header.push("PMS Integration");
-            }
             content.push(header);
             $scope.filtered.forEach(function (r) {
                 var row = [];
@@ -425,9 +421,6 @@ define([
                 }
                 if ($scope.show._id) {
                     row.push(r["_id"] || "");
-                }
-                if ($scope.show.pms) {
-                    row.push(r['pms'] || '');
                 }
 
                 content.push(row);

@@ -17,9 +17,13 @@ import {
   MatAutocompleteModule,
   MatBadgeModule,
   MatSnackBarModule,
+  MatSelectModule,
+  MatTableModule,
+  MatPaginatorModule, 
+  MatSortModule,
   MAT_SNACK_BAR_DEFAULT_OPTIONS, MatDialogModule, MatDatepickerModule, MatNativeDateModule, MatCheckboxModule
 } from "@angular/material";
-import {LoaderComponent} from "./components";
+import {ConfirmComponent, LoaderComponent} from "./components";
 import {UserIdleModule} from "angular-user-idle";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MdePopoverModule} from "@material-extended/mde";
@@ -29,15 +33,20 @@ import {
   faBuilding,
   faChartBar,
   faEyeSlash,
-  faHistory, faPowerOff, faQuestion,
+  faHistory, 
+  faPowerOff, 
+  faQuestion,
+  faCheck,
   faUser,
   faUsers,
   faWrench,
+  faTrashAlt,
   faTachometerAlt, faCaretDown, faSearch, faBars, faTimes, faBell
 } from "@fortawesome/free-solid-svg-icons";
 import {RaygunErrorHandler} from "./providers/raygun.provider";
 import {HighlightPipe} from "./pipes";
 import {FocusDirective} from "./directives/focus.directive";
+import {HtmlSnackbarComponent} from "./components/html-snackbar/html-snackbar.component";
 
 export const MaterialModules = [
   MatProgressSpinnerModule,
@@ -55,7 +64,11 @@ export const MaterialModules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatCheckboxModule,
-  MatIconModule
+  MatIconModule,
+  MatSelectModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
 ];
 
 @NgModule({
@@ -72,7 +85,8 @@ export const MaterialModules = [
     FontAwesomeModule,
     ...MaterialModules
   ],
-  declarations: [ LoaderComponent, HighlightPipe, FocusDirective ],
+  declarations: [ LoaderComponent, HighlightPipe, FocusDirective, ConfirmComponent, HtmlSnackbarComponent ],
+  entryComponents: [ConfirmComponent, HtmlSnackbarComponent],
   exports: [
     CommonModule,
     FormsModule,
@@ -87,6 +101,8 @@ export const MaterialModules = [
     HighlightPipe,
     MdePopoverModule,
     FontAwesomeModule,
+    ConfirmComponent,
+    HtmlSnackbarComponent,
     ...MaterialModules
   ],
   providers: [
@@ -113,10 +129,12 @@ export class SharedModule {
     library.add(faWrench);
     library.add(faPowerOff);
     library.add(faQuestion);
+    library.add(faCheck);
     library.add(faCaretDown);
     library.add(faSearch);
     library.add(faBars);
     library.add(faTimes);
     library.add(faBell);
+    library.add(faTrashAlt);
   }
 }

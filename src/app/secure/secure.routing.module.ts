@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SecureComponent, HelpComponent } from './pages';
+import { SecureComponent, HelpComponent, ApprovedListsComponent } from './pages';
 import {SecureAuthGuard} from "../core";
 
 const routes: Routes = [
-  {   path: 'secure', component: SecureComponent,
+  {   
+    path: 'secure', component: SecureComponent,
     children :[
       { path: '', redirectTo: '/', pathMatch: 'full'},
       { path: 'help', component: HelpComponent, data: {title: 'Help'}},
+      { path: 'approved-lists', component: ApprovedListsComponent, data: {title: 'Approved list'}},
       { path: '**', redirectTo: '/' }
     ], canActivate: [SecureAuthGuard]
   },

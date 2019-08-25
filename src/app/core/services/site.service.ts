@@ -41,6 +41,10 @@ export class SiteService {
     });
   }
 
+  isIEorEdge() {
+    return /trident|edge\//i.test(window.navigator.userAgent);
+  }
+
   handleApiError() {
     this.apiDown.next(true);
     this.snackBar.open("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page.", 'X', {panelClass: ["snack-bar-error"]});

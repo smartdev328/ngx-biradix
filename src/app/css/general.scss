@@ -1,0 +1,33 @@
+@import "../../global";
+  
+html, body { height: 100%; }
+body { margin: 0; font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: $light-grey-color;}
+
+.red {
+  color: $red-color;
+}
+
+.green {
+  color: $green-color;
+}
+
+.mat-card-header {
+  border-bottom: 1px solid $light-grey-color;
+  margin-bottom: 15px;
+}
+
+.mat-card-header-text {
+  margin: 0 !important;
+}
+
+.mat-menu-panel {
+  min-height: inherit !important;
+}
+
+.fill-space {
+  flex: 1 1 auto;
+}
+
+.text-center {
+  text-align: center;
+}

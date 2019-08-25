@@ -1,0 +1,12 @@
+
+@media (min-width: 800px) {
+  .table-container .mat-table-sticky:first-child {
+    border-right: inherit;
+  }
+}
+
+.table-container .mat-table-sticky:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width:150px;
+}
