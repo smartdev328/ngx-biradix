@@ -11,7 +11,7 @@
                 <i class="fa fa-download visible-xs-inline"></i> <span class="hidden-xs">Print/Export</span> <span class="caret" style="color:white !important;"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                <li><a href ng-click="print(false)"><i class="fa fa-print fa-fw"></i> Print</a></li>
+                <li><a href ng-click="pdf(false)"><i class="fa fa-print fa-fw"></i> Print</a></li>
                 <li><a href ng-click="pdf(false)"><i class="fa fa-file-pdf-o fa-fw" style="color:#ed110a"></i> Export PDF</a></li>
                 <li ng-if="owner && $root.me.permissions.indexOf('Hide/ExtendedProfile') == -1"><a href ng-click="excel()"><i class="fa fa-file-excel-o fa-fw" style="color:#32742a"></i> Export Excel</a></li>
                 <li ng-if="owner && $root.me.permissions.indexOf('Hide/ExtendedProfile') == -1"><a href ng-click="email()"><i class="fa fa-paper-plane fa-fw"></i> Email Property Data</a></li>
