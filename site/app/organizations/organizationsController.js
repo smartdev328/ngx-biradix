@@ -41,7 +41,7 @@ define([
                             Object.assign(pmsImport,{orgid: org._id});
                         }
                         $scope.results.push({
-                            id: org._id,
+                            _id: org._id,
                             name: org.name,  
                             settings: org.settings,
                             sso: org.sso,
@@ -175,7 +175,7 @@ define([
                 isActive: true,
                 provider: "YARDI",
                 timeZone: "America/Los_Angeles",
-                orgid: data.id,
+                orgid: data._id,
                 identity: "",
                 orgName: data.name
             };
