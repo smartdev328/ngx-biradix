@@ -175,7 +175,7 @@ define([
                 isActive: true,
                 provider: "YARDI",
                 timeZone: "America/Los_Angeles",
-                orgid: data.id,
+                orgid: data._id,
                 identity: "",
                 orgName: data.name
             };
