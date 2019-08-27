@@ -74,7 +74,7 @@ define([
                     var redirect_uri = gAPI + '/api/1.0/users/sso/azure';
 
                     var url = 'https://login.microsoftonline.com/common/oauth2/authorize?' +
-                      'client_id=' +  domainInfo.data.azureClientId +
+                      'client_id=' +  domainInfo.data.clientId +
                       '&response_type=code' +
                       '&redirect_uri=' + encodeURIComponent(redirect_uri) +
                       '&response_mode=form_post' +
