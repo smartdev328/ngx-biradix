@@ -69,28 +69,46 @@ define([
                   ui_domain = location.origin;
                 }
 
-                var redirect_uri = gAPI + '/api/1.0/users/sso/azure';
+                switch (domainInfo.data.provider) {
+                  case 'Azure':
+                    var redirect_uri = gAPI + '/api/1.0/users/sso/azure';
 
-                var url = 'https://login.microsoftonline.com/common/oauth2/authorize?' +
-                  'client_id=' +  domainInfo.data.azureClientId +
-                  '&response_type=code' +
-                  '&redirect_uri=' + encodeURIComponent(redirect_uri) +
-                  '&response_mode=form_post' +
-                  '&state=' + JSON.stringify(
-                    {
-                      email: $scope.email,
-                      redirect_uri: redirect_uri,
-                      ui_domain: ui_domain,
-                      r: $stateParams.r,
-                      o: $stateParams.o,
-                    }
-                  ) +
-                  '&login_hint=' + $scope.email;
+                    var url = 'https://login.microsoftonline.com/common/oauth2/authorize?' +
+                      'client_id=' +  domainInfo.data.azureClientId +
+                      '&response_type=code' +
+                      '&redirect_uri=' + encodeURIComponent(redirect_uri) +
+                      '&response_mode=form_post' +
+                      '&state=' + JSON.stringify(
+                        {
+                          email: $scope.email,
+                          redirect_uri: redirect_uri,
+                          ui_domain: ui_domain,
+                          r: $stateParams.r,
+                          o: $stateParams.o,
+                        }
+                      ) +
+                      '&login_hint=' + $scope.email;
+    
+                    location.href = url;
+                  break;
+                  case 'Okta':
+                    var redirect_uri = gAPI + '/api/1.0/users/sso/okta';
 
-                location.href = url;
+                    var url = domainInfo.data.clientUrl + '/oauth2/default/v1/authorize' +
+                    '?client_id=' +  domainInfo.data.clientId +
+                    '&login_hint=' + encodeURIComponent($scope.email) +
+                    '&redirect_uri=' + encodeURIComponent(redirect_uri) +
+                    '&response_mode=form_post' +
+                    '&response_type=code' +
+                    '&scope=openid' +
+                    '&state=' + encodeURIComponent($scope.email + '|' + redirect_uri + '|' + ui_domain + '|' + $stateParams.r + '|' + $stateParams.o);
+
+                    location.href = url;
+                  break;
+                }
               } else {
-                $cookies.put('host', domainInfo.data.domain, {expires : expireDate});
-                $scope.redirect(domainInfo.data.domain);
+                  $cookies.put('host', domainInfo.data.domain, {expires : expireDate});
+                  $scope.redirect(domainInfo.data.domain);
               }
             } else {
               toastr.error("Unable to locate your email address.");

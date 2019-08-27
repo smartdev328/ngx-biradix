@@ -29,6 +29,12 @@ define([
                     providerModel: organization.sso.provider,
                 };
 
+                if ($scope.ssoOrganizationModel.providerModel === 'Okta') {
+                    $scope.ssoOrganizationModel['clientId'] = organization.sso.clientId;
+                    $scope.ssoOrganizationModel['clientSecret'] = '.'.repeat(40);
+                    $scope.ssoOrganizationModel['clientUrl'] = organization.sso.clientUrl;
+                }
+
                 $scope.cancel = function () {
                     $uibModalInstance.dismiss('cancel');
                 };
@@ -93,10 +99,19 @@ define([
                             newUsers: $scope.ssoOrganizationModel.newUsers,
                             provider: $scope.ssoOrganizationModel.providerModel
                         }
+                        if (sso.provider === 'Okta') {
+                            sso['clientId'] = $scope.ssoOrganizationModel.clientId;
+                            sso['clientUrl'] = $scope.ssoOrganizationModel.clientUrl;
+                            
+                            if ($scope.ssoOrganizationModel.clientSecret !== '.'.repeat(40)) {
+                                sso['clientSecret'] = $scope.ssoOrganizationModel.clientSecret;
+                            }
+                        }
                         ngProgress.start();
                         $organizationsService.updateSSO(organization._id, sso).then(function (response) {
                             toastr.success('SSO Settings Updated Successfully');
                             ngProgress.complete();
+                            $uibModalInstance.dismiss();
                         }, function (response) {
                             toastr.error('Unable to update SSO settings. Please contact an administrator.');
                             ngProgress.complete();
@@ -113,6 +128,7 @@ define([
                         $userService.updateSSO({users: users}).then(function (response) {
                             toastr.success('SSO Settings Updated Successfully. ' + response.data.count + ' user(s) were updated.');
                             ngProgress.complete();
+                            $uibModalInstance.dismiss();
                         }, function (response) {
                             toastr.error('Unable to update SSO settings. Please contact an administrator.');
                             ngProgress.complete();
