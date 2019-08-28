@@ -9,15 +9,15 @@
 <div ng-if="ssoOrganizationModel.providerModel === 'Okta'">
     <div style="margin-top: 15px;">
         <label for="url">Client URL</label>
-        <input class="form-control input-sm" name="url" ng-model="ssoOrganizationModel.clientUrl" type="text" required />
+        <input autocomplete="off" class="form-control input-sm" name="url" ng-model="ssoOrganizationModel.clientUrl" type="text" required />
     </div>
     <div style="margin-top: 15px;">
         <label for="clientID">Client ID</label>
-        <input class="form-control input-sm" name="clientId" ng-model="ssoOrganizationModel.clientId" type="text" required />
+        <input autocomplete="off" class="form-control input-sm" name="clientId" ng-model="ssoOrganizationModel.clientId" type="text" required />
     </div>
     <div style="margin-top: 15px;">
         <label for="clientSecret">Client Secret</label>
-        <input class="form-control input-sm" name="clientSecret" ng-model="ssoOrganizationModel.clientSecret" type="password" required />
+        <input autocomplete="off" class="form-control input-sm" name="clientSecret" ng-model="ssoOrganizationModel.clientSecret" type="text" required />
     </div>
 </div>
 <br>

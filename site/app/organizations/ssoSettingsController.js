@@ -31,7 +31,7 @@ define([
 
                 if ($scope.ssoOrganizationModel.providerModel === 'Okta') {
                     $scope.ssoOrganizationModel['clientId'] = organization.sso.clientId;
-                    $scope.ssoOrganizationModel['clientSecret'] = '.'.repeat(40);
+                    $scope.ssoOrganizationModel['clientSecret'] = '*'.repeat(40);
                     $scope.ssoOrganizationModel['clientUrl'] = organization.sso.clientUrl;
                 }
 
@@ -103,7 +103,7 @@ define([
                             sso['clientId'] = $scope.ssoOrganizationModel.clientId;
                             sso['clientUrl'] = $scope.ssoOrganizationModel.clientUrl;
                             
-                            if ($scope.ssoOrganizationModel.clientSecret !== '.'.repeat(40)) {
+                            if ($scope.ssoOrganizationModel.clientSecret !== '*'.repeat(40)) {
                                 sso['clientSecret'] = $scope.ssoOrganizationModel.clientSecret;
                             }
                         }
