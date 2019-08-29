@@ -56,7 +56,7 @@ define([
         $scope.$watch('settings.nerScale', function(d) {
             if (!$scope.localLoading) return;
             $cookieSettingsService.saveNerScale($scope.settings.nerScale)
-            $scope.refreshGraphs();
+            $scope.refreshTableView();
         }, true);
 
         $scope.$watch('settings.daterange', function(d,old) {
@@ -72,7 +72,7 @@ define([
         $scope.$watch('settings.summary', function() {
             if (!$scope.localLoading) return;
             $cookieSettingsService.saveSummary($scope.settings.summary)
-            $scope.refreshGraphs();
+            $scope.refreshTableView();
         }, true);
 
         $scope.$watch('settings.totals', function() {
@@ -99,7 +99,7 @@ define([
              }, true);
 
 
-         $scope.refreshGraphs = function() {
+         $scope.refreshTableView = function() {
             if (!$scope.localLoading) return;
 
             if ($scope.bedroom) {
@@ -272,7 +272,7 @@ define([
                         start: $scope.settings.daterange.selectedStartDate,
                         end: $scope.settings.daterange.selectedEndDate
                         }
-                    ,{ner: true, occupancy: true, leased: true, graphs: true, scale: $scope.settings.nerScale}
+                    ,{ner: true, occupancy: true, leased: true, tableView: true, scale: $scope.settings.nerScale}
                     , $scope.settings.selectedPerspective
                 ).then(function(response) {
                     var resp = $propertyService.parseDashboard(response.data, $scope.settings.summary, $rootScope.me.settings.showLeases, $scope.settings.nerScale, $scope.settings.selectedBedroom, $scope.settings.selectedPerspective);

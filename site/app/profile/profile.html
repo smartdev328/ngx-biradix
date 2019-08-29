@@ -171,10 +171,10 @@
                             </Tr>
                             <Tr>
                                 <td>
-                                    <toggle-switch checked="settings.graphs"></toggle-switch>&nbsp;
+                                    <toggle-switch checked="settings.tableView"></toggle-switch>&nbsp;
                                 </td>
                                 <Td>
-                                    &nbsp;Show Graphs
+                                    &nbsp;Table View
                                 </Td>
 
                             </Tr>
@@ -215,12 +215,12 @@
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
                 <div ng-show="trendsLoading">
-                    <div ng-if="settings.graphs">
+                    <div ng-if="!settings.tableView">
                         <time-series options="nerData"></time-series>
                         <hr style="margin:10px 0px 20px 0px !important;">
                     </div>
 
-                    <div ng-if="!settings.graphs">
+                    <div ng-if="settings.tableView">
                         <table-view data="otherTable" columns="nerKeys" survey="canSurvey" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
                         <div style="margin:10px 0px 20px 0px !important;"></div>
                     </div>
@@ -231,7 +231,7 @@
                     <img src="/images/squares.gif" style="width:100px">
                 </div>
                 <div ng-show="trendsLoading">
-                    <div class="row" style="margin-left:-25px" ng-if="settings.graphs">
+                    <div class="row" style="margin-left:-25px" ng-if="!settings.tableView">
                         <div class="col-xs-6">
                             <time-series options="occData"></time-series>
                         </div>
@@ -239,7 +239,7 @@
                             <time-series options="otherData"></time-series>
                         </div>
                     </div>
-                    <div ng-if="!settings.graphs">
+                    <div ng-if="settings.tableView">
                         <table-view data="otherTable" columns="columns" survey="canSurvey" propertyid="property._id" marketsurvey="marketSurvey"></table-view>
                     </div>
                 </div>

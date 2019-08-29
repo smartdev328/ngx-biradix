@@ -278,18 +278,18 @@
             </div>
             <div class="panel-body">
                 <hr>
-                <div ng-if="profileSettings.graphs">
+                <div ng-if="!profileSettings.tableView">
                     <time-series options="profile.nerData"></time-series>
                     <hr style="margin:10px 0px 20px 0px !important;">
                 </div>
 
-                <div ng-if="!profileSettings.graphs">
+                <div ng-if="profileSettings.tableView">
                     <table-view data="profile.otherTable" columns="profile.nerKeys"></table-view>
                     <div style="margin:10px 0px 20px 0px !important;"></div>
                 </div>
 
                 <hr>
-                <div class="row" style="margin-left:-15px" ng-if="profileSettings.graphs">
+                <div class="row" style="margin-left:-15px" ng-if="!profileSettings.tableView">
                     <div class="col-xs-6">
                         <time-series options="profile.occData"></time-series>
                     </div>
@@ -297,7 +297,7 @@
                         <time-series options="profile.otherData"></time-series>
                     </div>
                 </div>
-                <div ng-if="!profileSettings.graphs">
+                <div ng-if="profileSettings.tableView">
                     <table-view data="profile.otherTable" columns="columns"></table-view>
                 </div>
             </div>

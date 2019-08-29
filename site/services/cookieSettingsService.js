@@ -87,18 +87,25 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
             $cookies.put('Summary', summary, {expires : expireDate})
         }
 
-        fac.getGraphs = function () {
+        fac.getTableView = function () {
+            if($cookies.get('Graphs')) {
+                var expireDate = new Date();
+                expireDate.setDate(expireDate.getDate() + 365);
+                var tempBoolean = JSON.parse($cookies.get('Graphs'));
+                $cookies.put('TableView', !tempBoolean, {expires : expireDate});
+                $cookies.remove('Graphs');
+            }
             try {
-                return JSON.parse($cookies.get('Graphs') || "true")
+                return JSON.parse($cookies.get('TableView') || "false")
             } catch(ex) {
-                return true;
+                return false;
             }
         }
 
-        fac.saveGraphs = function(graphs) {
+        fac.saveTableView = function(tableView) {
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
-            $cookies.put('Graphs', graphs, {expires : expireDate})
+            $cookies.put('TableView', tableView, {expires : expireDate})
         }
 
         fac.saveTotals = function(totals) {
@@ -115,10 +122,10 @@ angular.module('biradix.global').factory('$cookieSettingsService', ['$cookies', 
             }
         }
 
-        fac.saveNerScale = function(graphs) {
+        fac.saveNerScale = function(tableView) {
             var expireDate = new Date();
             expireDate.setDate(expireDate.getDate() + 365);
-            $cookies.put('Scale', graphs, {expires : expireDate})
+            $cookies.put('Scale', tableView, {expires : expireDate})
         }
 
         fac.defaultDateObject = function(selectedRange,selectedStartDate,selectedEndDate) {

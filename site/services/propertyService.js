@@ -490,7 +490,9 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
                             return x.d == tr.d
                         })
 
-                        row[k] = n.v
+                        if(n) {
+                            row[k] = n.v
+                        }
                     })
 
                     if (o && !o.f) {
@@ -518,7 +520,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return table;
 
         }
-        fac.parseProfile = function(profile, graphs, showLeases, showRenewal, scale, showATR) {
+        fac.parseProfile = function(profile, tableView, showLeases, showRenewal, scale, showATR) {
 
             var resp = {};
             resp.lookups = profile.lookups;
@@ -705,7 +707,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
 
             resp.otherData = {height:250, printWidth:380, decimalPlaces: 0, prefix:'',suffix:'', title: '', marker: true, data: other.data, min: other.min, max: other.max};
 
-            if (pts && !graphs) {
+            if (pts && tableView) {
                 resp.nerKeys = keys;
                 resp.otherTable = extractTableViews(resp.surveyData, resp.occData, pts, keys, showLeases, showRenewal, showATR);
             }

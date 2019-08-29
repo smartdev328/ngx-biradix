@@ -686,7 +686,7 @@ define([
                         end: $scope.cleanSettings.dashboardSettings.daterange.selectedEndDate
                     },
                     show: {
-                        graphs: $scope.cleanSettings.profileSettings.graphs
+                        tableView: $scope.cleanSettings.profileSettings.tableView
                         , scale: $scope.cleanSettings.dashboardSettings.nerScale
                     },
                     offset: $scope.timezone,
@@ -752,24 +752,24 @@ define([
                 delete $scope.reportStarted;
 
                 if ($scope.property_report) {
-                    $scope.graphs = 0;
+                    $scope.tableView = 0;
                     $scope.total = 3; // Map + NER + OCC
 
                     if ($rootScope.me.settings.showLeases) {
                         $scope.total++;
                     }
 
-                    if ($scope.runSettings.profileSettings.graphs) {
+                    if (!$scope.runSettings.profileSettings.tableView) {
                         $scope.total += (3*($scope.compIds.length + 1));
                     }
 
                     $rootScope.$on('timeseriesLoaded', function (event,data) {
                         // console.log('timesieres', (new Date()).getTime())
-                        $scope.graphs ++;
+                        $scope.tableView ++;
 
-                        //console.log($scope.graphs, $scope.total,(new Date()).getTime());
+                        //console.log($scope.tableView, $scope.total,(new Date()).getTime());
 
-                        if ($scope.graphs == $scope.total) {
+                        if ($scope.tableView == $scope.total) {
                             window.setTimeout(function () {
                                 window.renderable = true;
                             }, 600)
@@ -1649,8 +1649,8 @@ define([
             $scope.temp.rankingSortDir = $scope.liveSettings.rankings.orderBy[0] == "-" ? "desc" : "asc";
 
 
-            if (typeof $scope.liveSettings.trends.graphs == 'undefined') {
-                $scope.liveSettings.trends.graphs = true;
+            if (typeof $scope.liveSettings.trends.tableView == 'undefined') {
+                $scope.liveSettings.trends.tableView = false;
             }
 
             $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
@@ -1702,14 +1702,14 @@ define([
         $scope.$watch("temp.trendsBedroom", function() {
             if ($scope.temp && $scope.temp.trendsBedroom && $scope.temp.trendsBedroom.value === -2) {
                 $scope.liveSettings.trends.groupProperties = true;
-                $scope.liveSettings.trends.graphs = true;
+                $scope.liveSettings.trends.tableView = false;
             }
         });
 
             $scope.$watch("liveSettings.trends.groupProperties", function() {
                 if ($scope.liveSettings.trends) {
                     if (!$scope.liveSettings.trends.groupProperties) {
-                        $scope.liveSettings.trends.graphs = true;
+                        $scope.liveSettings.trends.tableView = false;
                     }
                 }
             });
@@ -1767,7 +1767,7 @@ define([
                     }
                 }
 
-                $scope.liveSettings.trends.graphs = true;
+                $scope.liveSettings.trends.tableView = false;
                 $scope.liveSettings.trends.groupProperties = true;
                 $scope.liveSettings.trends.showCompAverage = true;
 

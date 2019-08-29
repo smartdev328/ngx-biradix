@@ -127,21 +127,21 @@ define([
             $scope.loadProperty($scope.propertyId);
         }, true);
 
-        $scope.$watch('settings.graphs', function() {
+        $scope.$watch('settings.tableView', function() {
             if (!$scope.localLoading) return;
 
-            $cookieSettingsService.saveGraphs($scope.settings.graphs)
-            $scope.refreshGraphs();
+            $cookieSettingsService.saveTableView($scope.settings.tableView)
+            $scope.refreshTableView();
         }, true);
 
 
         $scope.$watch('settings.nerScale', function(d) {
             if (!$scope.localLoading) return;
             $cookieSettingsService.saveNerScale($scope.settings.nerScale)
-            $scope.refreshGraphs();
+            $scope.refreshTableView();
         }, true);
 
-        $scope.refreshGraphs = function() {
+        $scope.refreshTableView = function() {
             $scope.loadProperty($scope.propertyId, true);
         }
 
@@ -171,13 +171,13 @@ define([
                         end: daterange.selectedEndDate
                     },
                     {
-                        occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, graphs: $scope.settings.graphs, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale,
+                        occupancy: true, ner: true, traffic: true, leases: true, bedrooms: true, tableView: $scope.settings.tableView, leased: $rootScope.me.settings.showLeases, renewal: $rootScope.me.settings.showRenewal, scale: $scope.settings.nerScale,
                         atr: $rootScope.me.settings.showATR
                     },
                     $scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.propertyId : $scope.propertyId,
                     $scope.settings.perspective && $scope.settings.perspective.value ? $scope.settings.perspective.value : null
                 ).then(function (response) {
-                    var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.graphs, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale, $rootScope.me.settings.showATR);
+                    var resp = $propertyService.parseProfile(response.data.profile,$scope.settings.tableView, $rootScope.me.settings.showLeases, $rootScope.me.settings.showRenewal, $scope.settings.nerScale, $rootScope.me.settings.showATR);
 
                     $scope.columns = ['occupancy'];
 
@@ -482,7 +482,7 @@ define([
 
             var daterange = $scope.settings.daterange;
 
-            $exportService.print($scope.property._id, true, daterange, $scope.progressId, $scope.settings.graphs, $scope.settings.perspective.value);
+            $exportService.print($scope.property._id, true, daterange, $scope.progressId, $scope.settings.tableView, $scope.settings.perspective.value);
 
             $window.setTimeout($scope.checkProgress, 500);
         };

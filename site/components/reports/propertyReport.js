@@ -56,7 +56,7 @@ angular.module('biradix.global').directive('propertyReport', function () {
                 $scope.columns.push('traffic');
 
                 $scope.report.profiles.forEach(function(p) {
-                    resp = $propertyService.parseProfile(p,$scope.profileSettings.graphs,$scope.me.settings.showLeases, $scope.me.settings.showRenewal, $scope.dashboardSettings.nerScale,$scope.me.settings.showATR);
+                    resp = $propertyService.parseProfile(p,$scope.profileSettings.tableView,$scope.me.settings.showLeases, $scope.me.settings.showRenewal, $scope.dashboardSettings.nerScale,$scope.me.settings.showATR);
 
                     $scope.profiles.push({
                         lookups : resp.lookups,

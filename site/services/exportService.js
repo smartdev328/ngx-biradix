@@ -2,7 +2,7 @@ angular.module("biradix.global").factory('$exportService', ['$http','$cookies','
     var fac = {};
 
 
-    var getPdfUrl = function(showFile,propertyId,graphs, daterange, progressId, perspective) {
+    var getPdfUrl = function(showFile,propertyId,tableView, daterange, progressId, perspective) {
         var timezone = moment().utcOffset();
         if ($cookies.get("timezone")) {
             timezone = parseInt($cookies.get("timezone"));
@@ -10,7 +10,7 @@ angular.module("biradix.global").factory('$exportService', ['$http','$cookies','
 
         var url = gAPI + '/api/1.0/properties/' + propertyId + '/pdf?';
         var data = {
-            Graphs: graphs,
+            TableView: tableView,
             Scale: $cookies.get('Scale') || "ner",
             selectedStartDate: daterange.selectedStartDate,
             selectedEndDate: daterange.selectedEndDate,
@@ -28,8 +28,8 @@ angular.module("biradix.global").factory('$exportService', ['$http','$cookies','
         return {base:url, data: data};
     };
 
-    fac.print = function (propertyId, showFile, daterange, progressId, graphs, perspective) {
-        var pdf = getPdfUrl(true,propertyId, graphs, daterange, progressId, perspective);
+    fac.print = function (propertyId, showFile, daterange, progressId, tableView, perspective) {
+        var pdf = getPdfUrl(true,propertyId, tableView, daterange, progressId, perspective);
 
         //Has to be synchronous
         var key = $urlService.shorten(JSON.stringify(pdf.data));
