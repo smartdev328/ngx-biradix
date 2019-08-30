@@ -10,7 +10,7 @@ define([
         if (performance && performance.now) {
             var timeStart = performance.now();
         }
-        
+
         window.setTimeout(function() {
             window.document.title = "Manage Users | BI:Radix";
             }, 1500);
@@ -156,9 +156,9 @@ define([
                         'metric3': 1,
                         'metric4': pageTime,
                     }
-            
+
                     ga('send', 'event', pageViewType, 'Manage Users', metrics);
-            
+
                     pageViewType = 'PageView';
                 }
             },
@@ -179,14 +179,10 @@ define([
         $scope.loginAs = function(userid) {
             $authService.loginAs(userid, function (usr, status) {
                 if (usr) {
-                    // $rootScope.me = usr;
-                    // $rootScope.updateLogos();
-                    window.location.href = '/';
+                    $rootScope.swaptoLoggedIn();
                 }
             })
-
-
-        }
+        };
 
         $scope.resetPager = function () {
             $scope.currentPage = 1;

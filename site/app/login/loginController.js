@@ -15,18 +15,8 @@ define([
                 window.document.title = "Log In | BI:Radix";
             }, 1500);
 
-            $scope.reload = function() {
-                window.location.href= '/';
-            }
 
-            $scope.hasSessionStorage = true;
-            try {
-                window.sessionStorage;
-            } catch (ex) {
-                $scope.hasSessionStorage = false;
-            }
-
-            if ($scope.hasSessionStorage && $stateParams.r) {
+            if (gHasSessionStorage && $stateParams.r) {
                 $window.sessionStorage.redirect = $stateParams.r;
             }
 

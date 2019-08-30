@@ -4,10 +4,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             $scope.settings = {showNotes: false, showBulkConcessions: false, showDetailed: false, showLeases: false, showRenewal: false, showATR: false };
             $scope.sort = "";
 
-            if (!$rootScope.loggedIn) {
-                return $location.path("/login");
-            }
-
             ga("set", "title", "/marketSurvey");
             ga("set", "page", "/marketSurvey");
             ga("send", "pageview");
@@ -93,8 +89,8 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                             $scope.allShown = true;
                         }
 
-                        if(($scope.settings.showLeases && !$scope.settings.showRenewal && !$scope.settings.showATR) || 
-                        (!$scope.settings.showLeases && $scope.settings.showRenewal && !$scope.settings.showATR) || 
+                        if(($scope.settings.showLeases && !$scope.settings.showRenewal && !$scope.settings.showATR) ||
+                        (!$scope.settings.showLeases && $scope.settings.showRenewal && !$scope.settings.showATR) ||
                         (!$scope.settings.showLeases && !$scope.settings.showRenewal && !$scope.settings.showATR)) {
                             $scope.threeColumnsInput = false;
                         } else {
@@ -1054,7 +1050,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             "concessionsTimes" : "One-time",
             "concessionValue" : "",
             "leasedLength" : 12,
-            "concessionsTypeOff" : "week(s) free", 
+            "concessionsTypeOff" : "week(s) free",
             "SelectedFloorPlan" : {},
             "applyError": "",
             "checkboxError": false
@@ -1091,7 +1087,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 }
             }
 
-            var filteredList = _.filter($scope.survey.floorplans, function(fp) { 
+            var filteredList = _.filter($scope.survey.floorplans, function(fp) {
                 if(selectedFPId.includes(fp.id)) {
                     return fp;
                 }
@@ -1137,7 +1133,7 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
             $scope.bulkConcession.applyError = "";
             $scope.bulkConcession.checkboxError = false;
-        
+
         }
 
         $scope.showAllFP = function() {

@@ -1,13 +1,6 @@
 angular.module("biradix.global").controller("rootController",
     ["$scope", "$location", "$rootScope", "$cookies", "$authService", "$propertyService", "$window", "$uibModal", "toastr", "ngProgress", "$timeout", "$sce", "$amenityService","$auditService","$organizationsService",
         function($scope, $location, $rootScope, $cookies, $authService, $propertyService, $window, $uibModal, toastr, ngProgress, $timeout, $sce, $amenityService,$auditService,$organizationsService) {
-        $scope.hasSessionStorage = true;
-        try {
-            window.sessionStorage;
-        } catch (ex) {
-            $scope.hasSessionStorage = false;
-        }
-
         $rootScope.v2Base = gV2;
         $scope.env = "";
         var loc = gAPI.toLowerCase();
@@ -88,7 +81,7 @@ angular.module("biradix.global").controller("rootController",
 
             // log off after 60 minutes of inactivity
             if ($rootScope.timeout > 60 * 60) {
-                if ($rootScope.loggedIn && $scope.hasSessionStorage) {
+                if ($rootScope.loggedIn && gHasSessionStorage) {
                     $window.sessionStorage.redirect = $location.path();
                 }
                 $rootScope.logoff();
@@ -147,7 +140,7 @@ angular.module("biradix.global").controller("rootController",
                             callback();
                         }
                     } else if (status == 401 ) {
-                        if ($rootScope.loggedIn && $scope.hasSessionStorage) {
+                        if ($rootScope.loggedIn && gHasSessionStorage) {
                             $window.sessionStorage.redirect = $location.path();
                         }
                         $rootScope.logoff();
@@ -188,7 +181,7 @@ angular.module("biradix.global").controller("rootController",
 
         $rootScope.validateTokens = function() {
             if (!$cookies.get("token")) {
-                if ($scope.hasSessionStorage) {
+                if (gHasSessionStorage) {
                     $window.sessionStorage.redirect = $location.path();
                 }
                 $rootScope.logoff();
@@ -206,7 +199,7 @@ angular.module("biradix.global").controller("rootController",
             var tokenAgeInMinutes = (new Date().getTime() - date.getTime()) / 1000 / 60;
 
             if (tokenAgeInMinutes > 65) {
-                if ($scope.hasSessionStorage) {
+                if (gHasSessionStorage) {
                     $window.sessionStorage.redirect = $location.path();
                 }
                 $rootScope.logoff();
@@ -260,7 +253,7 @@ angular.module("biradix.global").controller("rootController",
                     }
                 }
                 else if (status == 401) {
-                    if ($rootScope.loggedIn && $scope.hasSessionStorage) {
+                    if ($rootScope.loggedIn && gHasSessionStorage) {
                         $window.sessionStorage.redirect = $location.path();
                     }
                     $rootScope.logoff()
@@ -350,11 +343,11 @@ angular.module("biradix.global").controller("rootController",
                 $timeout($rootScope.incrementTimeout, 1000);
 
                 var ar = location.hash.split("login?r=");
-                if (ar.length === 2 && $scope.hasSessionStorage) {
+                if (ar.length === 2 && gHasSessionStorage) {
                     $window.sessionStorage.redirect = decodeURIComponent(ar[1]);
                 }
 
-                if ($scope.hasSessionStorage && $window.sessionStorage.redirect) {
+                if (gHasSessionStorage && $window.sessionStorage.redirect) {
                     var x = $window.sessionStorage.redirect;
                     $window.sessionStorage.removeItem('redirect');
 
@@ -366,7 +359,7 @@ angular.module("biradix.global").controller("rootController",
                     //Make sure we dont redirect to /login
                     if (x.indexOf('/login') === -1) {
                         if (x.indexOf("?") === -1) {
-                            $location.path(x)
+                            $location.path(x).search("r", null);
                         } else {
                             var a = x.split('?');
                             $location.path(a[0]).search(a[1]);
@@ -550,7 +543,7 @@ angular.module("biradix.global").controller("rootController",
                         },
                         options: function () {
                             return options;
-                        },                        
+                        },
                     }
                 });
 

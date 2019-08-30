@@ -2,10 +2,6 @@ define([
     "app",
 ], function(app) {
      app.controller("clonePropertyController", ["$scope", "$uibModalInstance", "ngProgress", "$rootScope","toastr", "$location", "$propertyService", "$uibModal", "$dialog", function($scope, $uibModalInstance, ngProgress, $rootScope, toastr, $location, $propertyService, $uibModal, $dialog) {
-        if (!$rootScope.loggedIn) {
-            $location.path("/login");
-        }
-
         ga("set", "title", "/cloneProperty");
         ga("set", "page", "/cloneProperty");
         ga("send", "pageview");

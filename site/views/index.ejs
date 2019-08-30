@@ -42,6 +42,14 @@
             h&&h(b,c,d,f,g),g||(g=new Error(b)),a[e].q=a[e].q||[],a[e].q.push({
                 e:g})}}(window,document,"script","//cdn.raygun.io/raygun4js/raygun.min.js","rg4js");
     </script>
+    <script>
+        var gHasSessionStorage = true;
+        try {
+            window.sessionStorage;
+        } catch (ex) {
+            gHasSessionStorage = false;
+        }
+    </script>
 </head>
 <body ng-controller="rootController" ng-click="resetTimeout()" ng-keypress="resetTimeout()">
     <div ui-view="printView"></div>

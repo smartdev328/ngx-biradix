@@ -135,13 +135,13 @@ define([], function () {
 
                 if (toState.data && toState.data.loggedIn === true && !$rootScope.loggedIn) {
                     var ar = location.href.split("#");
-                    if (ar.length == 2) {
-                        if ($rootScope.hasSessionStorage) {
+                    if (ar.length === 2) {
+                        if (gHasSessionStorage) {
                             window.sessionStorage.redirect = ar[1];
                         }
                     }
 
-                    window.location.href = "/";
+                    $rootScope.logoff();
                     return event.preventDefault();
                 }
 

@@ -5,10 +5,6 @@ define([
 ], function(app) {
     app.controller("propertyWizardController", ["$scope", "$uibModalInstance", "id", "isComp", "isCustom", "ngProgress", "$rootScope", "toastr", "$location", "$propertyService", "$dialog", "$amenityService", "$uibModal", "subjectid", "$approvedListsService",
     function($scope, $uibModalInstance, id, isComp, isCustom, ngProgress, $rootScope, toastr, $location, $propertyService, $dialog, $amenityService, $uibModal, subjectid, $approvedListsService) {
-            if (!$rootScope.loggedIn) {
-                $location.path("/login");
-            }
-
             $scope.mediaIndex = 0;
 
             $scope.changed = false;
@@ -824,7 +820,7 @@ define([
                 }
             }, function() {});
         };
-            
+
             $scope.addFloorplan = function(fp) {
                 var oldFp = _.cloneDeep(fp);
                 require([
