@@ -74,7 +74,7 @@ define([], function () {
             extendedTimeOut: 5000
         });
 
-        $urlRouterProvider.otherwise("/login");
+        $urlRouterProvider.otherwise("/sso");
 
         $stateProvider
           .state("login", AsyncRoute("/login?r&e&o", "login", "loginController", "login.html", "loggedOutView",{}))
@@ -142,7 +142,7 @@ define([], function () {
                     }
 
                     $rootScope.logoff();
-                    return event.preventDefault();
+                  return;
                 }
 
                 if (toState.data && toState.data.loggedIn === false && $rootScope.loggedIn) {

@@ -4,10 +4,6 @@ define([
 ], function(app) {
     app.controller('profileShareController', ['$scope', '$rootScope', '$location', '$uibModalInstance', '$propertyService', 'comp', 'items', 'ngProgress', 'options', 'toastr',
     function($scope, $rootScope, $location, $uibModalInstance, $propertyService, comp, items, ngProgress, options, toastr) {
-        if (!$rootScope.loggedIn) {
-            $location.path('/login');
-        }
-
         $scope.comp = comp;
         $scope.email = '';
         $scope.items = items;
@@ -25,7 +21,7 @@ define([
                 floorPlan: [],
                 property: [],
             };
-            
+
             $scope.itemsUnsorted.forEach(function(item) {
                 if (item.selected) {
                     switch(item.group) {
@@ -38,10 +34,10 @@ define([
                     }
                 }
             });
-            
+
             return items;
         };
-        
+
         $scope.send = function () {
             if (!$scope.email) {
                 toastr.error('Please enter a valid email address');
@@ -52,7 +48,7 @@ define([
                 toastr.error('Please select data to include');
                 return;
             }
-            
+
             ngProgress.start();
 
             var comp = $scope.comp;

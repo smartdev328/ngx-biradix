@@ -6,11 +6,6 @@ define([
         ('manageCompsController', ['$scope', '$uibModalInstance', 'id', 'ngProgress', '$rootScope','toastr', '$location', '$propertyService', '$uibModal','$dialog', '$progressService',
             function($scope, $uibModalInstance, id, ngProgress, $rootScope, toastr, $location, $propertyService,$uibModal,$dialog, $progressService) {
 
-            if (!$rootScope.loggedIn) {
-                $location.path('/login');
-                return;
-            }
-
             ga('set', 'title', "/manageComps");
             ga('set', 'page', "/manageComps");
             ga('send', 'pageview');

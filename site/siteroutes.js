@@ -35,11 +35,11 @@ module.exports = (function() {
   });
 
   ui.get("/d/:id", function(req, res) {
-    return res.redirect("/#/login?r=%2Fdashboard%3Fid=" + req.params.id + "%26s="+req.query.s);
+    return res.redirect("/#/sso?r=%2Fdashboard%3Fid=" + req.params.id + "%26s="+req.query.s);
   });
 
   ui.get("/u", function(req, res) {
-    return res.redirect("/#/login?r=%2FupdateProfile%3Fnotifications=1");
+    return res.redirect("/#/sso?r=%2FupdateProfile%3Fnotifications=1");
   });
 
   ui.get('/p/:token', function (req, res) {

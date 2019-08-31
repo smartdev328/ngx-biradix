@@ -272,7 +272,7 @@ define([
                         start: $scope.settings.daterange.selectedStartDate,
                         end: $scope.settings.daterange.selectedEndDate
                         }
-                    ,{ner: true, occupancy: true, leased: true, tableView: true, scale: $scope.settings.nerScale}
+                    ,{ner: true, occupancy: true, leased: true, tableView: false, scale: $scope.settings.nerScale}
                     , $scope.settings.selectedPerspective
                 ).then(function(response) {
                     var resp = $propertyService.parseDashboard(response.data, $scope.settings.summary, $rootScope.me.settings.showLeases, $scope.settings.nerScale, $scope.settings.selectedBedroom, $scope.settings.selectedPerspective);

@@ -389,7 +389,7 @@ angular.module("biradix.global").controller("rootController",
         $rootScope.logoff = function() {
             $rootScope.loggedIn = false;
             $cookies.remove('token');
-            $location.path("/login");
+            $location.path("/sso");
             $rootScope.updateLogos();
         }
 
