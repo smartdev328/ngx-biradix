@@ -5,8 +5,8 @@ define([
 ], function(app) {
     var pageViewType = 'InitialPageView';
 
-    app.controller("manageUsersController", ["$scope", "$rootScope", "$location", "$userService", "$authService", "ngProgress", "$dialog", "$uibModal", "$gridService", "toastr",
-    function($scope, $rootScope, $location, $userService, $authService, ngProgress, $dialog, $uibModal, $gridService, toastr) {
+    app.controller("manageUsersController", ["$scope", "$rootScope", "$location", "$userService", "$authService", "ngProgress", "$dialog", "$uibModal", "$gridService", "toastr", "$window",
+    function($scope, $rootScope, $location, $userService, $authService, ngProgress, $dialog, $uibModal, $gridService, toastr, $window) {
         if (performance && performance.now) {
             var timeStart = performance.now();
         }
@@ -179,7 +179,7 @@ define([
         $scope.loginAs = function(userid) {
             $authService.loginAs(userid, function (usr, status) {
                 if (usr) {
-                    $rootScope.swaptoLoggedIn();
+                    $window.location.reload();
                 }
             })
         };
