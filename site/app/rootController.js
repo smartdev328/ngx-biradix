@@ -46,6 +46,7 @@ angular.module("biradix.global").controller("rootController",
         $rootScope.loggedIn = false;
       }
 
+
       $rootScope.timeout = 0;
 
       // Global functions
@@ -93,6 +94,10 @@ angular.module("biradix.global").controller("rootController",
 
       var refreshFactor = 1;
       $rootScope.refreshToken = function(force, callback) {
+        if (!$rootScope.loggedIn) {
+          return;
+        }
+
         if (!$rootScope.validateTokens()) {
           return;
         }
@@ -107,7 +112,7 @@ angular.module("biradix.global").controller("rootController",
             date = new Date(date);
           }
 
-          var tokenAgeInMinutes = (new Date().getTime() - date.getTime()) / 1000 / 60 * refreshFactor;
+          var tokenAgeInMinutes = (new Date().getTime() - date.getTime()) / 1000 / 60 / refreshFactor;
 
           if (tokenAgeInMinutes > 30) {
             refresh = true;
@@ -178,7 +183,6 @@ angular.module("biradix.global").controller("rootController",
         search1: "",
         search2: "",
       }
-      $scope.first = true;
 
       $rootScope.notifications = [];
 
@@ -214,6 +218,9 @@ angular.module("biradix.global").controller("rootController",
         return true;
       }
       $rootScope.getMe = function(callback) {
+        if (!$scope.first && !$rootScope.loggedIn) {
+          return;
+        }
 
         if (!$rootScope.validateTokens()) {
           return;
@@ -229,7 +236,6 @@ angular.module("biradix.global").controller("rootController",
             }
 
             $rootScope.me = usr;
-
             if ($scope.first) {
               $scope.alerts();
             }
@@ -296,6 +302,7 @@ angular.module("biradix.global").controller("rootController",
       }
 
       $rootScope.swaptoLoggedIn = function(redirect) {
+        $scope.first = true;
         $rootScope.getMe(function() {
           var expireDate = new Date();
           expireDate.setDate(expireDate.getDate() + 365);
@@ -345,7 +352,6 @@ angular.module("biradix.global").controller("rootController",
 
           $rootScope.updateLogos();
 
-
           $window.setTimeout($rootScope.refreshToken,60/refreshFactor * 1000); // start token refresh in 1 min
           $timeout($rootScope.incrementTimeout, 1000);
 
@@ -390,6 +396,7 @@ angular.module("biradix.global").controller("rootController",
       $rootScope.swaptoLoggedOut = function() {
         $('body').css("padding-top","10px")
         $rootScope.loggedIn = false;
+        $scope.first = false;
       }
 
       //Local functions
@@ -573,6 +580,9 @@ angular.module("biradix.global").controller("rootController",
       };
 
       $scope.alertsApprovedLists = function(type, key, label) {
+        if (!$rootScope.loggedIn) {
+          return
+        }
         $propertyService.getUnapproved(type, "frequency {value}").then(function (response) {
             var a = _.find($rootScope.notifications, function(x) {return x.key === key});
             var total = response.data.data.UnapprovedList.frequency.length;
@@ -599,8 +609,10 @@ angular.module("biradix.global").controller("rootController",
       };
 
       $scope.alertsAmenities = function() {
+        if (!$rootScope.loggedIn) {
+          return
+        }
         $amenityService.search({active: true, unapproved: true}).then(function (response) {
-
             var a = _.find($rootScope.notifications, function(x) {return x.key == "amenities"});
 
             if (a) {
@@ -634,6 +646,9 @@ angular.module("biradix.global").controller("rootController",
       };
 
       $scope.alertsAudits = function() {
+        if (!$rootScope.loggedIn) {
+          return
+        }
         $auditService.search({
           limit: 1,
           approved: false,
