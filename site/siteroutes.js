@@ -126,7 +126,7 @@ module.exports = (function() {
       } else {
         console.log("SSO Success token");
         res.cookie('token', decoded.data);
-        res.cookie('tokenDate', new Date());
+        res.cookie('tokenDate', "");
         res.redirect('/#/dashboard?r=' + encodeURIComponent(req.query.r) + "&o=" + encodeURIComponent(req.query.o));
       }
     });
