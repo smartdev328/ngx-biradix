@@ -759,8 +759,6 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
                 } else {
                     fp.updated = fp.rent != old.rent || fp.concessions != old.concessions;
                 }
-
-
             }
 
             $scope.update = function(fp) {
@@ -1101,33 +1099,39 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
 
             filteredList.forEach(function(item) {
 
-                $scope.checkUndoFp(item, item.concessions);
+                var old = _.find($scope.originalSurvey.floorplans, function(o) {
+                    return o.id == item.id;
+                });
+
+                if(item.rent) {
+                    switch ($scope.bulkConcession.concessionsTypeOff) {
+                        case "dollars off":
+                            if($scope.bulkConcession.concessionsTimes == "One-time") {
+                                item.concessionsOneTime = parseInt($scope.bulkConcession.concessionValue);
+                            } else {
+                                item.concessionsMonthly = parseInt($scope.bulkConcession.concessionValue);
+                            }
+                            break;
+                        case "week(s) free":
+                            if($scope.bulkConcession.concessionsTimes == "One-time") {
+                                item.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * item.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
+                            } else {
+                                item.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * item.rent)/parseInt($scope.bulkConcession.leasedLength));
+                            }
+                            break;
+                        case "month(s) free":
+                            if($scope.bulkConcession.concessionsTimes == "One-time") {
+                                item.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue) * item.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
+                            } else {
+                                item.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue) * item.rent)/parseInt($scope.bulkConcession.leasedLength));
+                            }
+                            break;
+                    }
+                }
+                
+                $scope.checkUndoFp(item, old);
                 $scope.getErrors(item);
                 $scope.getWarnings(item);
-
-                switch ($scope.bulkConcession.concessionsTypeOff) {
-                    case "dollars off":
-                        if($scope.bulkConcession.concessionsTimes == "One-time") {
-                            item.concessionsOneTime = parseInt($scope.bulkConcession.concessionValue);
-                        } else {
-                            item.concessionsMonthly = parseInt($scope.bulkConcession.concessionValue);
-                        }
-                        break;
-                    case "week(s) free":
-                        if($scope.bulkConcession.concessionsTimes == "One-time") {
-                            item.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * item.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
-                        } else {
-                            item.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue)/4 * item.rent)/parseInt($scope.bulkConcession.leasedLength));
-                        }
-                        break;
-                    case "month(s) free":
-                        if($scope.bulkConcession.concessionsTimes == "One-time") {
-                            item.concessionsOneTime = Math.round((parseInt($scope.bulkConcession.concessionValue) * item.rent)/parseInt($scope.bulkConcession.leasedLength) * 12);
-                        } else {
-                            item.concessionsMonthly = Math.round((parseInt($scope.bulkConcession.concessionValue) * item.rent)/parseInt($scope.bulkConcession.leasedLength));
-                        }
-                        break;
-                }
 
             });
 
