@@ -357,28 +357,32 @@
     padding: 5px 0;
 }
 
-.propertySurvey  table {
+.propertySurvey  table, .missmatchContainer {
     height: 350px;
+}
+
+.missmatchContainer {
+  overflow-y:auto;
 }
 
 .propertySurvey.pmsTable table {
   height: 395px;
 } 
 
-.propertySurvey.allShown table, .propertySurvey.allShownPms table {
+.propertySurvey.allShown table, .propertySurvey.allShownPms table, .missmatchContainer.allShownPmsFp {
     height: auto;
     overflow-y: hidden;
 }
 
-.propertySurvey table tbody::-webkit-scrollbar {
+.propertySurvey table tbody::-webkit-scrollbar, .missmatchContainer::-webkit-scrollbar {
     width: 5px;
 }
  
-.propertySurvey table tbody::-webkit-scrollbar-track {
+.propertySurvey table tbody::-webkit-scrollbar-track, .missmatchContainer::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
  
-.propertySurvey table tbody::-webkit-scrollbar-thumb {
+.propertySurvey table tbody::-webkit-scrollbar-thumb, .missmatchContainer::-webkit-scrollbar-thumb {
   background-color: #4460a9;
   outline: 1px solid slategrey;
 }
@@ -437,6 +441,60 @@
   font-size: 14px;
   border: none;
 }
+
+.missmatchExists button {
+  position: relative;
+  border:none;
+  background: transparent;
+  color: #337ab7;
+  padding: 0;
+  margin: 6px 0;
+  text-decoration: underline;
+  font-size: 14px;
+  border: none;
+}
+
+.missmatchExists button:hover, .missmatchExists button:active, .missmatchExists button:focus {
+  background-color: transparent !important;
+  box-shadow: none;
+  color: #337ab7;
+  text-decoration: underline;
+}
+
+.red-top-int {
+  background: #d9534f;
+  border-radius:100%;
+  color:#ffffff;
+  font-size:12px;
+  width:16px;
+  line-height:16px;
+  height:16px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.fpMapping ul {
+  margin: 0;
+  padding: 0;
+}
+.fpMapping .grey-bg {
+  background:#eeeeee;
+}
+.fpMapping ul li {
+  list-style: none;
+}
+.fpMapping .border-bottom {
+  padding:10px 0;
+  border-bottom: 1px solid #cccccc;
+}
+
+.fpMapping .missmatch {
+    background:transparent;
+    border:none;
+}
+
+.fpMapping .missmatch i {color: #d9534f;}
 
 @media all and (min-width: 0px) and (max-width: 767px) {
 

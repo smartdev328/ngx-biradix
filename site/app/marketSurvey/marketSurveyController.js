@@ -1162,4 +1162,26 @@ angular.module("biradix.global").controller("marketSurveyController", ["$scope",
             });
         }
 
+        $scope.floorplansMissmatch = function () {
+            require([
+                '/app/marketSurvey/marketSurveyPmsMissmatchController.js'
+            ], function () {
+                $uibModal.open({
+                    templateUrl: '/app/marketSurvey/pmsMissmatch.html?bust=' + version,
+                    controller: 'marketSurveyPmsMissmatchController',
+                    size: "md",
+                    keyboard: false,
+                    backdrop: 'static',
+                    resolve: {
+                        pms : function () {
+                            return  $scope.pms;
+                        },
+                        originalSurvey : function () {
+                            return  $scope.originalSurvey;
+                        }
+                    }
+                });
+            });
+        }
+
     }]);

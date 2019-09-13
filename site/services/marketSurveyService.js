@@ -242,10 +242,19 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                     responseObj.pms.mappedFloorplans = {};
 
                     var pmsFp;
+                    var missmatchExists = false;
                     responseObj.originalSurvey.floorplans.forEach(function(fp) {
                         pmsFp = _.find(responseObj.pms.floorplans, function(x) {
                             return x.biradixid.toString() === fp.id.toString();
                         });
+
+                        fp.name = fp.bedrooms + "x" + fp.bathrooms + " " + fp.description + ", Sqft: " + fp.sqft + ", Units: "+ fp.units;
+                        
+                        if(pmsFp) {
+                            if(pmsFp.units !== fp.units) {
+                                missmatchExists = true;
+                            }
+                        }
 
                         // If no floorplan is mapped to Yardi, default Biradix Rent
                         if (pmsFp) {
@@ -264,6 +273,8 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                             responseObj.pms.mappedFloorplans[fp.id] = null;
                         }
                     });
+
+                    responseObj.pms.mappedFloorplans.missmatchExists = missmatchExists;
 
                     callback(responseObj);
                 }, function(error) {

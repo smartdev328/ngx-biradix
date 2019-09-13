@@ -1,0 +1,58 @@
+<Style>
+    .w-10 {
+        width: 10%;
+        padding-top: 3px;
+    }
+    .w-45 {
+        width: 45%;
+    }
+</Style>
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+            <h2 class="modal-title">Floorplan Mapping: {{pms.property.name}}</h2>
+        <hr>
+    </div>
+    <div class="modal-body container-fluid fpMapping">
+        <div>
+            <p>This view shows how your floorplans are mapped from your PMS system to BI:Radix. A <i class="fa fa-times red-txt" aria-hidden="true"></i> indicates that there is a mismatch between the floorplan types, total square feet, or total unit counts. Contact us at support@biradix.com if you'd like us to change the way your floorplans are mapped.</p>
+            <div class="clearfix grey-bg pt-10 pb-10">
+                <div class="w-45 pull-left text-right">
+                    <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;">
+                    <strong class="hidden-xs">BI:Radix Floor Plans</strong>
+                </div>
+                <div class="w-10 pull-left"></div>
+                <div class="w-45 pull-left">
+                    <img src="/images/organizations/yardi-small.png" style="width:12px;margin-right: 5px;">
+                    <strong class="hidden-xs">Yardi Floor Plans</strong>
+                </div>
+            </div>
+            <div class="missmatchContainer" ng-class="{'allShownPmsFp': allShownPmsFp}">
+                <div ng-repeat-start="row in originalSurvey.floorplans"></div>
+                <div class="clearfix border-bottom" ng-if="row">
+                    <div class="w-45 pull-left text-right">
+                        <ul>
+                            <li class="floorplan biradix">{{row.name}}</li>
+                        </ul>
+                    </div>
+                    <div class="w-10 pull-left text-center">
+                        <button class="missmatch" ng-if="pms.mappedFloorplans[row.id].units !== row.units" type="button" data-toggle="dropdown" aria-expanded="false" uib-tooltip="Mismatch between units" tooltip-placement="top">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                        <i ng-if="pms.mappedFloorplans[row.id].units === row.units" class="fa fa-check" aria-hidden="true"></i>
+                    </div>
+                    <div class="w-45 pull-left">
+                        <ul>
+                            <li ng-repeat="mapped in pms.mappedFloorplans[row.id].yardiFlooplans track by mapped.id" class="floorplan mapped">{{mapped.bedrooms}}x{{mapped.bathrooms}} {{mapped.description}}, Sqft: {{mapped.sqft}}, Units: {{mapped.units}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div ng-repeat-end ng-if="false"></div>
+            </div>
+            <button type="button" ng-hide="allShownPmsFp" class="showAllFpButton mb-20" ng-click="showAllPmsFp()">Show all</button>
+        </div>
+        <div class="text-center mt-20">
+            <button type="button" class="btn btn-default" ng-click="cancel()">Back</button>
+        </div>
+    </div>
+</div>
