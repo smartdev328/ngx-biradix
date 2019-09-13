@@ -71,18 +71,36 @@ function fixedTable($timeout) {
             });
 
             if(!$scope.toggles.showBulkConcessions) {
-                thDesc.style.width = parseInt(thDesc.style.width.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
-                tdDesc.style.minWidth = parseInt(tdDesc.style.minWidth.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
-                tfDesc.style.width = parseInt(tfDesc.style.width.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
+                if(thDesc && thDesc.style) {
+                    thDesc.style.width = parseInt(thDesc.style.width.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
+                }
+                if(tdDesc && tdDesc.style) {
+                    tdDesc.style.minWidth = parseInt(tdDesc.style.minWidth.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
+                }
+                if(tfDesc && tfDesc.style) {
+                    tfDesc.style.width = parseInt(tfDesc.style.width.replace(/\D/g,'')) + columnWidthArray[0] + 'px';
+                }
             }
 
             if(!$scope.toggles.showDetailed) {
-                thDesc.style.width = parseInt(thDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
-                tdDesc.style.minWidth = parseInt(tdDesc.style.minWidth.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
-                tfDesc.style.width = parseInt(tfDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
-                thLast.style.width = columnWidthArray[8] + 'px';
-                tdLast.style.minWidth = columnWidthArray[8] + 'px';
-                tfLast.style.width = columnWidthArray[8] + 'px';
+                if(thDesc && thDesc.style) {
+                    thDesc.style.width = parseInt(thDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
+                }
+                if(thLast && thLast.style) {
+                    thLast.style.width = columnWidthArray[8] + 'px';
+                }
+                if(tdDesc && tdDesc.style) {
+                    tdDesc.style.minWidth = parseInt(tdDesc.style.minWidth.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
+                }
+                if(tdLast && tdLast.style) {
+                    tdLast.style.minWidth = columnWidthArray[8] + 'px';
+                }
+                if(tfDesc && tfDesc.style) {
+                    tfDesc.style.width = parseInt(tfDesc.style.width.replace(/\D/g,'')) + columnWidthArray[5] + 'px';
+                }
+                if(tfLast && tfLast.style) {
+                    tfLast.style.width = columnWidthArray[8] + 'px';
+                }
             }
         }
 
