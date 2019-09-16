@@ -922,7 +922,7 @@ define([
                         else {
                             newProp = response.data.property;
                             toastr.success($scope.property.name + ' created successfully');
-
+                            $rootScope.globalConfirm = "";
                             $uibModalInstance.close(newProp);
 
                         }
@@ -944,7 +944,7 @@ define([
                         }
                         else {
                             toastr.success($scope.property.name + ' updated successfully');
-
+                            $rootScope.globalConfirm = "";
                             $uibModalInstance.close(response.data.property);
                         }
 
