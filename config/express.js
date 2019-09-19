@@ -5,6 +5,7 @@ const error = require("./error.js");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
+const request = require("request");
 
 module.exports = {
         init: function(app, domain) {
@@ -51,30 +52,31 @@ module.exports = {
             app.set("views", __dirname + "/../site/views");
 
             app.use((req, res, next) => {
-                const host = req.headers.host.toString().toLowerCase();
-                if ((host.indexOf("localhost") > -1 || host.indexOf("qa.biradix.com") > -1 || host.indexOf("herokuapp") > -1)
+                let host = req.headers.host.toString().toLowerCase();
+                if ((host.indexOf("qa.biradix.com") > -1 || host.indexOf("herokuapp") > -1)
                     && req.originalUrl === "/"
                     && req.headers["user-agent"] !== "PhantomJS"
                     && host.indexOf("biradixplatform-prod.herokuapp.com") === -1
                 ) {
-                    const auth = {login: "testadmin@biradix.com", password: "temppass!",
-                                login2: "testdesign@biradix.com", password2: "design51!"};
-
                     // parse login and password from headers
-                    const b64auth = (req.headers.authorization || "").split(" ")[1] || ""
-                    const [login, password] = new Buffer(b64auth, "base64").toString().split(":")
+                    const b64auth = (req.headers.authorization || "").split(" ")[1] || "";
+                    const [login, password] = new Buffer(b64auth, "base64").toString().split(":");
 
-                    // Verify login and password are set and correct
-                    var wrongCredentials = true;
-                    if((login === auth.login && password === auth.password) || (login === auth.login2 && password === auth.password2)) {
-                        wrongCredentials = false;
+                    if (host.indexOf("biradixplatform-qa-pr") > -1) {
+                      host = "pr.biradix.com";
                     }
-                    if (!login || !password || wrongCredentials) {
+
+                  request.post('https://radix-nonprodaccessmanagement.herokuapp.com/logins', {form:
+                      {domain: host, email: login, password: password}
+                  }, function(err, httpResponse, body) {
+                    if (body !== "true") {
                         res.set("WWW-Authenticate", "Basic realm=\"401\"");
                         res.status(401).send("Authentication required.");
                         return;
                     }
                     next();
+                  });
+
                 } else {
                     next();
                 }
