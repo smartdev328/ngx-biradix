@@ -237,7 +237,7 @@ angular.module("biradix.global").controller("rootController",
 
             $rootScope.me = usr;
             if ($scope.first) {
-              $scope.alerts();
+              window.setTimeout($scope.alerts, 200);
             }
 
             if ($scope.first && !$rootScope.me.passwordUpdated && !$rootScope.me.allowSSO) {
