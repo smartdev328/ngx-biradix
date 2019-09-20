@@ -2,91 +2,88 @@
 define([
     "app",
     "async",
-], function(app, async) {
-    app.controller("editImportController", ["$scope", "$uibModalInstance", "config", "$importService", "ngProgress", "toastr", "$rootScope",
-        function($scope, $uibModalInstance, config, $importService, ngProgress, toastr, $rootScope) {
+], function (app, async) {
+    app.controller("editImportController", ["$scope", "$uibModalInstance", "config", "$importService", "ngProgress", "toastr", "$rootScope", "$q",
+        function ($scope, $uibModalInstance, config, $importService, ngProgress, toastr, $rootScope, $q) {
             $scope.config = _.cloneDeep(config);
-            $scope.isEdit = true;
-            if(config.id === ""){
-                $scope.isEdit = false;
-            }
-
-            $scope.model = {
-                selectedTimeZone: null
-            };
 
             ga("set", "title", "/editImport");
             ga("set", "page", "/editImport");
             ga("send", "pageview");
 
-            $scope.cancel = function() {
+            $scope.cancel = function () {
                 $uibModalInstance.dismiss("cancel");
             };
 
             $scope.timezones = [
-                {id: 'America/Los_Angeles', name: "Los Angeles (Pacific)"},
-                {id: 'America/Phoenix', name: "Phoenix (Arizona)"},
-                {id: 'America/Denver', name: "Denver (Mountain)"},
-                {id: 'America/Chicago', name: "Chicago (Central)"},
-                {id: 'America/New_York', name: "New York (Eastern)"},
+                { id: 'America/Los_Angeles', name: "Los Angeles (Pacific)" },
+                { id: 'America/Phoenix', name: "Phoenix (Arizona)" },
+                { id: 'America/Denver', name: "Denver (Mountain)" },
+                { id: 'America/Chicago', name: "Chicago (Central)" },
+                { id: 'America/New_York', name: "New York (Eastern)" },
             ];
 
-            $scope.model.selectedTimeZone = _.find($scope.timezones, function(o) {
-                return o.id.toString() === $scope.config.timeZone;
-            });
-            $scope.model.selectedActiveStatus = $scope.config.isActive ? "1":"0";
+            $scope.statuses = [
+                { name: 'Enabled', value: true },
+                { name: 'Disabled', value: false }
+            ];
 
-            $scope.save = function() {
-                var obj = {
-                    provider: $scope.config.provider,
-                    orgid: $scope.config.orgid,
-                    timeZone: $scope.model.selectedTimeZone.id,
-                    yardi: {
-                        folder: $scope.config.identity
-                    }
-                };
+            $scope.addRow = function () {
+                $scope.config.data.push({
+                    id: "",
+                    isActive: true,
+                    provider: "YARDI",
+                    timeZone: "America/Los_Angeles",
+                    orgid: $scope.config.data[0].orgid,
+                    identity: "",
+                    orgName: $scope.config.data[0].orgName,
+                    isCreate: true
+                });
+            }
 
-                if ($scope.isEdit) {
-                    obj.id = config.id;
-                    obj.isActive =  $scope.model.selectedActiveStatus === "1" ? true: false; 
-
-                    ngProgress.start();
-                    $importService.update(obj).then(function(response) {
-                            var ret = _.cloneDeep(response.data);
-                            ret.org = $scope.config.orgName;
-                            $uibModalInstance.close(ret);
-                            ngProgress.reset();
-                        },
-                        function(error) {
-                            if (error.status === 400) {
-                                toastr.error(error.data);
-                            } else {
-                                toastr.error("Unable to create PMS Config. Please contact an administrator.");
+            $scope.save = function () {
+                var imports = $scope.config.data;
+                var deferred = $q.defer();
+                ngProgress.start();
+                imports.reduce(function (p, importObj) {
+                    return p.then(function () {
+                        var obj = {
+                            provider: importObj.provider,
+                            orgid: importObj.orgid,
+                            timeZone: importObj.timeZone,
+                            yardi: {
+                                folder: importObj.identity
                             }
+                        };
 
-                            ngProgress.reset();
-                        });
-                } else {
-                    obj.isActive = true;
-
-                    ngProgress.start();
-
-                    $importService.create(obj).then(function(response) {
-                        var ret = _.cloneDeep(response.data);
-                        ret.org = $scope.config.orgName;
-                        $uibModalInstance.close(ret);
-                        ngProgress.reset();
-                    },
-                    function(error) {
-                        if (error.status === 400) {
-                            toastr.error(error.data);
+                        if (importObj.isCreate) {
+                            obj.isActive = true;
+                            return $importService.create(obj);
                         } else {
-                            toastr.error("Unable to create PMS Config. Please contact an administrator.");
+                            obj.id = importObj.id;
+                            obj.isActive = importObj.isActive;
+                            return $importService.update(obj);
                         }
-
-                        ngProgress.reset();
                     });
-                }
+                }, $q.when(true)).then(function (response) {
+                    var ret = _.cloneDeep(response.data);
+                    ret.org = $scope.config.data[0].orgName;
+                    $uibModalInstance.close(ret);
+                    ngProgress.reset();
+                    deferred.resolve(response);
+                }, function (error) {
+                    if (error.status === 400) {
+                        toastr.error(error.data);
+                    } else {
+                        toastr.error("Unable to create PMS Config. Please contact an administrator.");
+                    }
+                    ngProgress.reset();
+                    deferred.reject(error.data);
+                });
+            };
+
+            $scope.remove = function (index) {
+                $scope.config.data.splice(index, 1); 
             };
         }]);
 });

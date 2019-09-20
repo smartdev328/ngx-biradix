@@ -2,8 +2,8 @@
 define([
     "app"
 ], function(app) {
-    app.controller("pmsSetupController", ["$scope", "$uibModalInstance", "property", "ngProgress", "$propertyService", "$importService", "$importIntegrationService", "toastr", "$dialog", "$rootScope",
-        function($scope, $uibModalInstance, property, ngProgress, $propertyService, $importService, $importIntegrationService, toastr, $dialog, $rootScope) {
+    app.controller("pmsSetupController", ["$scope", "$uibModalInstance", "property", "ngProgress", "$propertyService", "$importService", "$importIntegrationService", "toastr", "$dialog", "$rootScope", "$q",
+        function($scope, $uibModalInstance, property, ngProgress, $propertyService, $importService, $importIntegrationService, toastr, $dialog, $rootScope, $q) {
             ga("set", "title", "/pmsSetup");
             ga("set", "page", "/pmsSetup");
             ga("send", "pageview");
@@ -50,18 +50,42 @@ define([
                         });
                     }
 
-                    // TODO: When this becomes client facing, we cannot return all integration client side
-                    $importService.read().then(function(response) {
-                        $scope.imports = _.filter(response.data, function(i) {
-                            return i.orgid.toString() === $scope.property.orgid.toString();
-                        });
+                    $importService.read($scope.property.orgid.toString(), true).then(function(response) {
+                        $scope.imports = response.data;
 
-                        if ($scope.imports.length === 1) {
-                            $importIntegrationService.getLatestProperties($scope.imports[0].id).then(function(response) {
-                                $scope.properties = response.data;
-                                $scope.pms.importYardiUrl ="https://biradix-integrations-yardi.herokuapp.com/yardi/ui/latestImport/"+
-                                + $scope.property.pms.yardi.propertyId +"?key=" + $scope.imports[0].id;
+                        if ($scope.imports.length > 0) {
 
+                            if ($scope.property.pms && $scope.property.pms.importId) {
+                                $scope.imports = _.filter($scope.imports, function(i) {
+                                    return (i.id === $scope.property.pms.importId);
+                                });
+                            }
+
+                            var promises = _.map($scope.imports, function (obj) {
+                                return $importIntegrationService.getLatestProperties(obj.id);
+                            });
+
+                            $q.all(promises).then(function (response) {
+
+                                var props = [];
+                                for(var i = 0; i < response.length; i++) {
+                                    props = props.concat(_.map(response[i].data.properties, function(x) {
+                                        return {
+                                            id: x.id,
+                                            name: x.name,
+                                            revManagement: x.revManagement,
+                                            state:x.state,
+                                            city: x.city,
+                                            code: x.code,
+                                            address:x.address,
+                                            zip: x.zip,
+                                            importId: response[i].data.importId
+                                        }
+                                    }));
+                                }
+
+                                $scope.properties = props;
+                                
                                 if (!$scope.pms.config) {
                                     $scope.pms.selectedProperty = _.find($scope.properties, function(p) {
                                        return p.name === $scope.property.name;
@@ -71,6 +95,11 @@ define([
                                     $scope.pms.selectedProperty = _.find($scope.properties, function(p) {
                                         return p.id === $scope.pms.config.yardi.propertyId;
                                     });
+                                }
+
+                                if ($scope.pms.config && $scope.pms.config.importId && $scope.pms.selectedProperty) { 
+                                    $scope.pms.importYardiUrl ="https://biradix-integrations-yardi.herokuapp.com/yardi/ui/latestImport/"+
+                                    + $scope.property.pms.yardi.propertyId +"?key=" + $scope.pms.selectedProperty.importId;
                                 }
 
                                 $scope.property.floorplans.forEach(function(fp) {
@@ -87,7 +116,7 @@ define([
                                 });
 
                                 if ($scope.pms.selectedProperty && $scope.pms.config && $scope.pms.config.yardi) {
-                                    $importIntegrationService.getLatestFloorplans($scope.imports[0].id, $scope.pms.selectedProperty.id).then(function(response) {
+                                    $importIntegrationService.getLatestFloorplans($scope.pms.selectedProperty.importId, $scope.pms.selectedProperty.id).then(function(response) {
                                         response.data.forEach(function(fp) {
                                             $scope.pms.unmappedFloorplans.push({
                                                 id: fp.id,
@@ -132,6 +161,8 @@ define([
                                 } else {
                                     $scope.loaded = true;
                                 }
+                            }, function (error) {
+                                console.log(error);
                             });
                         }
                     });
@@ -148,9 +179,13 @@ define([
             };
 
             $scope.connect = function(isNew) {
+                var selectedImport = _.filter($scope.imports, function(i) {
+                    return (i.id === $scope.pms.selectedProperty.importId);
+                });
+
                 var pms = {
-                    importId: $scope.imports[0].id,
-                    importProvider: $scope.imports[0].provider,
+                    importId: selectedImport[0].id,
+                    importProvider: selectedImport[0].provider,
                     yardi: {
                         propertyId: $scope.pms.selectedProperty.id,
                         floorplans: [],

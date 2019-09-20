@@ -1,8 +1,15 @@
 angular.module("biradix.global").factory("$importService", ["$http", "$cookies", function($http, $cookies) {
     var fac = {};
 
-    fac.read = function() {
-        return $http.get(gAPI + "/api/1.0/import"+ "?bust=" + (new Date()).getTime(), {
+    fac.read = function(organizationId, isActive) {
+        let path = gAPI + "/api/1.0/import"+ "?bust=" + (new Date()).getTime();
+        if(organizationId) {
+            path += "&organizationId=" + organizationId;
+        }
+        if(isActive) {
+            path += "&isActive=" + isActive;
+        }
+        return $http.get(path, {
             headers: {"Authorization": "Bearer " + $cookies.get("token")}}).success(function(response) {
             return response;
         }).error(function(response) {

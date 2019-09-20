@@ -1,4 +1,5 @@
 'use strict';
+
 define([
     'app',
 ], function (app) {
@@ -29,16 +30,20 @@ define([
                 $importService.read().then(function(response) {
                     $scope.imports = response.data;
                     $scope.results = [];
-                    var pmsImport;
+                    var pmsImports = [];
                     
                     $scope.orgs.forEach(function(org) {
-                        pmsImport = _.find($scope.imports, function(i) {
+                        pmsImports = _.filter($scope.imports, function(i) {
                             return i.orgid.toString() === org._id.toString()
                         });
-                        if(pmsImport) {
-                            Object.assign(pmsImport,{identity: pmsImport.yardi.folder});
-                            Object.assign(pmsImport,{orgName: org.name});
-                            Object.assign(pmsImport,{orgid: org._id});
+                        if(pmsImports.length > 0) {
+                            pmsImports.forEach(pmsImport => {
+                                Object.assign(pmsImport,{identity: pmsImport.yardi.folder});
+                                Object.assign(pmsImport,{orgName: org.name});
+                                Object.assign(pmsImport,{orgid: org._id});
+                                Object.assign(pmsImport,{isCreate: false});
+                                Object.assign(pmsImport,{providerStr: titleCase(pmsImport.provider)});
+                            });
                         }
                         $scope.results.push({
                             _id: org._id,
@@ -46,8 +51,8 @@ define([
                             settings: org.settings,
                             sso: org.sso,
                             subdomain: org.subdomain,
-                            import: pmsImport,
-                            hasPmsImport: pmsImport ? true : false
+                            imports: pmsImports,
+                            hasPmsImport: pmsImports.length > 0 ? true : false
                         });
 
                     });
@@ -82,7 +87,6 @@ define([
                 $scope.localLoading = true;
             });
         }
-
 
         $scope.reload(true);
 
@@ -137,8 +141,10 @@ define([
             });
         }
 
-        $scope.edit = function(config) {
-            var isEdit = config.id === "" ? false : true;
+        $scope.edit = function(imports) {
+            var newImport = _.find(imports,  function (x) {
+                return x.isCreate === true;
+            });
             require([
                 "/app/import/editImportController.js"
             ], function() {
@@ -150,37 +156,41 @@ define([
                     backdrop: "static",
                     resolve: {
                         config: function() {
-                            return config;
+                            return {data: imports};
                         }
                     }
                 });
 
                 modalInstance.result.then(function(newConfig) {
                     var name = newConfig.org + " (" + newConfig.provider +")";
-                    if (!isEdit) {
+                    if (newImport) {
                         toastr.success("<B>" + name + "</B> has been created successfully.", "", {timeOut: 10000});
                     } else {
                         toastr.success("<B>" + name + "</B> updated successfully.");
                     }
-
                     $scope.reload();
                 }, function() {
 
                 });
             });
         }
+
         $scope.addPMSImport = function (data) {
-            var config = {
+            var imports = [{
                 id: "",
                 isActive: true,
                 provider: "YARDI",
                 timeZone: "America/Los_Angeles",
                 orgid: data._id,
                 identity: "",
-                orgName: data.name
-            };
-            $scope.edit(config);
+                orgName: data.name,
+                isCreate: true
+            }];
+            $scope.edit(imports);
         }
 
+        function titleCase(str) {
+            return str.toLowerCase().replace(/\b\S/g, function(t) { return t.toUpperCase() });
+          }
     }]);
 });

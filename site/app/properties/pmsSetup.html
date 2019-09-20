@@ -59,12 +59,14 @@
     <hr>
 </div>
 <div class="modal-body">
+    <p class="mb-20" ng-if="!pms.config.importId">Use this wizard to connect <b>{{property.name}}</b> to a PMS and enable importing data into new property surveys.</p>
     <div ng-if="loading" style="display:block;width:100px;margin:20px auto">
         <img src="/images/squares.gif" style="width:100px">
     </div>
     <div ng-if="!loading">
-        <form ng-if="imports.length === 1">
+        <form ng-if="imports.length > 0">
             <div class="form-group">
+                <label ng-if="pms.selectedProperty && !pms.config.importId">What property do you want to connect to?<span class="required">*</span></label>
                 <div ng-if="!pms.config.importId" ng-model="pms.selectedProperty"
                     custom-select="property.name for property in properties | filter: $searchTerm"></div>
                 <div ng-if="pms.config.importId">
@@ -126,7 +128,6 @@
             </div>
         </form>
         <div class="alert alert-warning" role="alert" ng-if="imports.length === 0"><b>There are no PMS Integrations configured for your organization.</b></div>
-        <div class="alert alert-danger" role="alert" ng-if="imports.length > 1"><b>There are multiple PMS Integrations configured for your organization.</b></div>
 
     </div>
 </div>

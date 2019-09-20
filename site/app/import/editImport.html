@@ -4,48 +4,69 @@
     }
 
     .modal-sm {
-        width: 450px;
+        width: 720px;
     }
+
+    .fa-flag:hover {
+        color: grey;
+    }
+    
 </style>
 
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
-    <h2 class="modal-title">{{!isEdit ? 'Add' : 'Update'}} PMS Import: {{config.orgName}}</h2>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span
+            aria-hidden="true">&times;</span></button>
+    <h2 class="modal-title">Update PMS Import: {{config.data[0].orgName}}</h2>
     <hr>
 </div>
 
 <div class="modal-body">
-    <div class="row">
-        <div class="col-xs-12">
-            Provider:<Br>
-            <select ng-model="config.provider" class="form-control input-sm"><option value="YARDI" ng-selected="true">Yardi</option></select>
-        </div>
-    </div>
-    <div class="row" ng-if="config.provider === 'YARDI'">
-        <div class="col-xs-12">
-            Folder:<Br>
-            <input class="form-control input-sm" ng-model="config.identity">
-        </div>
-    </div>
-    <div class="row" ng-if="config.provider === 'YARDI'">
-        <div class="col-xs-12">
-            Timezone:<Br>
-            <select ng-model="model.selectedTimeZone" class="form-control input-sm" ng-options="tz.name for tz in timezones"></select>
-        </div>
-    </div>
-    <div class="row" ng-if="isEdit">
-        <div class="col-xs-12">
-            Active Status:<Br> 
-                <select class="form-control input-sm" ng-model="model.selectedActiveStatus">
-                    <option value="1" ng-selected="config.isActive === true">Enabled</option>
-                    <option value="0" ng-selected="config.isActive === false">Disabled</option>
+    <div class="row" ng-repeat-start="import in config.data">
+        <div ng-if="import.provider === 'YARDI'">
+            <div class="col-xs-1" style="width: 1%">
+                <Br>{{$index + 1}})
+            </div>
+            <div class="col-xs-2">
+                Provider:<Br>
+                <select ng-model="import.provider" class="form-control input-sm">
+                    <option value="YARDI" ng-selected="true">Yardi</option>
                 </select>
-    
+            </div>
+            <div class="col-xs-4">
+                Folder:<Br>
+                <input class="form-control input-sm" ng-model="import.identity">
+            </div>
+            <div class="col-xs-3" style="width: 29%">
+                Timezone:<Br>
+                <select ng-model="import.timeZone" class="form-control input-sm">
+                    <option ng-repeat="tz in timezones" ng-selected="{{tz.name === import.timeZone}}" value="{{tz.id}}">
+                        {{tz.name}}
+                    </option>
+                    <option ng-repeat-end ng-if="false"></option>
+                </select>
+            </div>
+            <div class="col-xs-2" ng-if="import.id">
+                Active Status:<Br>
+                <select class="form-control input-sm" ng-model="import.isActive"
+                    ng-options="status.value as status.name for status in statuses">
+                </select>
+            </div>
+            <div class="col-xs-2 text-right" ng-if="import.isCreate">
+                <A href ng-click="remove($index)"><i class="fa fa-trash fa-flag fa-1x"></i></A>
+            </div>
         </div>
+    </div>
+    <hr>
+    <div ng-repeat-end ng-if="false"></div>
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            <button class="btn btn-primary" type="button" style="padding: 5px 25px;"
+                ng-click="save()"><span>{{isCreate ? 'Create' : 'Save'}}</span></button>
         </div>
-    <div style="margin:0px auto;width:75px">
-        <Br>
-        <button class=" btn btn-primary btn-large btn-block contact-submit" type="button" ng-click="save()">{{!isEdit ? 'Create' : 'Save'}}</button>
+        <div>
+            <button type="button" class="btn btn-default btn-sm" ng-click="addRow()">
+                <span class="fa fa-plus"></span> Add Integration Row
+            </button>
+        </div>
     </div>
 </div>
-
