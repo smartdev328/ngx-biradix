@@ -87,7 +87,6 @@ export class HelpComponent  {
     }
 
     this.sending = false;
-    response.success = false;
 
     if (response.success) {
       // Reset data
@@ -102,10 +101,12 @@ export class HelpComponent  {
         data: `Thank you for your submission. Someone will contact you shortly.`,
       });
     } else {
-      this.snackBar.openFromComponent(HtmlSnackbarComponent, {
-        panelClass: ["snack-bar-error"],
-        data: response.errors.map((x) => x.msg).join("<br>"),
-      });
+      if(response.errors) {
+        this.snackBar.openFromComponent(HtmlSnackbarComponent, {
+          panelClass: ["snack-bar-error"],
+          data: response.errors.map((x) => x.msg).join("<br>"),
+        });
+      }
     }
   }
 }
