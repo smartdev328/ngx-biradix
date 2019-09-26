@@ -9,7 +9,7 @@ define([
         if (performance && performance.now) {
             var timeStart = performance.now();
         }
-        
+
         $scope.selected = {};
         $scope.reportIds = [];
         $scope.reportType = "";
@@ -979,9 +979,6 @@ define([
                 $scope.changeProperty();
             }
 
-            if ($scope.liveSettings.trends) {
-                $scope.singlePerspective("trendsPerspectives", "trendsPerspectiveSelected", $scope.liveSettings.trends.perspective);
-            }
             if ($scope.liveSettings.rankings) {
                 $scope.singlePerspective("rankingPerspectives", "rankingPerspectiveSelected", $scope.liveSettings.rankings.perspective);
             }
@@ -1240,7 +1237,7 @@ define([
                 ner: true,
                 nerweek: true,
                 nermonth: true,
-                neryear: false,                
+                neryear: false,
                 nersqft: true,
                 nersqftweek: false,
                 nersqftmonth: false,
@@ -1653,7 +1650,7 @@ define([
                 $scope.liveSettings.trends.tableView = false;
             }
 
-            $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
+          $scope.singlePerspective("rankingPerspectives", "rankingPerspectiveSelected", $scope.liveSettings.rankings.perspective);
         };
 
         $scope.$watch("runSettings.rankings.orderBy", function(newValue,oldValue) {
@@ -1697,7 +1694,7 @@ define([
                     $scope.temp.trendsBedroom = $scope.temp.bedrooms[0];
                 }
 
-                $scope.singlePerspective("trendsPerspectives", "trendsPerspectiveSelected", $scope.liveSettings.trends.perspective)
+              $scope.temp.trendsPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.trendsPerspectives, $scope.liveSettings.trends.perspectives);
             };
         $scope.$watch("temp.trendsBedroom", function() {
             if ($scope.temp && $scope.temp.trendsBedroom && $scope.temp.trendsBedroom.value === -2) {
@@ -1906,7 +1903,7 @@ define([
                     $scope.updateTrendsDaterange2(newValue.selectedRange)
                 }
             }, true);
-            
+
         ////////////////////// Property Report ////////////////////////////////
 
         $scope.configurePropertyReportOptions = function() {
