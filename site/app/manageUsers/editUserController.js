@@ -205,7 +205,7 @@ define([
                         }), "id"));
                     }
 
-                    if (r.selectedRole.tags[0] !== "PO") {
+                    if (r.selectedRole.tags && r.selectedRole.tags[0] !== "PO") {
                         done = true;
                     }
                 }
