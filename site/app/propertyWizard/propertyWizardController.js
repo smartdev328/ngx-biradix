@@ -127,7 +127,7 @@ define([
                 $scope.property.orgid = $rootScope.me.orgs[0]._id;
             }
 
-            $scope.constructionTypes = ['Garden','Highrise','Midrise','Platform','Wrap']
+            $scope.constructionTypes = ['Garden','High-rise','Mid-rise','Platform','Wrap']
             $scope.states = [
                 {
                     "name": "Alabama",
