@@ -48,6 +48,8 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
 
                     if (scope.pms.values.rent[fpid] === "BIRADIX") {
                         surveyFp.rent = originalSurveyFp.rent;
+                    } else if(scope.pms.values.rent[fpid] === "") {
+                        surveyFp.rent = null;
                     } else {
                         surveyFp.rent = scope.pms.mappedFloorplans[fpid].rent;
                     }
@@ -228,7 +230,7 @@ angular.module("biradix.global").factory("$marketSurveyPMSService", ["$uibModal"
                 fpName += ", " + fp.units + " Units";
 
                 pmsFp = scope.pms.mappedFloorplans[fp.id.toString()];
-                if (pmsFp && pmsFp.rent.toFixed(0) !== fp.rent.toFixed(0)) {
+                if (pmsFp && pmsFp.rent && fp.rent && pmsFp.rent.toFixed(0) !== fp.rent.toFixed(0)) {
                     diff.push({description: fpName + " Difference Survey vs Yardi: " + (fp.rent || 0).toFixed(0) + " vs " + (pmsFp.rent || 0).toFixed(0)});
                 }
             });

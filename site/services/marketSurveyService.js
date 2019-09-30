@@ -256,17 +256,25 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
                             }
                         }
 
-                        // If no floorplan is mapped to Yardi, default Biradix Rent
+                        // If no floorplan is mapped to Yardi, default Radix Rent
                         if (pmsFp) {
                             responseObj.pms.mappedFloorplans[fp.id] = pmsFp;
                             responseObj.pms.values.rent[fp.id] = "YARDI";
 
-                            if (responseObj.editMode && pmsFp.rent.toFixed(0) !== fp.rent.toFixed(0)) {
+                            if (responseObj.editMode && pmsFp.rent && pmsFp.rent.toFixed(0) !== fp.rent.toFixed(0)) {
                                 responseObj.pms.values.rent[fp.id] = "BIRADIX";
                             }
 
                             if (!responseObj.editMode && pmsFp.priceWarning && fp.rent) {
                                 responseObj.pms.values.rent[fp.id] = "YARDI";
+                            }
+
+                            if(!pmsFp.rent && fp.rent) {
+                                responseObj.pms.values.rent[fp.id] = "BIRADIX";
+                            }
+
+                            if(!pmsFp.rent && !fp.rent) {
+                                responseObj.pms.values.rent[fp.id] = "";
                             }
                         } else {
                             responseObj.pms.values.rent[fp.id] = "BIRADIX";

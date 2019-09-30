@@ -1,4 +1,4 @@
-<p style="margin:0 14px 14px;">We have imported PMS data for <strong>{{property.name}}</strong>. Select any fields where you want to use BI:Radix values instead - you can make additional changes on the next screen.</p>
+<p style="margin:0 14px 14px;">We have imported PMS data for <strong>{{property.name}}</strong>. Select any fields where you want to use Radix values instead - you can make additional changes on the next screen.</p>
 <div class="table-responsive" style="margin-bottom: 10px;">
 <table class="new-table">
   <thead>
@@ -20,7 +20,7 @@
         <img src="/images/organizations/biradix-small.png" style="width:16px">
       </td>
       <td class="min-width-100-m">
-        <strong>BI:Radix</strong><br>
+        <strong>Radix</strong><br>
         <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
       </td>
       <td>
@@ -122,7 +122,7 @@
         <th class="hidden-xs text-right"><span class="pr-20">Units</span></th>
         <th class="hidden-xs text-right"><span class="pr-20">Sqft</span></th>
         <th>
-          <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">BI:Radix</strong><br class="hidden-xs">
+          <img src="/images/organizations/biradix-small.png" style="width:16px;margin-right: 5px;"><strong class="hidden-xs">Radix</strong><br class="hidden-xs">
           <i class="grey-txt">Updated: {{showDate(originalSurvey.survey_date)}}</i><br>
         </th>
         <th>
@@ -145,9 +145,9 @@
           <div ng-if="row.rent === ''"><input type="radio" value="BIRADIX" disabled="disabled"> -</div>
         </td>
         <td>
-          <label ng-if="pms.mappedFloorplans[row.id]"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
-          <label ng-if="!pms.mappedFloorplans[row.id]"><input type="radio" value="BIRADIX" disabled="disabled"> -</label>
-          <i class="fa fa-question-circle link ml-3"
+          <label ng-if="pms.mappedFloorplans[row.id] && pms.mappedFloorplans[row.id].rent"><input type="radio" ng-model="pms.values.rent[row.id]" value="YARDI" id="Y-{{row.id}}"> ${{pms.mappedFloorplans[row.id].rent  | number: 0}}</label>
+          <label ng-if="!pms.mappedFloorplans[row.id] || !pms.mappedFloorplans[row.id].rent"><input type="radio" value="BIRADIX" disabled="disabled"> -</label>
+          <i class="fa fa-question-circle link ml-3" ng-if="pms.mappedFloorplans[row.id].rent"
              popover-trigger="'mouseenter'"
              popover-placement="top"
              uib-popover-html="'View Floor Plan Pricing Breakdown'"
@@ -156,7 +156,7 @@
              ng-if="pms.mappedFloorplans[row.id] && $root.me.permissions.indexOf('Admin') > -1"
           ></i>
           <span class="fa fa-exclamation-triangle warning label-side-icon" style="padding-top: 3px;margin:0;"
-                ng-if="pms.mappedFloorplans[row.id] && pms.mappedFloorplans[row.id].priceWarning"
+                ng-if="pms.mappedFloorplans[row.id] && pms.mappedFloorplans[row.id].priceWarning && pms.mappedFloorplans[row.id].rent"
                 popover-trigger="'mouseenter'"
                 popover-placement="left"
                 popover-class="popover-small"
@@ -175,7 +175,7 @@
   </div>
   <div class="col-xs-5 text-right missmatchExists">
     <button type="button" class="btn btn-default" ng-click="floorplansMissmatch()" >
-      See floor plan mapping <strong ng-if="pms.mappedFloorplans.missmatchExists" class="red-top-int" popover-trigger="'mouseenter'" popover-placement="top" popover-class="popover-small" popover-append-to-body="true" uib-popover-html="'A mismatch in unit count, sq ft, or unit type has been detected between the BI:Radix floor plan(s) and your PMS system. Click the link for more detail'">!</strong>
+      See floor plan mapping <strong ng-if="pms.mappedFloorplans.missmatchExists" class="red-top-int" popover-trigger="'mouseenter'" popover-placement="top" popover-class="popover-small" popover-append-to-body="true" uib-popover-html="'A mismatch in unit count, sq ft, or unit type has been detected between the Radix floor plan(s) and your PMS system. Click the link for more detail'">!</strong>
     </button>
   </div>
 </div>
