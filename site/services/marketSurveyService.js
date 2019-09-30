@@ -286,8 +286,13 @@ angular.module("biradix.global").factory("$marketSurveyService", ["$propertyServ
 
                     callback(responseObj);
                 }, function(error) {
-                    Raygun.send(new Error("User saw API unavailable error alert/message/page"));
-                    toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
+                    if(error.status === 400 && error.data === "Unable to locate property") {
+                        delete responseObj.pms;
+                        return callback(responseObj);
+                    } else {
+                        Raygun.send(new Error("User saw API unavailable error alert/message/page"));
+                        toastr.error("Pretend you didn't see this! Something went wrong and we can only show you this message. Sorry for the trouble. Please try refreshing the page");
+                    }
                 });
             } else {
                 callback(responseObj);
