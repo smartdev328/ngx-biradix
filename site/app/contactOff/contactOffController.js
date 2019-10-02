@@ -29,7 +29,7 @@ define([
                             toastr.error(errors);
                         }
                         else {
-                            $location.path('/contact/thankyou?e=' + $scope.user.email + "&o=" + $scope.o)
+                            $location.path('/contact/thankyou').search("e", $scope.user.email).search("o", $scope.o);
                         }
                     },
                     function(errors) {
