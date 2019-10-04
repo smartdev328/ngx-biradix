@@ -15,6 +15,7 @@ define([
 
       if($stateParams.err) {
         toastr.error($stateParams.err);
+        $location.search("err", null);
       }
 
       $scope.noSubDomains = function() {
