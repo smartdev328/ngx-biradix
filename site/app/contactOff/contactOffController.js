@@ -20,6 +20,10 @@ define([
 
             $scope.o = $stateParams.o;
 
+            $scope.backURL = "#/login?e=" +
+                encodeURIComponent($scope.user.email || "") +
+                "&o=" + encodeURIComponent($scope.o || "");
+
             $scope.btnSubmit = function() {
                 $scope.localLoading = true;
                 $contactService.send($scope.user).then(function (resp) {

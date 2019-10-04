@@ -27,9 +27,14 @@ define([
 
             if ($stateParams.e) {
                 $scope.email = $stateParams.e;
+                $scope.forgotPassURL = "#/password?e=" +
+                    encodeURIComponent($scope.email || "") +
+                    "&o=" + encodeURIComponent($scope.o || "");
+                $scope.contactUsURL = "#/contact?e=" +
+                    encodeURIComponent($scope.email || "") +
+                    "&o=" + encodeURIComponent($scope.o || "");
             } else {
                 return $location.path("/sso").search("r", $stateParams.r);
-
             }
 
             $scope.setRenderable = function() {

@@ -677,9 +677,9 @@ define([
 
                 modalInstance.result.then(function(yelp) {
                     $scope.property.reputation = $scope.property.reputation || {};
-                    $scope.property.reputation.yelp = {
+                    $scope.property.reputation.yelp = yelp ? {
                         id: yelp.id, url: yelp.url
-                    };
+                    } : {};
                 }, function() {
                     // Cancel
 
@@ -706,9 +706,9 @@ define([
 
                 modalInstance.result.then(function(google) {
                     $scope.property.reputation = $scope.property.reputation || {};
-                    $scope.property.reputation.google = {
+                    $scope.property.reputation.google = google ? {
                         id: google.id, url: google.url
-                    };
+                    } : {};
                 }, function() {
                     // Cancel
 
@@ -735,9 +735,9 @@ define([
 
                 modalInstance.result.then(function(facebook) {
                     $scope.property.reputation = $scope.property.reputation || {};
-                    $scope.property.reputation.facebook = {
+                    $scope.property.reputation.facebook = facebook ? {
                         id: facebook.id, url: facebook.url
-                    };
+                    } : {};
                 }, function() {
                     // Cancel
 

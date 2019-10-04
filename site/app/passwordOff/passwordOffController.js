@@ -14,6 +14,10 @@ define([
             $scope.o = $stateParams.o;
             window.document.title = "Forgot Password | BI:Radix";
 
+            $scope.backURL = "#/login?e=" +
+                encodeURIComponent($scope.email || "") +
+                "&o=" + encodeURIComponent($scope.o || "");
+
             $scope.btnSubmit = function() {
                 $scope.localLoading = true;
                 $authService.recoverPassword($scope.email).then(function (resp) {

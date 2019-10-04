@@ -121,8 +121,8 @@ module.exports = (function() {
 
     jwt.verify(req.query.token, settings.SECRET, function(err, decoded) {
       if (err) {
-        console.error(err);
-        res.redirect('/');
+        console.error(new Error(err));
+        res.redirect('/#/sso?err='+ encodeURIComponent("Unexpected Error. Unable to login."));
       } else {
         console.log("SSO Success token");
         res.cookie('token', decoded.data);

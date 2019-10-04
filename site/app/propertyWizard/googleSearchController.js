@@ -50,6 +50,9 @@ define([
             }
 
             $scope.use = function() {
+                if(!$scope.search.selectedId) {
+                    return toastr.error("Please select one of the results");
+                }
                 var result = _.find($scope.results, function(x) {
                    return x.id.toString() === $scope.search.selectedId.toString();
                 });

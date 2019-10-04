@@ -13,6 +13,10 @@ define([
       $scope.email = $cookies.get("email");
       $scope.o = $stateParams.o;
 
+      if($stateParams.err) {
+        toastr.error($stateParams.err);
+      }
+
       $scope.noSubDomains = function() {
         return location.hostname.toLowerCase().indexOf("localhost") > -1
           || location.hostname.toLowerCase().indexOf("qa.biradix") > -1
