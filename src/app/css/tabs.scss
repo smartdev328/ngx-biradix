@@ -1,0 +1,12 @@
+@import "../../global";
+
+.tabs-container .mat-tab-link {
+    padding:0 10px;
+    min-width: auto;
+    text-transform: uppercase;
+}
+
+.tabs-container.mat-tab-group.mat-primary .mat-ink-bar,
+.tabs-container.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background:$green-color;
+}

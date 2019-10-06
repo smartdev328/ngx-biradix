@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatIconModule,
+  MatTabsModule,
   MatListModule,
   MatMenuModule,
   MatProgressSpinnerModule,
@@ -41,6 +42,11 @@ import {
   faUsers,
   faWrench,
   faTrashAlt,
+  faEllipsisV,
+  faBan,
+  faPen,
+  faChevronUp,
+  faChevronDown,
   faTachometerAlt, faCaretDown, faSearch, faBars, faTimes, faBell
 } from "@fortawesome/free-solid-svg-icons";
 import {RaygunErrorHandler} from "./providers/raygun.provider";
@@ -65,6 +71,7 @@ export const MaterialModules = [
   MatNativeDateModule,
   MatCheckboxModule,
   MatIconModule,
+  MatTabsModule,
   MatSelectModule,
   MatTableModule,
   MatPaginatorModule,
@@ -136,5 +143,10 @@ export class SharedModule {
     library.add(faTimes);
     library.add(faBell);
     library.add(faTrashAlt);
+    library.add(faEllipsisV);
+    library.add(faBan);
+    library.add(faPen);
+    library.add(faChevronUp);
+    library.add(faChevronDown);
   }
 }

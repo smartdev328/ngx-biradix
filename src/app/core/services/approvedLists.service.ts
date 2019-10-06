@@ -6,15 +6,37 @@ import {SiteService} from "./site.service";
 import {IAmenity, IAmenitySearchCriteria} from "../models/amenities";
 import {
   APPROVED_LIST_TYPE,
-  IApprovedListItemRead,
-  IApprovedListSearchCriteria,
-  IUnapprovedListFrequency
+  IApprovedListItemRead, IApprovedListItemWrite,
+  IApprovedListSearchCriteria, IUnapprovedListFrequenciesWithProperties, IUnapprovedListFrequency
 } from "../models/approvedLists";
 
 @Injectable()
 export class ApprovedListsService {
   constructor(private http: HttpClient, private httpService: HttpService, private siteService: SiteService){
   }
+
+  async getUnapprovedFrequencyWithProperties (type: APPROVED_LIST_TYPE) : Promise<IUnapprovedListFrequenciesWithProperties> {
+    const apiUrl = this.siteService.apiUrl;
+    const authHeader = this.httpService.getAuthHeader();
+
+    const gql = {
+      query: `query {
+        UnapprovedList(type: ${type}) {
+          frequency {value count}
+          unapproved {id name value}
+          }
+        }
+       `
+    };
+    try {
+      const searchResponse: any = await this.http.post(apiUrl + "/graphql?bust=" + (new Date()).getTime(), gql, {headers: authHeader}).toPromise();
+      return {frequencies: searchResponse.data.UnapprovedList.frequency, properties: searchResponse.data.UnapprovedList.unapproved};
+    } catch(err) {
+      this.siteService.handleApiError();
+      return null;
+    }
+  }
+
   async getUnapprovedFrequency (type: APPROVED_LIST_TYPE) : Promise<IUnapprovedListFrequency[]> {
     const apiUrl = this.siteService.apiUrl;
     const authHeader = this.httpService.getAuthHeader();
@@ -22,7 +44,7 @@ export class ApprovedListsService {
     const gql = {
       query: `query {
         UnapprovedList(type: ${type}) {
-          frequency {value}
+          frequency {value count}
           }
         }
        `
@@ -78,6 +100,30 @@ export class ApprovedListsService {
     try {
       const searchResponse: any = await this.http.post(apiUrl + "/graphql?bust=" + (new Date()).getTime(), gql, {headers: authHeader}).toPromise();
       return searchResponse.data.ApprovedListItemDelete;
+    } catch(err) {
+      this.siteService.handleApiError();
+      return null;
+    }
+  }
+
+  async createApproved (approvedListItem: IApprovedListItemWrite) : Promise<IApprovedListItemRead> {
+    const apiUrl = this.siteService.apiUrl;
+    const authHeader = this.httpService.getAuthHeader();
+
+    const gql = {
+      query: `mutation ApprovedListItemCreate($approvedListItem: ApprovedListItemWrite) {
+        ApprovedListItemCreate(approvedListItem: $approvedListItem) {
+            id
+            value
+            type
+            searchable
+          }
+      }`,
+      variables: {approvedListItem},
+    };
+    try {
+      const searchResponse: any = await this.http.post(apiUrl + "/graphql?bust=" + (new Date()).getTime(), gql, {headers: authHeader}).toPromise();
+      return searchResponse.data.ApprovedListItemCreate;
     } catch(err) {
       this.siteService.handleApiError();
       return null;

@@ -32,9 +32,9 @@ export class AlertsService {
     this.alerts.next([
       {type: ALERT_TYPE.AMENITIES, label: "Amenities", url: this.baseUrl + "#/amenities" , count: 0},
       {type: ALERT_TYPE.DATA_INTEGRITY, label: "Data Integrity", url: this.baseUrl + "#/history?active=1" , count: 0},
-      {type: ALERT_TYPE.PROPERTY_OWNERS, label: APPROVED_LIST_LABELS[APPROVED_LIST_TYPE.OWNER], url: this.baseUrl + "#/unapprovedLists?type=" + APPROVED_LIST_TYPE.OWNER, count: 0},
-      {type: ALERT_TYPE.PROPERTY_MANAGERS, label: APPROVED_LIST_LABELS[APPROVED_LIST_TYPE.MANAGER], url: this.baseUrl + "#/unapprovedLists?type=" + APPROVED_LIST_TYPE.MANAGER, count: 0},
-      {type: ALERT_TYPE.CUSTOM_FEES, label: APPROVED_LIST_LABELS[APPROVED_LIST_TYPE.FEES], url: this.baseUrl + "#/unapprovedLists?type=" + APPROVED_LIST_TYPE.FEES, count: 0},
+      {type: ALERT_TYPE.PROPERTY_OWNERS, label: APPROVED_LIST_LABELS[APPROVED_LIST_TYPE.OWNER], route: "/secure/unapproved-lists", routeParams: {type: APPROVED_LIST_TYPE.OWNER}, count: 0},
+      {type: ALERT_TYPE.PROPERTY_MANAGERS, label: APPROVED_LIST_LABELS[APPROVED_LIST_TYPE.MANAGER], route: "/secure/unapproved-lists", routeParams:{type: APPROVED_LIST_TYPE.MANAGER}, count: 0},
+      {type: ALERT_TYPE.CUSTOM_FEES, label: APPROVED_LIST_LABELS[APPROVED_LIST_TYPE.FEES], route: "/secure/unapproved-lists", routeParams: {type: APPROVED_LIST_TYPE.FEES}, count: 0},
     ]);
 
     // Subscribe to auth service to make sure to stop checking if logged out

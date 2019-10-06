@@ -9,7 +9,10 @@
         <fa-icon icon="bell" [fixedWidth]="true" class="red"></fa-icon>
       </button>
       <mat-menu #menuAlerts="matMenu">
-        <a *ngFor="let alert of alerts" mat-menu-item [href]="alert.url"><span>{{alert.label}}: {{alert.count}}</span></a>
+        <li *ngFor="let alert of alerts" mat-menu-item>
+          <a [href]="alert.url" *ngIf="alert.url" class="alerts"><span>{{alert.label}}: {{alert.count}}</span></a>
+          <a [routerLink]="alert.route" [queryParams]="alert.routeParams" *ngIf="alert.route" class="alerts"><span>{{alert.label}}: {{alert.count}}</span></a>
+        </li>
       </mat-menu>
       <div fxHide.lt-sm>
         <a *ngIf="!hasPermission(PERMISSIONS.HIDE_DASHBOARD)" [href]="baseUrl + '#/dashboard'" class="top-nav">Dashboard</a>

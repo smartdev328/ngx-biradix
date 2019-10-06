@@ -598,7 +598,7 @@ angular.module("biradix.global").controller("rootController",
                   key: key,
                   count: total,
                   label: label + ": ",
-                  url: "#/unapprovedLists?type=" + type,
+                  url: $scope.v2Base + "secure/unapproved-lists?type=" + type,
                 });
               }
             }

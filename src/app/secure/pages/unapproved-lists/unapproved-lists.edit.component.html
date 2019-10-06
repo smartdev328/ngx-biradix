@@ -1,0 +1,31 @@
+<div fxLayout class="dialog-title-bar">
+    <h1 mat-dialog-title>Edit Unapproved Value</h1>
+    <span class="fill-space"></span>
+    <div><button mat-icon-button (click)="cancel()" style="min-width:inherit"><fa-icon icon="times"></fa-icon></button></div>
+    </div>
+      <div mat-dialog-content>
+        <b>{{this.data.value}}</b><br>
+        <p>{{this.typeLabel}} ({{data.selectedProperties.length}} properties)</p>
+        <form>
+          <div fxLayout fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap.gt-sm="15px" fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+            <div fxFlex.gt-sm="100%">
+                <mat-form-field fxFlex="fill">
+                  <input type="text" placeholder="New Value" matInput [formControl]="autoCompleteControl" [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="autoCompleteDisplay" autoActiveFirstOption>
+                    <mat-option *ngFor="let property of propertyAutoComplete$ | async" [value]="property" class="autoCompleteOption">
+                      {{property.value}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout fxLayoutGap="10px" fxLayout.xs="column" fxLayout.sm="column"  fxLayoutGap.xs="0" fxLayoutGap.sm="0">
+            <span class="fill-space" fxHide.lt-md></span>
+            <div>
+              <div fxHide.gt-sm style="height:20px"></div>
+              <button mat-raised-button (click)="update()" color="primary" [disabled]="updating">
+                <mat-icon *ngIf="updating"><mat-spinner color="primary" diameter="20"></mat-spinner></mat-icon>Update</button>
+            </div>
+          </div>
+        </form>
+      </div>

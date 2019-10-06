@@ -12,11 +12,13 @@ import * as rg4js from 'raygun4js';
     './css/modals.scss',
     './css/typography.scss',
     './css/alerts.scss',
+    './css/spacing.scss',
     './css/navigation.scss',
     './css/forms.scss',
     './css/buttons.scss',
     './css/general.scss',
-    './css/table.scss'
+    './css/table.scss',
+    './css/tabs.scss'
   ],
   encapsulation: ViewEncapsulation.None
 })

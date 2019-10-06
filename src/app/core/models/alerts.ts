@@ -8,7 +8,9 @@ export enum ALERT_TYPE {
 
 export interface IAlert {
   type: ALERT_TYPE;
-  url: string;
+  url?: string;
+  route?: string;
+  routeParams?: any;
   count: number;
   label: string;
 }

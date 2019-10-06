@@ -5,6 +5,7 @@ import {ApprovedListsService, PerformanceService, SiteService} from "../../../co
 import {APPROVED_LIST_TYPE, APPROVED_LIST_LABELS, IApprovedListItemRead} from "../../../core/models/approvedLists";
 import {ConfirmComponent} from "../../../shared/components";
 import {HtmlSnackbarComponent} from "../../../shared/components/html-snackbar/html-snackbar.component";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-approved-lists',
@@ -14,7 +15,7 @@ import {HtmlSnackbarComponent} from "../../../shared/components/html-snackbar/ht
 
 export class ApprovedListsComponent implements OnInit {
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) approvedListPaginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   typeFilter: APPROVED_LIST_TYPE = APPROVED_LIST_TYPE.OWNER;
@@ -32,7 +33,9 @@ export class ApprovedListsComponent implements OnInit {
               private performanceService: PerformanceService,
               private siteService: SiteService,
               private snackBar: MatSnackBar,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   filterBySearch() {
@@ -44,14 +47,34 @@ export class ApprovedListsComponent implements OnInit {
 
   async ngOnInit() {
     this.performanceService.start();
+    if (this.route.snapshot.queryParamMap.get("type")) {
+      this.typeFilter = this.route.snapshot.queryParamMap.get("type") as APPROVED_LIST_TYPE;
+    }
+    this.route.queryParamMap.subscribe(queryParams => {
+      if (queryParams.get("type")) {
+        if (this.typeFilter !== queryParams.get("type") as APPROVED_LIST_TYPE) {
+          this.typeFilter = queryParams.get("type") as APPROVED_LIST_TYPE;
+          this.run();
+        }
+      }
+    });
 
     this.fields = APPROVED_LIST_LABELS;
     this.dataSource = new MatTableDataSource();
-    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator = this.approvedListPaginator;
     this.dataSource.sort = this.sort;
     this.dataSource.connect().subscribe(d => {
       this.numberOfResults = d.length;
     });
+
+    this.dataSource.sortingDataAccessor = (data, sortHeaderId) => {
+      if (typeof data[sortHeaderId] === "string") {
+        return data[sortHeaderId].toLocaleLowerCase();
+      }
+      else {
+        return data[sortHeaderId]
+      }
+    };
 
     await this.run();
 
@@ -69,6 +92,15 @@ export class ApprovedListsComponent implements OnInit {
     this.dataSource.data = this.approvedLists;
     this.filterBySearch();
     this.loading = false;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams:
+        {
+          type: this.typeFilter
+        },
+      replaceUrl: true,
+    });
   }
 
   async confirmDelete(item: IApprovedListItemRead) {
@@ -89,4 +121,5 @@ export class ApprovedListsComponent implements OnInit {
       }
     });
   }
+
 }

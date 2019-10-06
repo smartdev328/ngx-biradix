@@ -3,6 +3,11 @@ export interface ILegacyResponse {
   errors?: [{param: string; msg: string}];
 }
 
+export interface ILegacyResponseSingleError {
+  success: boolean;
+  errors?: string;
+}
+
 export interface IPager {
   count: number,
   itemsPerPage: number;

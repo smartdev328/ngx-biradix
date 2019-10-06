@@ -14,7 +14,18 @@ APPROVED_LIST_LABELS[APPROVED_LIST_TYPE.FEES] = "Custom Fees & Deposits";
 
 export interface IUnapprovedListFrequency {
   value: string;
-  count?: number;
+  count: number;
+}
+
+export interface IUnapprovedListProperty {
+  id: string;
+  value: string;
+  name: string;
+}
+
+export interface IUnapprovedListFrequenciesWithProperties {
+  frequencies: IUnapprovedListFrequency[];
+  properties: IUnapprovedListProperty[];
 }
 
 export interface IApprovedListItemWrite {

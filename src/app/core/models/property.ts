@@ -1,3 +1,5 @@
+import {APPROVED_LIST_TYPE} from "./approvedLists";
+
 export interface IProperty {
   _id: string;
   name?: string;
@@ -13,4 +15,11 @@ export interface IPropertySearchCriteria {
   hideCustom?: boolean;
   permission?: string[];
   select?: string;
+}
+
+export interface IMassUpdateRequest {
+  propertyIds: string[];
+  type: APPROVED_LIST_TYPE;
+  newValue: string;
+  oldValue: string;
 }
