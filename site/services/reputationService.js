@@ -30,7 +30,7 @@ angular.module("biradix.global").factory("$reputationService", ["$http", "$cooki
             });
         };
 
-/*        fac.searchFacebook = function(term, location, limit) {
+        fac.searchFacebook = function(term, location, limit) {
             return $http.post(gAPI + "/api/1.0/facebook/search"+ "?bust=" + (new Date()).getTime(),
                 {
                     term: term,
@@ -42,7 +42,7 @@ angular.module("biradix.global").factory("$reputationService", ["$http", "$cooki
             }).error(function(response) {
                 return response;
             });
-        };*/
+        };
 
     return fac;
 }]);
