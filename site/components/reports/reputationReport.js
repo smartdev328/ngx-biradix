@@ -26,6 +26,9 @@ angular.module("biradix.global").directive("reputationReport", function() {
             }
 
             $scope.report.averages.googleRatingAverage = Math.round( $scope.report.averages.googleRatingAverage * 10 ) / 10;
+            if($scope.report.averages.facebookRatingAverage) {
+                $scope.report.averages.facebookRatingAverage = Math.round($scope.report.averages.facebookRatingAverage * 10) / 10;
+            }
 
         },
         templateUrl: "/components/reports/reputationReport.html?bust=" + version,

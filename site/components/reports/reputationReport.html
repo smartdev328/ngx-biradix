@@ -114,8 +114,11 @@
                             <span style="margin-right: 10px;" class="google-stars" aria-label="Rated {{report.averages.googleRatingAverage.toFixed(1)}} out of 5,">
                                 <span style="width:{{ report.averages.googleRatingAverage.toFixed(1) * 13 }}px;"></span>
                             </span><strong><i>{{report.averages.googleReviewAverage.toFixed(0)}} Google reviews</i></strong></td>
-                        <td style="border-top:1px solid #ccc;"><strong><i>-</i></strong></td>
-                    </tr>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="!report.averages.facebookCount">-</td>
+                        <td style="border-top:1px solid #ccc;padding-top: 10px;" ng-if="report.averages.facebookCount">
+                            <span class="inline-block"><p class="facebook-ratings">{{report.averages.facebookRatingAverage.toFixed(1)}}</p></span>
+                            <span class="inline-block" style="font-size:14px; color: #337ab7">{{report.averages.facebookReviewAverage.toFixed(0)}} People</span></td>
+                        </tr>
                 </tbody>
             </table>
         </div>
