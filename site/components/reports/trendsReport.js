@@ -32,6 +32,7 @@ angular.module('biradix.global').directive('trendsReport', function () {
                         $scope.options.rentsqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'rentsqft', title: "Rent / Sqft", emptyMaxX: 1}
                         $scope.options.runrate = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 0, metric: 'runrate', title: "Recurring Rent", emptyMaxX: 1000}
                         $scope.options.runratesqft = {height:height, printWidth:printWidth, prefix: '$', suffix: '', decimalPlaces: 2, metric: 'runratesqft', title: "Recurring Rent / Sqft", emptyMaxX: 1}
+                        $scope.options.atr = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'atr', title: "ATR %", emptyMaxX: 100}
                         $scope.options.occupancy = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'occupancy', title: "Occupancy %", emptyMaxX: 100}
 
                         $scope.options.leased = {height:height, printWidth:printWidth, prefix: '', suffix: '%', decimalPlaces: 1, metric: 'leased', title: "Leased %", emptyMaxX: 100}

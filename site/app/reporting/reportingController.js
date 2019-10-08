@@ -1674,6 +1674,7 @@ define([
 
                 $scope.temp.showTrendsOptions = { hideSearch: true, dropdown: true, dropdownDirection : 'left', labelAvailable: "Available Fields", labelSelected: "Selected Fields", searchLabel: "Fields" }
                 $scope.temp.showTrendsItems = [
+                    {id: "atr", name: "ATR %", selected: $scope.liveSettings.trends.show.atr},
                     {id: "occupancy", name: "Occupancy %", selected: $scope.liveSettings.trends.show.occupancy},
                     {id: "leased", name: "Leased %", selected: $scope.liveSettings.trends.show.leased},
                     {id: "renewal", name: "Renewal %", selected: $scope.liveSettings.trends.show.renewal},
