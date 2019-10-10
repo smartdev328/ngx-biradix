@@ -894,8 +894,8 @@ define([
 
                         var url = gAPI + "/api/1.0/properties/downloadPdf?";
                         url += "id=" + $scope.progressId;
-
-                      $exportService.streamFile(url);
+                        $exportService.streamFile(url);
+                    
                     } else {
                         window.setTimeout(
                             function() {

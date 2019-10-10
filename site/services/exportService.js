@@ -1,4 +1,4 @@
-angular.module("biradix.global").factory('$exportService', ['$http','$cookies','$urlService', '$timeout', function ($http,$cookies,$urlService, $timeout) {
+angular.module("biradix.global").factory('$exportService', ['$http','$cookies','$urlService', '$timeout', 'toastr', function ($http,$cookies,$urlService, $timeout, toastr) {
     var fac = {};
 
 
@@ -51,8 +51,15 @@ angular.module("biradix.global").factory('$exportService', ['$http','$cookies','
         var filename = headers()["x-filename"];
 
         if (!filename) {
-            filename = headers()["content-disposition"].split(";")[1].split("=")[1];
+            if(headers()["content-disposition"]) { 
+                filename = headers()["content-disposition"].split(";")[1].split("=")[1];
+            } else { 
+                rg4js('send', new Error("Report file stream from API empty."));
+                toastr.error("Your report cannot be downloaded right now, please try again.");
+                return;
+            }
         }
+
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
             window.navigator.msSaveOrOpenBlob(blob, filename);
             return;
