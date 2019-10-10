@@ -626,10 +626,10 @@
                     <div ng-show="reportLoading" style="display:block;width:40px;margin:50px auto">
                         <img src="/images/squares.gif" style="width:100px">
                     </div>
-                    <div class="alert alert-warning" role="alert" ng-if="!reports && !noReports && !reportLoading && !noProperties"><b>Please select your Criteria and hit 'Run'</b></div>
+                    <div class="alert alert-warning" role="alert" ng-if="!reports && !noReports && !reportLoading && !noProperties && !propertiesOver100"><b>Please select your Criteria and hit 'Run'</b></div>
                     <div class="alert alert-danger" role="alert" ng-if="noReports"><b>Please select at least 1 report and hit 'Run '</b></div>
                     <div class="alert alert-danger" role="alert" ng-if="noProperties"><b>Please select at least 1 property and hit 'Run'</b></div>
-
+                    <div class="alert alert-danger" role="alert" ng-if="propertiesOver100"><b>Please select less than 100 properties and hit 'Run'</b></div>
                 </div>
             </div>
         </div>

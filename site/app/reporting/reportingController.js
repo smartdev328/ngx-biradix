@@ -449,6 +449,7 @@ define([
             $scope.reportLoading = true;
             $scope.noReports = false;
             $scope.noProperties = false;
+            $scope.propertiesOver100 = false;
 
             $scope.reportNamesChanged();
 
@@ -475,6 +476,11 @@ define([
 
                 $scope.singleReport();
             } else {
+                if($scope.propertyItems.items.length > 100) {
+                    $scope.reportLoading = false; 
+                    $scope.propertiesOver100 = true;
+                    return;
+                }
                 var properties = _.pluck($scope.propertyItems.items, "name");
                 var reports = [];
 
@@ -954,7 +960,7 @@ define([
 
         },true);
 
-        $scope.$watch('propertyItems.items', function() {
+        $scope.$watch('propertyItems.items', function(newValue, oldValue) {
 
             if ($scope.liveSettings.customPortfolio) {
                 $scope.temp.customPortfolioPerspectives = $reportingService.multiSelectToPerspectives($scope.propertyItems, $scope.temp.customPortfolioPerspectives, $scope.liveSettings.customPortfolio.perspectives);
@@ -969,6 +975,10 @@ define([
                 if ($scope.propertyItems.items.length > 10) {
                     $scope.liveSettings.trends.groupProperties = true;
                 }
+            }
+
+            if (newValue && newValue.length > 100 && (!oldValue || newValue.length != oldValue.length)) {
+                toastr.warning("Portfolio reports can only be run for 100 or less properties at a time");
             }
 
         },true);

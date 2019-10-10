@@ -9,7 +9,7 @@
                 tooltipfn: "=",
                 tooltipdir: "=",
             },
-            controller: function ($scope) {
+            controller: function ($scope, toastr) {
                 $scope.version = version;
                 $scope.clickCounter = 0;
                 $scope.selectAll = false;
@@ -17,6 +17,7 @@
                 $scope.current = null;
 
                 $scope.clk = function($event, item) {
+                    
                     if (item.disabled) {
                         return;
                     }
