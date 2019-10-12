@@ -143,11 +143,6 @@ define([], function () {
                   return;
                 }
 
-                if (toState.data && toState.data.loggedIn === false && $rootScope.loggedIn) {
-                    $rootScope.swaptoLoggedIn();
-                    return event.preventDefault();
-                }
-
                 ga("set", "title", toState.name);
                 ga("set", "page", toState.name);
                 ga("send", "pageview");

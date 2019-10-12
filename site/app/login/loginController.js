@@ -11,11 +11,6 @@ define([
             }
             $scope.o = $stateParams.o;
 
-            window.setTimeout(function() {
-                window.document.title = "Log In | BI:Radix";
-            }, 1500);
-
-
             if (gHasSessionStorage && $stateParams.r) {
                 $window.sessionStorage.redirect = $stateParams.r;
             }
@@ -25,7 +20,11 @@ define([
                 return;
             }
 
-            if ($stateParams.e) {
+          window.setTimeout(function() {
+            window.document.title = "Log In | BI:Radix";
+          }, 1500);
+
+          if ($stateParams.e) {
                 $scope.email = $stateParams.e;
                 $scope.forgotPassURL = "#/password?e=" +
                     encodeURIComponent($scope.email || "") +

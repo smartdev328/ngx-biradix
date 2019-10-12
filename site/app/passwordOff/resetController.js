@@ -6,7 +6,18 @@ define([
 
     app.controller('resetController', ['$scope','$rootScope','$location','toastr','$window', '$authService', '$stateParams', function ($scope,$rootScope,$location,toastr,$window,$authService,$stateParams) {
 
+      if (gHasSessionStorage && $stateParams.r) {
+        $window.sessionStorage.redirect = $stateParams.r;
+      }
+
+      if ($rootScope.loggedIn) {
+        $rootScope.swaptoLoggedIn();
+        return;
+      }
+
+      window.setTimeout(function() {
         window.document.title = "Forgot Password | BI:Radix";
+      }, 1500);
 
         $scope.token = $stateParams.token;
 

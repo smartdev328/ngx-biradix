@@ -6,13 +6,19 @@ define([
 
     app.controller('contactOffController', ['$scope','$rootScope','$location','toastr','$window','$contactService', '$stateParams',
         function ($scope,$rootScope,$location,toastr,$window,$contactService,$stateParams) {
+          if (gHasSessionStorage && $stateParams.r) {
+            $window.sessionStorage.redirect = $stateParams.r;
+          }
 
+          if ($rootScope.loggedIn) {
+            $rootScope.swaptoLoggedIn();
+            return;
+          }
             $scope.user = $scope.user || {};
-            window.document.title = "Contact Us | BI:Radix";
 
-            if ($rootScope.loggedIn) {
-                $location.path('/dashboard')
-            }
+          window.setTimeout(function() {
+            window.document.title = "Contact Us | BI:Radix";
+          }, 1500);
 
             if ($stateParams.e) {
                 $scope.user.email = $stateParams.e;

@@ -10,6 +10,20 @@ define([
       if (maintenance === true && $location.path().indexOf("maintenance") === -1) {
         return $location.path("/maintenance");
       }
+
+      if (gHasSessionStorage && $stateParams.r) {
+        $window.sessionStorage.redirect = $stateParams.r;
+      }
+
+      if ($rootScope.loggedIn) {
+        $rootScope.swaptoLoggedIn();
+        return;
+      }
+
+      window.setTimeout(function() {
+        window.document.title = "Log In | BI:Radix";
+      }, 1500);
+
       $scope.email = $cookies.get("email");
       $scope.o = $stateParams.o;
 
@@ -93,7 +107,7 @@ define([
                         }
                       ) +
                       '&login_hint=' + $scope.email;
-    
+
                     location.href = url;
                   break;
                   case 'Okta':
