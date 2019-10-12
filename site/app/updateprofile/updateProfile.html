@@ -138,6 +138,41 @@
                       <filter-list options="columnsOptions" items="columnsItems.items"></filter-list>
                   </div>
                 </div>
+
+                <div class="row">
+                  <label class="indent col-xs-12 col-sm-7 col-md-5 valign5">Alerts
+                    <i class="fa fa-question-circle label-side-icon"
+                       popover-trigger="'mouseenter'"
+                       popover-placement="top"
+                       uib-popover="Alerts are highlighted in your Property Status Update Email. These alerts notify you when changes in Property Data occur. You can specify which fields you would like to be alerted by."
+                       popover-append-to-body="true"
+                    ></i>
+                  </label>
+                  <div class="form-group col-xs-12 col-sm-5 col-md-7 indent-col-2"  ng-style="{'margin-bottom': selectedAlerts.length ? '10px' : '20px'}">
+                    <div class="row" style="margin:0px -15px">
+                    <div class="col-xs-8">
+
+                      <select class="input-sm form-control"
+                        ng-options="f.name group by f.group for f in alertItems.items "
+                      ng-model="alertItems.selected"
+                    ></select>
+                    </div>
+                    <div class="col-xs-4" style="text-align: right"><button class="btn btn-primary btn-sm" type="submit" ng-click="addAlert()">Add Alert</button></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" ng-if="selectedAlerts.length">
+                  <label class="indent col-xs-12 col-sm-7 col-md-5 valign5 indent2x"><strong>Alert me if...</strong></label>
+                </div>
+                <div  class="row" ng-repeat="alert in selectedAlerts">
+                  <label class="indent col-xs-12 col-sm-7 col-md-5 valign5 indent2x">- {{alert.name}}</label>
+                  <div class="form-group col-xs-12 col-sm-5 col-md-7 indent-col-2" ng-style="{'margin-bottom': $index === (selectedAlerts.length - 1) ? '20px' : '10px'}">
+                    <select class="form-control input-sm" ng-model="alert.value" style="width:120px;display:inline-block"
+                            ng-options="item + '% or more' for item in alertItems.percents">
+                    </select>
+                    &nbsp;<A href ng-click="selectedAlerts.splice($index, 1)"><i class="fa fa-trash" style="color:red"></i></A>
+                  </div>
+                </div>
                 <div class="row">
                   <label class="indent col-xs-6 pl-10 pr-10 col-sm-7 col-md-5 valign5">
                     Group Comps

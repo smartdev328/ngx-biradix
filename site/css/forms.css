@@ -7,6 +7,10 @@ form.full-page .indent {
     padding-left:30px;
 }
 
+form.full-page .indent.indent2x {
+  padding-left:45px;
+}
+
 form.full-page .valign5 {
     margin-top:5px;
 }
@@ -21,4 +25,4 @@ form.full-page .valign5 {
   form.full-page .valign5 {
   	margin-top: 0;
   }
-} 
+}

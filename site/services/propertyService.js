@@ -42,14 +42,15 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             return response;
         });
     }
-        fac.notifications_test = function (properties,showLeases,notification_columns, groupComps, perspectives) {
+        fac.notifications_test = function (properties,showLeases,notification_columns, groupComps, perspectives, alerts) {
             return $http.post(gAPI + '/api/1.0/properties/notifications_test?bust=' + (new Date()).getTime(), {
                 properties:properties,
                 showLeases: showLeases,
                 notification_columns: notification_columns,
                 groupComps: groupComps,
                 options: {
-                    perspectives: perspectives
+                  perspectives: perspectives,
+                  alerts: alerts
                 },
 
             },  {
@@ -568,7 +569,7 @@ angular.module('biradix.global').factory('$propertyService', ['$http','$cookies'
             if (resp.comp.hasSurveyNotes) {
                 resp.comp.survey.notes = (resp.comp.survey.notes || '').replace(/(?:\r\n|\r|\n)/g, '<br />');
             }
-            
+
             if (resp.comp.website) {
                 if (resp.comp.website.length > 40) {
                     resp.comp.websiteLabel = resp.comp.website.replace("http://", '').substring(0, 40) + "...";
