@@ -427,7 +427,7 @@ define([
                     row.push(r["_id"] || "");
                 }
                 if ($scope.show.pms) {
-                    row.push(r['pms'] || '');
+                    row.push(r['pms'] ? r['pms'].importProvider : '');
                 }
 
                 content.push(row);
