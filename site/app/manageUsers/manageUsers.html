@@ -114,7 +114,7 @@
             <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.email" ng-checked="show.email" ng-click="columnsChanged=true"> Email</label></div></li>
             <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.role" ng-checked="show.role" ng-click="columnsChanged=true"> Role</label></div></li>
             <li class="pl-10"><div class="checkbox"><label><input type="checkbox" ng-model="show.active" ng-checked="show.active" ng-click="columnsChanged=true"> Active</label></div></li>
-            <li class="dropdown-header" ng-if="$root.me.roles.indexOf('Site Admin') > -1">BI:Radix Admin</li>
+            <li class="dropdown-header" ng-if="$root.me.roles.indexOf('Site Admin') > -1">Radix Admin</li>
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.company" ng-checked="show.company" ng-click="columnsChanged=true"> Company</label></div></li>
             <li class="pl-10" ng-if="$root.me.roles.indexOf('Site Admin') > -1;"><div class="checkbox"><label><input type="checkbox" ng-model="show.customPropertiesLimit" ng-checked="show.customPropertiesLimit" ng-click="columnsChanged=true"> Custom Prop.</label></div></li>
         </ul>
@@ -215,7 +215,7 @@
                                 <li><a href ng-click="edit(row._id)"><span class="fa fa-fw fa-pencil"></span> Edit User</a></li>
                                 <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && !row.active"><span class="fa fa-fw fa-check"></span> Activate</a></li>
                                 <li><a href ng-click="toggleActive(row)" ng-show="me.permissions.indexOf('Users/Deactivate') > -1 && row.active"><span class="fa fa-fw fa-minus"></span> De-activate</a></li>
-                                <li class="dropdown-header" ng-if="me.permissions.indexOf('Admin') > -1">BI:Radix Admin</li>
+                                <li class="dropdown-header" ng-if="me.permissions.indexOf('Admin') > -1">Radix Admin</li>
                                 <li><a href ng-click="loginAs(row._id)" ng-show="me.permissions.indexOf('Users/LogInAs') > -1 && row.active"><span class="fa fa-fw fa-key"></span> Login As</a></li>
                                 <li ng-if="!row.isCustom && me.permissions.indexOf('Admin') > -1"><a href="/#history?user={{row._id}}" target="_blank"><span class="fa fa-history fa-fw"></span> View Activity</a></li>
                             </ul>

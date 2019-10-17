@@ -54,7 +54,7 @@ define([
                         tooltip: "<b>Trend Analysis</b> - <i>Report allows comparison of data (Rent, NER, NER/SQFT, Occupancy, Leased %, Traffic & Leases, etc.) over two different time periods (ex: last 30 days vs. previous 30 days), as well as benchmarking against competitor data.</i>",
                     });
                 $scope.reportItems.push({id: "property_status", name: "Property Status", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Property Status</b> - <i>Report is intended to give a focused summary on the current state of your portfolio. It can be modified to include data points such as Traffic & Leases, NER, and NER/SQFT as well as NER changes vs. {Last Week, Last Month, Last Year, or Comp Average}.</i>"});
-                $scope.reportItems.push({id: "custom_portfolio", name: "Customizable Property Data", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Customizable Property Data</b> - <i>Report offers customizable solution to ad hoc building report tables with any property data available in BI:Radix. Allows modifying column order, setting sort preference, and exporting to Excel.</i>"});
+                $scope.reportItems.push({id: "custom_portfolio", name: "Customizable Property Data", selected: false, group: "Portfolio Reports", type:"multiple", tooltip: "<b>Customizable Property Data</b> - <i>Report offers customizable solution to ad hoc building report tables with any property data available in Radix. Allows modifying column order, setting sort preference, and exporting to Excel.</i>"});
 
                 $scope.timezone = moment().utcOffset();
                 if ($cookies.get("settings")) {
@@ -272,7 +272,7 @@ define([
             }
 
             window.setTimeout(function() {
-                window.document.title = "Reporting | BI:Radix";
+                window.document.title = "Reporting | Radix";
             }, 1500);
             $scope.localLoading = true;
 
@@ -392,7 +392,7 @@ define([
                 }
             }
 
-            window.setTimeout(function() {window.document.title = $scope.selected.Property.name + " - Reporting | BI:Radix";},1500);
+            window.setTimeout(function() {window.document.title = $scope.selected.Property.name + " - Reporting | Radix";},1500);
             $scope.reportLoading = false;
             $scope.noReports = false;
             delete $scope.reports;
@@ -443,7 +443,7 @@ define([
             var seconds = ((new Date()).getTime() - $scope.reportStarted.getTime()) / 1000;
 
             if (seconds > 90) {
-                toastr.error("Sorry! We appear to be having difficulties generating your report. Please try to run the report again and if you continue see this message contact support@biradix.com", null, {timeOut: 60000});
+                toastr.error("Sorry! We appear to be having difficulties generating your report. Please try to run the report again and if you continue see this message contact support@radix.com", null, {timeOut: 60000});
                 delete $scope.reportStarted;
                 $scope.reportLoading = false;
                 window.renderable = true;
@@ -474,7 +474,7 @@ define([
             $scope.reportStarted = new Date();
             $scope.checkReportRunning();
 
-            if ($scope.currentReport && $scope.currentReport.name.toLowerCase() === "crash me" && $rootScope.me.email.toLowerCase().indexOf("biradix.com") > -1) {
+            if ($scope.currentReport && $scope.currentReport.name.toLowerCase() === "crash me" && $rootScope.me.email.toLowerCase().indexOf("radix.com") > -1) {
                throw new Error("Reports crash testing on purpose");
             }
 

@@ -291,7 +291,7 @@ define([
                         $scope.settings.perspectives = resp.perspectives;
                         $scope.settings.perspective = resp.perspective;
 
-                        window.document.title = resp.property.name + " - Dashboard | BI:Radix";
+                        window.document.title = resp.property.name + " - Dashboard | Radix";
                     }
 
                     $scope.points = resp.points;

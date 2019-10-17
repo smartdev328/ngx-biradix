@@ -7,7 +7,7 @@ define([
         $scope.data = {};
 
         window.setTimeout(function() {
-            window.document.title = "Admin | Upload Surveys | BI:Radix";
+            window.document.title = "Admin | Upload Surveys | Radix";
         }, 1500);
 
         $rootScope.nav = "";

@@ -5,7 +5,7 @@ define([
 
     app.controller('expiredController', ['$scope','$stateParams', function ($scope,$stateParams) {
 
-        window.document.title = "Link Expired | BI:Radix";
+        window.document.title = "Link Expired | Radix";
 
         $scope.name=$stateParams.name;
 

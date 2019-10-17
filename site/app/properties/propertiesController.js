@@ -10,7 +10,7 @@ define([
             var timeStart = performance.now();
         }
 
-        window.setTimeout(function() {window.document.title = "Manage Properties | BI:Radix";},1500);
+        window.setTimeout(function() {window.document.title = "Manage Properties | Radix";},1500);
 
         $rootScope.nav = "";
 

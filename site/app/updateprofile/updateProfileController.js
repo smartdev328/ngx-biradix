@@ -6,7 +6,7 @@ define([
   app.controller
   ('updateProfileController', ['$scope', '$authService', 'ngProgress', '$rootScope','toastr', '$location','$userService','$stateParams','$propertyService','$cronService', '$reportingService',
     function ($scope, $authService, ngProgress, $rootScope, toastr, $location, $userService, $stateParams, $propertyService, $cronService, $reportingService) {
-      window.setTimeout(function() {window.document.title = "My Account - Update Profile | BI:Radix";},1500);
+      window.setTimeout(function() {window.document.title = "My Account - Update Profile | Radix";},1500);
 
       $rootScope.nav = "";
       $rootScope.sideMenu = true;

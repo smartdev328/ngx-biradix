@@ -4,7 +4,7 @@ define([
     app.controller("metricsController", ["$scope", "$rootScope", "$location", "$keenService", "ngProgress", "$uibModal", "toastr", "$cookieSettingsService", "$organizationsService",
         function($scope, $rootScope, $location, $keenService, ngProgress, $uibModal, toastr, $cookieSettingsService, $organizationsService) {
             window.setTimeout(function() {
-                window.document.title = "Metrics | BI:Radix";
+                window.document.title = "Metrics | Radix";
             }, 1500);
 
             $rootScope.nav = "";

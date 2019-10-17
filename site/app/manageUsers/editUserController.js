@@ -305,7 +305,7 @@ define([
             if (_.find($scope.roles, function(x) {
                 return x.name === "Corporate Manager";
             })) {
-                string += "<span class='roles_info'><B>Corporate Manager</B> - The Corporate Manager has full access to the BI:Radix platform. This role includes all functionality available to other roles as well as additional administrative functions and access to all users and properties in the organization.</span><Br><Br>";
+                string += "<span class='roles_info'><B>Corporate Manager</B> - The Corporate Manager has full access to the Radix platform. This role includes all functionality available to other roles as well as additional administrative functions and access to all users and properties in the organization.</span><Br><Br>";
             }
             if (_.find($scope.roles, function(x) {
                 return x.name === "Regional Manager";

@@ -11,7 +11,7 @@ define([
             var timeStart = performance.now();
         }
 
-        window.setTimeout(function() {window.document.title = "Amenities | BI:Radix";},1500);
+        window.setTimeout(function() {window.document.title = "Amenities | Radix";},1500);
 
         $rootScope.nav = "";
 

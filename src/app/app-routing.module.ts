@@ -26,9 +26,9 @@ export class AppRoutingModule {
         var title = this.getDeepestTitle(this.router.routerState.snapshot.root)
 
         if (title) {
-          document.title = title + ' | BI:Radix';
+          document.title = title + ' | Radix';
         } else {
-          document.title = 'BI:Radix';
+          document.title = 'Radix';
         }
       }
     });

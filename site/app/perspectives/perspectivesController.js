@@ -11,7 +11,7 @@ define([
         }
         
         window.setTimeout(function() {
-            window.document.title = "My Account - Perspectives | BI:Radix";
+            window.document.title = "My Account - Perspectives | Radix";
         }, 1500);
 
         $rootScope.sideNav = "Perspectives";

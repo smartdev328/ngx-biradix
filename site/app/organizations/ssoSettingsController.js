@@ -64,7 +64,7 @@ define([
                 $scope.ssoUserModel = {
                     list: [],
                     options: {
-                        availableLabel: 'BI:Radix Email/Password',
+                        availableLabel: 'Radix Email/Password',
                         selectedLabel: 'Single Sign On',
                         searchLabel: 'Email',
                         hideSearch: true,

@@ -3,7 +3,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 
 import { Welcome } from '@storybook/angular/demo';
  
-const stories = storiesOf('BI:Radix UI', module);
+const stories = storiesOf('Radix UI', module);
 stories.addDecorator(withKnobs);
  
 stories.add('Welcome', () => ({

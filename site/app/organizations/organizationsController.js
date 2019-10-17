@@ -10,7 +10,7 @@ define([
             var timeStart = performance.now();
         }
 
-        window.setTimeout(function() {window.document.title = "Organizations | BI:Radix";},1500);
+        window.setTimeout(function() {window.document.title = "Organizations | Radix";},1500);
 
         $rootScope.nav = "";
 

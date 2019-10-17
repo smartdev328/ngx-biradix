@@ -16,7 +16,7 @@ define([
       }
 
       window.setTimeout(function() {
-        window.document.title = "Forgot Password | BI:Radix";
+        window.document.title = "Forgot Password | Radix";
       }, 1500);
 
         $scope.token = $stateParams.token;

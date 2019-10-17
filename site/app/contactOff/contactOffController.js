@@ -17,7 +17,7 @@ define([
             $scope.user = $scope.user || {};
 
           window.setTimeout(function() {
-            window.document.title = "Contact Us | BI:Radix";
+            window.document.title = "Contact Us | Radix";
           }, 1500);
 
             if ($stateParams.e) {

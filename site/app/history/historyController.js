@@ -13,7 +13,7 @@ define([
         }
 
         window.setTimeout(function() {
-            window.document.title = "Activity History | BI:Radix";
+            window.document.title = "Activity History | Radix";
         }, 1500);
 
         $rootScope.nav = "";

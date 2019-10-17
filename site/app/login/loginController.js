@@ -21,7 +21,7 @@ define([
             }
 
           window.setTimeout(function() {
-            window.document.title = "Log In | BI:Radix";
+            window.document.title = "Log In | Radix";
           }, 1500);
 
           if ($stateParams.e) {
