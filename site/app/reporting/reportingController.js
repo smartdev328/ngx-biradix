@@ -94,6 +94,18 @@ define([
             ];
 
         $scope.loadReport = function(report) {
+            if(_.indexOf(report.reportIds, "trends") > -1 && report.reportIds.length > 1) {
+                var singleReports = _.map(_.filter($scope.reportItems,{"type": "single"}), function(x) {
+                    return x.id;
+                });
+                // by this point we know that selected template has "trends" multiple report, so we need to make sure there are no
+                // single reports in selected template by looking at the difference below
+                if(_.difference(singleReports, report.reportIds).length < singleReports.length) {
+                    toastr.error("The selected report template <b>" + report.name + "</b> is misconfigured, please contact the owner to delete it.");
+                    return;
+                }
+
+            }
 
             $scope.currentReport = report;
 
@@ -122,9 +134,9 @@ define([
             });
         }
 
-            $scope.sortPerspective = function( perspective ) {
-                return perspective.text.toLowerCase();
-            };
+        $scope.sortPerspective = function( perspective ) {
+            return perspective.text.toLowerCase();
+        };
 
         $scope.fixDates = function() {
             for (var key in $scope.liveSettings) {
@@ -1010,6 +1022,7 @@ define([
         }
 
         $scope.reportsChanged = function(load, callback) {
+            
             if (!$rootScope.me) {
                 return;
             }
